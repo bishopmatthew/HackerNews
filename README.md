@@ -27,7 +27,7 @@ Clone both repositories, and then import them into eclipse. Then add them as lib
 
 # Architecture
 
-I've outlined the architecture in in [this wiki article](https://github.com/bishopmatthew/DatabaseUtils/wiki/Architecture). This is also probably a good place to learn if you're interested in writing Android apps.
+I've outlined the architecture in in [this wiki article](https://github.com/bishopmatthew/HackerNews/wiki/Architecture). This is also probably a good place to learn if you're interested in writing Android apps.
 
 # How to help
 
