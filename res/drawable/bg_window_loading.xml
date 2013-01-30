@@ -1,0 +1,16 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" > <!-- default -->
+
+    <item>
+        <bitmap
+            android:src="@drawable/bg_dark_precomp"
+            android:tileMode="repeat" >
+        </bitmap>
+    </item>
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/logo_embossed_dark" >
+        </bitmap>
+    </item>
+
+</layer-list>

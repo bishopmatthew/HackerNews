@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- APP NAME -->
+    <string name="app_name">Hacker News 2</string>
+
+    <!-- PAGE TITLES -->
+    <string name="front_page">Front Page</string>
+    <string name="ask">Ask</string>
+    <string name="best">Best</string>
+    <string name="new_page">New</string>
+    <string name="user">User</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="comments">Comments</string>
+    <string name="contribute">Contribute</string>
+    <string name="search">Search</string>
+    <string name="reply">Reply</string>
+    <string name="submit">Submit</string>
+    <string name="submit_to_hn">Submit to HN</string>
+    <string name="donate">Donate</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+
+    <!-- MISC -->
+    <string name="share">Share</string>
+    <string name="text_settings">Text settings</string>
+
+    <!-- STORY -->
+    <string name="pts">pts.</string>
+    <string name="load_more">Load more</string>
+    <string name="link_expired">Link expired, refreshing page...</string>
+    <string name="problem_downloading_content">There was a problem downloading content</string>
+
+    <!-- COMMENT -->
+    <string name="upvote">Upvote</string>
+    <string name="upvoted">Upvoted!</string>
+
+    <!-- SUBMIT ACTIVITY -->
+    <string name="submit_to_hacker_news">Submit to Hacker News</string>
+
+    <!-- CONTRIBUTE ACTIVITY -->
+    <string name="contribute_title_thanks">Thanks for downloading!</string>
+    <string name="contribute_content_thanks">I hope you like the app. If you have any questions, comment, or problems - feel free to email me. \n\nIf you get value out of this app, I would appreciate if you could give something back.</string>
+    <string name="contribute_title_help">Ways to help</string>
+    <string name="contribute_content_help">- If you need an Android or Clojure dev, hire me!\n- Donate through the in-app-purchase link below, or anytime on the About page.\n- Contribute new features or bug fixes on Github; it’s open-source.\n- Use the app, learn from the source code, share it with someone else; that’s what I made it for!</string>
+
+    <!-- DONATION ACTIVITY -->
+    <string name="request_for_donation">I\’ve put a lot of effort into making this a great app. If you\’d like, you can use an in-app purchase to donate some money to me.\n\nIt doesn\’t unlock any new features, other than my thanks (the whole app is open-sourced anyway). But if you are getting value out of it and want to give something back, you can select an amount below. You\’ll be sent to the Google Play store where you can confirm the amount &amp; transaction in your local currency.\n\nThanks,\nMatthew Bishop</string>
+    <string name="donate_2_us">Donate $2 U.S.</string>
+    <string name="donate_4_us">Donate $4 U.S.</string>
+    <string name="donate_6_us">Donate $6 U.S.</string>
+
+    <!-- ABOUT ACTIVITY -->
+    <string name="designed_and_built_by">Designed &amp; built by</string>
+    <string name="about_description">Aka me, Matt Bishop.\n\nI design and code Android apps. Email me if you have any questions, comments, if you need someone to build an app for you, or are looking to hire a developer.</string>
+
+    <!-- WEB FRAGMENT -->
+    <string name="refresh_webpage">Refresh webpage</string>
+    <string name="refresh_stories">Refresh stories</string>
+    <string name="refresh_comments">Refresh comments</string>
+
+    <!-- LOGIN -->
+    <string name="login_success">Successfully logged in!</string>
+    <string name="login_failure">Login failed. Please check your network connection, username, and password, then try again.</string>
+
+    <!-- MISC -->
+    <string name="created">Created</string>
+    <string name="username">Username</string>
+    <string name="total_of">Total of</string>
+    <string name="karma">karma</string>
+    <string name="average_of">Average of</string>
+    <string name="error_loading">Couldn\'t connect to Hacker News.\n\n Please check your network connection &amp; try again.</string>
+    <string name="reply_no_connection">There was an error sending your reply. Please check your network connection &amp; try again.</string>
+    <string name="reply_sent">Reply sent!</string>
+    <string name="loading">Loading</string>
+    <string name="submissions">Submissions</string>
+    <string name="threads">Threads</string>
+    <string name="loading_">Loading&#8230;</string>
+    <string name="title">Title</string>
+    <string name="enter_title">Enter title</string>
+    <string name="url">Url</string>
+    <string name="enter_url_here">Enter Url here</string>
+    <string name="or">or</string>
+    <string name="refresh">Refresh</string>
+    <string name="about_user">About user</string>
+    <string name="text">Text</string>
+    <string name="enter_text_here">Enter text here</string>
+    <string name="automatic_bug_reports">Automatic bug reports</string>
+    <string name="automatic_bug_reports_description">Any information submited is never shared with anyone else &amp; is used solely for the purpose of fixing errors.</string>
+    <string name="open_in_browser">Open in browser</string>
+    <string name="open_in_browser_description">Open links in your devices web browser instead of inside the app.</string>
+    <string name="for_android">for Android</string>
+    <string name="enter_username_here">enter username here</string>
+    <string name="password">Password</string>
+    <string name="enter_password_here">enter password here</string>
+    <string name="login_to_hacker_news">Login to HN</string>
+    <string name="search_type">Search type:</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="logging_in_">Logging in&#8230;</string>
+    <string name="visit_website">Visit website</string>
+    <string name="email_me">Email me</string>
+    <string name="no_results_found_for_your_query_">No results found for your query.</string>
+    <string name="visit_project_on_github">Visit project on Github</string>
+    <string name="rate_on_play_store">Rate on Google Play Store</string>
+    <string name="cancel">Cancel</string>
+    <string name="submitting">Submitting&#8230;</string>
+    <string name="submitting_title_too_long">Make sure you\'ve entered a title that is &#060; 80 characters long.</string>
+    <string name="submitted">Submitted successfully!</string>
+    <string name="reply_is_blank">Comments cannot be blank!</string>
+    <string name="error_submitting">There was a problem with your submission. Please include either self-text or a url (including http://), but not both.</string>
+
+</resources>

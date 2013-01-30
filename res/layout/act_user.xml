@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cnt_tabpager"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/cnt_tabs" >
+    </android.support.v4.view.ViewPager>
+
+    <LinearLayout
+        android:id="@+id/cnt_tabs"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/actionbar_height"
+        android:layout_alignParentBottom="true" >
+
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/tab_about"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="?attr/bgTab" >
+
+            <com.airlocksoftware.holo.type.FontText
+                style="@style/FontText.Tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/about" />
+        </com.airlocksoftware.holo.checkable.CheckableView>
+
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/tab_submissions"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="?attr/bgTab" >
+
+            <com.airlocksoftware.holo.type.FontText
+                style="@style/FontText.Tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/submissions" >
+            </com.airlocksoftware.holo.type.FontText>
+        </com.airlocksoftware.holo.checkable.CheckableView>
+
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/tab_threads"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="?attr/bgTab" >
+
+            <com.airlocksoftware.holo.type.FontText
+                style="@style/FontText.Tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/threads" />
+        </com.airlocksoftware.holo.checkable.CheckableView>
+    </LinearLayout>
+
+</RelativeLayout>

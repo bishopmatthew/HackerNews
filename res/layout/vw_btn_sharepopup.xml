@@ -1,0 +1,18 @@
+<com.airlocksoftware.holo.checkable.CheckableView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews"
+    android:id="@+id/checkableview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="10dp"
+    android:background="?attr/btnSharePopup"
+    android:padding="6dp" >
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="@+id/txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textColor="?attr/textColorPrimary"
+        android:textSize="16sp" />
+
+</com.airlocksoftware.holo.checkable.CheckableView>

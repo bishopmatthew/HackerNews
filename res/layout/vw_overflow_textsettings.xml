@@ -1,0 +1,85 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews" >
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="@+id/txt_settings_title"
+        style="?overflowMenuButtonTextStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="13.33dp"
+        android:layout_marginRight="13.33dp"
+        android:paddingBottom="6.66dp"
+        android:text="@string/text_settings" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1.5dp"
+        android:layout_alignBottom="@+id/txt_settings_title"
+        android:layout_alignLeft="@+id/txt_settings_title"
+        android:layout_alignRight="@+id/txt_settings_title"
+        android:background="?attr/dividerColor" />
+
+    <LinearLayout
+        android:id="@+id/cnt_buttons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/txt_settings_title"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/actionbar_height"
+        android:paddingLeft="13.33dp"
+        android:paddingRight="13.33dp" >
+
+        <com.airlocksoftware.holo.image.IconView
+            android:id="@+id/icv_night_mode"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bright_accent"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:scaleType="center"
+            app:icon_colors="?attr/textColorPrimary"
+            app:icon_src="@drawable/ic_night_mode" />
+
+        <com.airlocksoftware.holo.image.IconView
+            android:id="@+id/icv_day_mode"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bright_accent"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:scaleType="center"
+            app:icon_colors="?attr/textColorPrimary"
+            app:icon_src="@drawable/ic_day_mode" />
+
+        <com.airlocksoftware.holo.image.IconView
+            android:id="@+id/icv_text_smaller"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bright_accent"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:scaleType="center"
+            app:icon_colors="?attr/textColorPrimary"
+            app:icon_src="@drawable/ic_text_smaller" />
+
+        <com.airlocksoftware.holo.image.IconView
+            android:id="@+id/icv_text_bigger"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bright_accent"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:scaleType="center"
+            app:icon_colors="?attr/textColorPrimary"
+            app:icon_src="@drawable/ic_text_bigger" />
+    </LinearLayout>
+
+</merge>

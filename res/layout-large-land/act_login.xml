@@ -1,0 +1,168 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews"
+    android:id="@+id/root_act_login"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:id="@+id/left"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:paddingLeft="6.66dp"
+        android:paddingRight="6.66dp" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_title"
+            style="@style/FontText.LoginTitle.Landscape"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/app_name" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_subtitle"
+            style="@style/FontText.LoginSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/txt_title"
+            android:text="@string/for_android" />
+
+        <ImageView
+            android:id="@+id/img_saturn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/txt_subtitle"
+            android:scaleType="center"
+            android:src="@drawable/img_saturn_light" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="0"
+        android:background="?attr/dividerColor" />
+
+    <RelativeLayout
+        android:id="@+id/right"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:paddingLeft="6.66dp"
+        android:paddingRight="6.66dp" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_username"
+            style="@style/FontText.LoginLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="15dp"
+            android:text="@string/username" />
+
+        <com.airlocksoftware.holo.type.FontEdit
+            android:id="@+id/edit_username"
+            style="@style/FontEdit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txt_username"
+            android:layout_below="@+id/txt_username"
+            android:layout_marginTop="6.66dp"
+            android:hint="@string/enter_username_here"
+            android:imeOptions="actionNext"
+            android:inputType="textNoSuggestions"
+            android:textSize="18sp" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_password"
+            style="@style/FontText.LoginLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_username"
+            android:layout_marginTop="13.33dp"
+            android:text="@string/password" />
+
+        <com.airlocksoftware.holo.type.FontEdit
+            android:id="@+id/edit_password"
+            style="@style/FontEdit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/edit_username"
+            android:layout_below="@+id/txt_password"
+            android:layout_marginTop="6.66dp"
+            android:hint="@string/enter_password_here"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:id="@+id/btn_login"
+            style="@style/Login.Button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" >
+
+            <com.airlocksoftware.holo.image.IconView
+                android:id="@+id/icv_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:duplicateParentState="true"
+                app:icon_colors="?attr/textColorPrimary"
+                app:icon_src="@drawable/ic_action_login" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_login"
+                style="@style/FontText.LoginButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="13.33dp"
+                android:layout_toRightOf="@+id/icv_login"
+                android:duplicateParentState="true"
+                android:text="@string/login_to_hacker_news" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/login_indicator"
+            style="@style/Login.Button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="false"
+            android:visibility="gone" >
+
+            <ProgressBar
+                android:id="@+id/progressbar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:duplicateParentState="true" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_logging_in"
+                style="@style/FontText.LoginButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="13.33dp"
+                android:layout_toRightOf="@+id/progressbar"
+                android:duplicateParentState="true"
+                android:text="@string/logging_in_" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

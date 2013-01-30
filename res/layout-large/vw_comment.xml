@@ -1,0 +1,274 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews"
+    android:id="@+id/cnt_comment"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:duplicateParentState="true"
+        android:orientation="horizontal" >
+
+        <View
+            android:id="@+id/depth_margin"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0"
+            android:background="?attr/bgStoryAndCommentControls"
+            android:duplicateParentState="true" />
+
+        <View
+            android:id="@+id/depth"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0"
+            android:duplicateParentState="true" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:duplicateParentState="true"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/cnt_main"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true" >
+
+                <com.airlocksoftware.holo.type.FontText
+                    android:id="@+id/txt_story_title"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/depth"
+                    android:background="@drawable/btn_bright_accent"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:paddingTop="10dp"
+                    android:textColor="?attr/textColorPrimary"
+                    android:textSize="24sp"
+                    android:visibility="gone"
+                    app:font="roboto_lt" />
+
+                <com.airlocksoftware.holo.type.FontText
+                    android:id="@+id/txt_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_story_title"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@+id/depth"
+                    android:duplicateParentState="true"
+                    android:textColor="?attr/textColorSecondary"
+                    android:textSize="14sp"
+                    app:font="roboto_rg" />
+
+                <com.airlocksoftware.holo.type.FontText
+                    android:id="@+id/txt_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_username"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="22dp"
+                    android:layout_toRightOf="@+id/depth"
+                    android:duplicateParentState="true"
+                    android:textColor="?attr/textColorPrimary"
+                    android:textColorHighlight="@color/white"
+                    android:textColorLink="@color/holo_blue_dark"
+                    android:textSize="14.66dp"
+                    app:font="roboto_rg" />
+
+                <com.airlocksoftware.holo.image.IconView
+                    android:id="@+id/icv_upvote_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/txt_username"
+                    android:layout_alignTop="@+id/txt_username"
+                    android:layout_toRightOf="@+id/txt_username"
+                    android:scaleType="center"
+                    android:visibility="gone"
+                    app:icon_colors="@color/bright_accent"
+                    app:icon_src="@drawable/ic_upvote_comment" />
+
+                <View
+                    android:id="@+id/divider_main"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.5dp"
+                    android:layout_below="@+id/txt_comment"
+                    android:background="?attr/dividerColor" />
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/cnt_folded"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/folded_comment_height"
+                android:background="?attr/bgFoldedComment"
+                android:duplicateParentState="true"
+                android:minHeight="@dimen/actionbar_height"
+                android:visibility="gone" >
+
+                <com.airlocksoftware.holo.type.FontText
+                    android:id="@+id/txt_folded"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.15"
+                    android:padding="6sp"
+                    android:textColor="?attr/textColorPrimary"
+                    android:textSize="13sp"
+                    app:font="roboto_rg" />
+
+                <View
+                    android:id="@+id/divider_folded"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.5dp"
+                    android:layout_gravity="bottom"
+                    android:background="?attr/dividerColor" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cnt_ctrl"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/slideout_ctrl_height"
+        android:background="?attr/bgStoryAndCommentControls"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <FrameLayout
+            android:id="@+id/btn_upvote"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bright_accent"
+            android:paddingBottom="7dp"
+            android:paddingTop="7dp" >
+
+            <com.airlocksoftware.holo.image.IconView
+                android:id="@+id/icv_upvote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:scaleType="center"
+                app:icon_colors="?attr/textColorPrimary"
+                app:icon_src="@drawable/ic_ctrl_upvote" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_upvote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:textColor="?attr/textColorPrimary"
+                android:textSize="12sp"
+                app:font="roboto_rg" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_share"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bright_accent"
+            android:clickable="true"
+            android:paddingBottom="7dp"
+            android:paddingTop="7dp" >
+
+            <com.airlocksoftware.holo.image.IconView
+                android:id="@+id/icv_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:scaleType="center"
+                app:icon_colors="?attr/textColorPrimary"
+                app:icon_src="@drawable/ic_ctrl_share" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:text="@string/share"
+                android:textColor="?attr/textColorPrimary"
+                android:textSize="12sp"
+                app:font="roboto_rg" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_user"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bright_accent"
+            android:clickable="true"
+            android:paddingBottom="7dp"
+            android:paddingTop="7dp" >
+
+            <com.airlocksoftware.holo.image.IconView
+                android:id="@+id/icv_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:scaleType="center"
+                app:icon_colors="?attr/textColorPrimary"
+                app:icon_src="@drawable/ic_ctrl_user" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:text="@string/user"
+                android:textColor="?attr/textColorPrimary"
+                android:textSize="12sp"
+                app:font="roboto_rg" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_reply"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bright_accent"
+            android:clickable="true"
+            android:paddingBottom="7dp"
+            android:paddingTop="7dp" >
+
+            <com.airlocksoftware.holo.image.IconView
+                android:id="@+id/icv_reply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:scaleType="center"
+                app:icon_colors="?attr/textColorPrimary"
+                app:icon_src="@drawable/ic_ctrl_reply" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_reply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:text="@string/reply"
+                android:textColor="?attr/textColorPrimary"
+                android:textSize="12sp"
+                app:font="roboto_rg" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_controls"
+        android:layout_width="fill_parent"
+        android:layout_height="1.5dp"
+        android:background="?attr/dividerColor"
+        android:visibility="gone" />
+
+</LinearLayout>

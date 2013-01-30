@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" > <!-- default -->
+
+    <item>
+        <nine-patch android:src="@drawable/shdw_10_0_10_black_cropped_topright" >
+        </nine-patch>
+    </item>
+    <item>
+        <shape android:shape="rectangle" >
+            <solid android:color="@color/grey_10" />
+
+            <padding
+                android:bottom="1.5dp"
+                android:left="1.5dp"
+                android:right="1.5dp"
+                android:top="1.5dp" />
+
+            <stroke
+                android:width="1.5dp"
+                android:color="@color/grey_20" />
+        </shape>
+    </item>
+    <item
+        android:bottom="1.5dp"
+        android:left="1.5dp"
+        android:right="1.5dp"
+        android:top="1.5dp">
+        <bitmap
+            android:src="@drawable/nse_5_mono"
+            android:tileMode="repeat" >
+        </bitmap>
+    </item>
+
+</layer-list>

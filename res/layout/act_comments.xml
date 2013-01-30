@@ -1,0 +1,6 @@
+<com.airlocksoftware.holo.webview.WebViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewpager"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+</com.airlocksoftware.holo.webview.WebViewPager>

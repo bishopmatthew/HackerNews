@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <FrameLayout
+        android:id="@+id/slideout_header"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/actionbar_height"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="?attr/slideoutHeaderBg" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/slideout_header_title"
+            style="@style/FontText.SlideoutMenu.Header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/app_name" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/slideout_checkable_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/slideout_header"
+        android:orientation="vertical" >
+
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/front_page_button"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/slideout_list_item_height"
+            android:layout_weight="1"
+            android:background="?attr/slideoutBtnBg" >
+
+            <com.airlocksoftware.holo.type.FontText
+                style="@style/FontText.SlideoutMenu.List"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/front_page" />
+        </com.airlocksoftware.holo.checkable.CheckableView>
+
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/ask_button"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/slideout_list_item_height"
+            android:layout_weight="1"
+            android:background="?attr/slideoutBtnBg" >
+
+            <com.airlocksoftware.holo.type.FontText
+                style="@style/FontText.SlideoutMenu.List"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/ask" />
+        </com.airlocksoftware.holo.checkable.CheckableView>
+
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/best_button"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/slideout_list_item_height"
+            android:layout_weight="1"
+            android:background="?attr/slideoutBtnBg" >
+
+            <com.airlocksoftware.holo.type.FontText
+                style="@style/FontText.SlideoutMenu.List"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/best" />
+        </com.airlocksoftware.holo.checkable.CheckableView>
+
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/new_button"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/slideout_list_item_height"
+            android:layout_weight="1"
+            android:background="?attr/slideoutBtnBg" >
+
+            <com.airlocksoftware.holo.type.FontText
+                style="@style/FontText.SlideoutMenu.List"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/new_page" />
+        </com.airlocksoftware.holo.checkable.CheckableView>
+
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/user_button"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/slideout_list_item_height"
+            android:layout_weight="1"
+            android:background="?attr/slideoutBtnBg" >
+
+            <com.airlocksoftware.holo.image.IconView
+                style="@style/IconView.SlideoutMenu"
+                android:layout_width="@dimen/slideout_list_item_height"
+                android:layout_height="@dimen/slideout_list_item_height"
+                app:icon_src="@drawable/ic_side_user" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_user"
+                style="@style/FontText.SlideoutMenu.List"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/user" />
+        </com.airlocksoftware.holo.checkable.CheckableView>
+
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/submit_button"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/slideout_list_item_height"
+            android:layout_weight="1"
+            android:background="?attr/slideoutBtnBg" >
+
+            <com.airlocksoftware.holo.image.IconView
+                style="@style/IconView.SlideoutMenu"
+                android:layout_width="@dimen/slideout_list_item_height"
+                android:layout_height="@dimen/slideout_list_item_height"
+                app:icon_src="@drawable/ic_side_submit" />
+
+            <com.airlocksoftware.holo.type.FontText
+                style="@style/FontText.SlideoutMenu.List"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/submit" />
+        </com.airlocksoftware.holo.checkable.CheckableView>
+
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/settings_button"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/slideout_list_item_height"
+            android:layout_weight="1"
+            android:background="?attr/slideoutBtnBg" >
+
+            <com.airlocksoftware.holo.image.IconView
+                style="@style/IconView.SlideoutMenu"
+                android:layout_width="@dimen/slideout_list_item_height"
+                android:layout_height="@dimen/slideout_list_item_height"
+                app:icon_src="@drawable/ic_side_settings" />
+
+            <com.airlocksoftware.holo.type.FontText
+                style="@style/FontText.SlideoutMenu.List"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/settings" />
+        </com.airlocksoftware.holo.checkable.CheckableView>
+
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/about_button"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/slideout_list_item_height"
+            android:layout_weight="1"
+            android:background="?attr/slideoutBtnBg" >
+
+            <com.airlocksoftware.holo.image.IconView
+                style="@style/IconView.SlideoutMenu"
+                android:layout_width="@dimen/slideout_list_item_height"
+                android:layout_height="@dimen/slideout_list_item_height"
+                app:icon_src="@drawable/ic_side_about" />
+
+            <com.airlocksoftware.holo.type.FontText
+                style="@style/FontText.SlideoutMenu.List"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/about" />
+        </com.airlocksoftware.holo.checkable.CheckableView>
+
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/login_button"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/slideout_list_item_height"
+            android:layout_weight="1"
+            android:background="?attr/slideoutBtnBg" >
+
+            <com.airlocksoftware.holo.image.IconView
+                android:id="@+id/icv_login"
+                style="@style/IconView.SlideoutMenu"
+                android:layout_width="@dimen/slideout_list_item_height"
+                android:layout_height="@dimen/slideout_list_item_height"
+                app:icon_src="@drawable/ic_side_login" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_login"
+                style="@style/FontText.SlideoutMenu.List"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/login" />
+        </com.airlocksoftware.holo.checkable.CheckableView>
+    </LinearLayout>
+
+</RelativeLayout>

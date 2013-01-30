@@ -1,0 +1,29 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews" >
+
+    <com.airlocksoftware.holo.image.IconView
+        android:id="@+id/icv_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/btn_bright_accent"
+        android:padding="13.33dp"
+        android:scaleType="center"
+        app:icon_colors="?attr/textColorPrimary"
+        app:icon_src="@drawable/ic_action_search" />
+
+    <com.airlocksoftware.holo.type.FontEdit
+        android:id="@+id/edit_search"
+        style="@style/FontEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="13.33dp"
+        android:layout_toLeftOf="@+id/icv_search"
+        android:hint="@string/search"
+        android:imeOptions="actionSearch"
+        android:inputType="text" />
+
+</merge>

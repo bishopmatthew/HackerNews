@@ -1,0 +1,70 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.airlocksoftware.hackernews"
+    android:installLocation="auto"
+    android:versionCode="7"
+    android:versionName="2.0.1" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <!-- PERMISSIONS -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- allowBackup is false because some users may store usernames / passwords in SharedPreferences. -->
+    <application
+        android:allowBackup="false"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Startup" >
+        <activity
+            android:name="com.airlocksoftware.hackernews.activity.MainActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.AboutActivity"
+            android:label="@string/about" />
+        <activity
+            android:name=".activity.DonationActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/donate"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:label="@string/login" />
+        <activity
+            android:name=".activity.ReplyActivity"
+            android:label="@string/reply" />
+        <activity
+            android:name=".activity.SearchActivity"
+            android:label="@string/search"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/settings" />
+        <activity
+            android:name=".activity.SubmitActivity"
+            android:label="@string/submit_to_hn"
+            tools:ignore="ExportedActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.UserActivity"
+            android:label="@string/user" />
+    </application>
+
+</manifest>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="HNTheme">
+        <attr name="themeName" format="string" />
+
+        <!-- ACTIONBAR -->
+        <attr name="btnActionBarTab" format="reference|color" />
+
+        <!-- TEXT -->
+        <attr name="textColorPrimary" format="reference|color" />
+        <attr name="textColorSecondary" format="reference|color" />
+        <attr name="textColorTertiary" format="reference|color" />
+        <attr name="textColorPrimaryDisableable" format="reference|color" />
+
+        <!-- MISC -->
+        <attr name="bgDefault" format="reference" />
+        <attr name="bgDefaultColor" format="reference|color" />
+        <attr name="dividerColor" format="reference|color" />
+        <attr name="btnOpac10" format="reference|color" />
+        <attr name="colorOpac10" format="reference|color" />
+        <attr name="bgSpinner" format="reference|color" />
+        <attr name="listCacheColorHint" format="reference|color" />
+
+        <!-- STORY -->
+        <attr name="btnStory" format="reference|color" />
+        <attr name="shdwStoryText" format="reference|color" />
+        <attr name="bgStoryAndCommentControls" format="reference|color" />
+        <attr name="bgStorylistTablet" format="reference|color" />
+        <attr name="cacheColorHintStorylistTablet" format="reference|color" />
+        
+        <!-- COMMENT -->
+        <attr name="commentDepthColors" format="reference" />
+        <attr name="bgFoldedComment" format="reference|color" />
+        <attr name="logoEmbossed" format="reference|color" />
+
+        <!-- SLIDEOUT MENU -->
+        <attr name="slideoutBtnBg" format="reference|color" />
+        <attr name="slideoutHeaderBg" format="reference|color" />
+        <attr name="slideoutTextColor" format="reference|color" />
+
+        <!-- COMMENT HEADER -->
+        <attr name="commentsHeaderBg" format="reference|color" />
+        <attr name="commentsHeaderControlsBg" format="reference|color" />
+        <attr name="commentsHeaderDivider" format="reference|color" />
+
+        <!-- USER ACT -->
+        <attr name="bgTab" format="reference" />
+
+        <!-- SHARE -->
+        <attr name="btnSharePopup" format="reference" />
+        <attr name="bgSharePopup" format="reference" />
+
+        <!-- ABOUT -->
+        <attr name="bgAboutTextbox" format="reference" />
+        <attr name="logoAbout" format="reference" />
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,56 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews" >
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/actionBarBg"
+        android:paddingTop="6dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="11dp" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_share"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textColor="?attr/textColorPrimary"
+            android:textSize="28sp"
+            android:layout_marginBottom="6dp"
+            app:font="roboto_lt" />
+
+        <com.airlocksoftware.holo.image.IconView
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/txt_share"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/txt_share"
+            android:clickable="true"
+            android:scaleType="center"
+            app:icon_colors="?attr/slideoutTextColor"
+            app:icon_src="@drawable/ic_action_cancel" />
+
+        <LinearLayout
+            android:id="@+id/cnt_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_share"
+            android:gravity="left"
+            android:orientation="horizontal" />
+    </RelativeLayout>
+
+    <com.airlocksoftware.holo.picker.share.ShareList
+        android:id="@+id/sharelist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:background="?attr/bgDefault"
+        android:cacheColorHint="?attr/bgDefaultColor"
+        android:textColor="?attr/textColorPrimary"
+        app:sharelist_itemBg="@drawable/btn_bright_accent" />
+
+</merge>

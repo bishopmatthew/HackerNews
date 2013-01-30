@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews"
+    android:id="@+id/btn_more"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="?attr/btnStory"
+    android:clickable="true"
+    android:padding="12dp" >
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="@+id/txt_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:duplicateParentState="true"
+        android:text="@string/load_more"
+        android:textColor="?attr/textColorPrimary"
+        android:textSize="24sp"
+        app:font="roboto_rg" />
+
+    <com.airlocksoftware.holo.image.IconView
+        android:id="@+id/icv_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:duplicateParentState="true"
+        app:icon_colors="?attr/textColorPrimary"
+        app:icon_src="@drawable/ic_action_download" />
+
+</LinearLayout>

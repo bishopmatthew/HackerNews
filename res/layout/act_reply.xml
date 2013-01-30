@@ -1,0 +1,66 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_scroll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/cnt_reply"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_margin="13.33dp"
+        android:orientation="vertical" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_parent_username"
+            style="@style/FontText.Reply.Username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_parent_title"
+            style="@style/FontText.Reply.Username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6.66dp" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_parent_comment"
+            style="@style/FontText.Reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6.66dp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="fill_parent"
+            android:layout_height="1.5dp"
+            android:layout_marginTop="13.33dp"
+            android:background="@color/bright_accent" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_reply_username"
+            style="@style/FontText.Reply.Username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13.33dp" />
+
+        <com.airlocksoftware.holo.type.FontEdit
+            android:id="@+id/edit_reply_comment"
+            style="@style/FontEdit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13.33dp"
+            android:hint="Enter your comment here"
+            android:textSize="15sp" >
+
+            <requestFocus />
+        </com.airlocksoftware.holo.type.FontEdit>
+
+        <View
+            android:id="@+id/ensure_scrollview_shows_textbox"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp" />
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+    <FrameLayout
+        android:id="@+id/frg_storylist"
+        android:layout_width="320dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="fill_parent"
+        android:layout_toRightOf="@+id/frg_storylist"
+        android:background="?attr/dividerColor" />
+
+    <com.airlocksoftware.holo.webview.WebViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/divider" >
+    </com.airlocksoftware.holo.webview.WebViewPager>
+
+</RelativeLayout>

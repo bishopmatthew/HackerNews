@@ -1,0 +1,70 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews"
+    android:id="@+id/scrollview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/cnt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="13.33dp" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_title_thanks"
+            style="@style/FontText.Contribute.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contribute_title_thanks" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_content_thanks"
+            style="@style/FontText.Contribute.Content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contribute_content_thanks" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_title_help"
+            style="@style/FontText.Contribute.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contribute_title_help" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_content_help"
+            style="@style/FontText.Contribute.Content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contribute_content_help" />
+
+        <com.airlocksoftware.holo.type.FontButton
+            android:id="@+id/btn_hire"
+            style="@style/FontButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Hire me"
+            android:textSize="18sp" />
+        
+        <com.airlocksoftware.holo.type.FontButton
+            android:id="@+id/btn_donate"
+            style="@style/FontButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Donate"
+            android:textSize="18sp" />
+
+        <com.airlocksoftware.holo.type.FontButton
+            android:id="@+id/btn_github"
+            style="@style/FontButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="View on Github"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</ScrollView>

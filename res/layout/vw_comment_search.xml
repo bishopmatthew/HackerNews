@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews"
+    android:id="@+id/cnt_comment"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingRight="8dp" >
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="@+id/txt_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/txt_title"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="14.66dp"
+        android:textColor="?attr/textColorSecondary"
+        android:textSize="12sp"
+        app:font="roboto_rg" />
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="@+id/txt_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_username"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="14.66dp"
+        android:textColor="?attr/textColorPrimary"
+        android:textColorLink="@color/holo_blue_dark"
+        android:textSize="14.66dp"
+        app:font="roboto_rg" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1.5dp"
+        android:layout_below="@+id/txt_comment"
+        android:background="@color/grey_30" />
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="@+id/txt_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_bright_accent"
+        android:paddingBottom="5dp"
+        android:paddingLeft="14.66dp"
+        android:paddingTop="5dp"
+        android:textColor="?attr/textColorPrimary"
+        android:textSize="16sp"
+        app:font="roboto_lt" />
+
+</RelativeLayout>

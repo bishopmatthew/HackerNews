@@ -1,0 +1,6 @@
+<com.airlocksoftware.holo.picker.share.ShareList xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sharelist"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+</com.airlocksoftware.holo.picker.share.ShareList>

@@ -1,0 +1,9 @@
+<com.airlocksoftware.holo.type.FontText xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/txt_webfragment_title"
+    style="@style/FontText.WebFragment.Domain"
+    android:layout_centerVertical="true"
+    android:layout_alignParentLeft="true"
+    android:singleLine="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="8dp" />

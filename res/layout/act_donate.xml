@@ -1,0 +1,40 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/cnt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_call_for_donation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/request_for_donation" />
+
+        <com.airlocksoftware.holo.type.FontButton
+            android:id="@+id/btn_donate_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/donate_2_us" />
+
+        <com.airlocksoftware.holo.type.FontButton
+            android:id="@+id/btn_donate_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/donate_4_us" />
+
+        <com.airlocksoftware.holo.type.FontButton
+            android:id="@+id/btn_donate_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/donate_6_us" />
+    </LinearLayout>
+
+</ScrollView>

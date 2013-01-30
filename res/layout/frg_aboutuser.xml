@@ -1,0 +1,128 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        style="@style/FontText.About.Title"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <RelativeLayout
+            android:id="@+id/cnt_about_user"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="13.33dp"
+            android:visibility="gone" >
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_username"
+                style="@style/FontText.About.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="13.33dp"
+                android:gravity="center_horizontal"
+                android:text="@string/username" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_created_left"
+                style="@style/FontText.About.Stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/txt_username"
+                android:text="@string/created" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_created"
+                style="@style/FontText.About.Stats.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txt_created_left"
+                android:layout_marginLeft="5sp"
+                android:layout_toRightOf="@+id/txt_created_left" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_karma_total_left"
+                style="@style/FontText.About.Stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/txt_created_left"
+                android:text="@string/total_of" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_karma_total"
+                style="@style/FontText.About.Stats.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txt_karma_total_left"
+                android:layout_marginLeft="5sp"
+                android:layout_toRightOf="@+id/txt_karma_total_left" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_karma_total_right"
+                style="@style/FontText.About.Stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txt_karma_total"
+                android:layout_marginLeft="5sp"
+                android:layout_toRightOf="@+id/txt_karma_total"
+                android:text="@string/karma" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_karma_avg_left"
+                style="@style/FontText.About.Stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/txt_karma_total_left"
+                android:text="@string/average_of" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_karma_avg"
+                style="@style/FontText.About.Stats.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txt_karma_avg_left"
+                android:layout_marginLeft="5sp"
+                android:layout_toRightOf="@+id/txt_karma_avg_left" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_karma_avg_right"
+                style="@style/FontText.About.Stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txt_karma_avg"
+                android:layout_marginLeft="5sp"
+                android:layout_toRightOf="@+id/txt_karma_avg"
+                android:text="@string/karma" />
+
+            <com.airlocksoftware.holo.type.FontText
+                android:id="@+id/txt_description"
+                style="@style/FontText.About.Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/txt_karma_avg_left"
+                android:layout_marginTop="26.66dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="@+id/cnt_error"
+        style="@style/FontText.Loading"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:text="@string/error_loading" />
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="@+id/cnt_loading"
+        style="@style/FontText.Loading"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:text="@string/loading" />
+
+</FrameLayout>

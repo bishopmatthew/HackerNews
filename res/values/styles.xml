@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:holo="http://schemas.android.com/apk/res/com.airlocksoftware.holo">
+
+    <!-- FONT TEXT -->
+    <style name="FontText.SlideoutMenu"></style>
+
+    <style name="FontText.ActionBar">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="FontText.ActionBar.Title">
+        <item name="android:textSize">28sp</item>
+        <item name="font">roboto_lt</item>
+        <item name="textScalingEnabled">false</item>
+        <item name="android:textColor">?attr/textColorPrimary</item>
+    </style>
+
+    <style name="FontText.ActionBar.Overflow">
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textSize">21sp</item>
+        <item name="font">roboto_rg</item>
+    </style>
+
+    <style name="FontText.ActionBar.Overflow.Dark">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="FontText.ActionBar.Overflow.Light">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="FontText.SlideoutMenu.List">
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingLeft">@dimen/slideout_list_item_height</item>
+        <item name="android:textColor">?attr/slideoutTextColor</item>
+        <item name="android:textSize">24sp</item>
+        <item name="font">roboto_lt</item>
+    </style>
+
+    <style name="FontText.SlideoutMenu.Header">
+        <item name="android:maxLines">1</item>
+        <item name="textScalingEnabled">false</item>
+        <item name="android:textColor">@color/bright_accent</item>
+        <item name="android:textSize">36sp</item>
+        <item name="font">roboto_th</item>
+    </style>
+
+    <style name="FontText.LoginTitle">
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?attr/textColorPrimary</item>
+        <item name="android:shadowColor">@color/bright_accent</item>
+        <item name="android:shadowDx">0</item>
+        <item name="textScalingEnabled">false</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textSize">42sp</item>
+        <item name="font">roboto_lt</item>
+    </style>
+
+    <style name="FontText.LoginTitle.Landscape">
+        <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="FontText.LoginSubtitle">
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?attr/textColorPrimary</item>
+        <item name="android:textSize">26sp</item>
+        <item name="font">roboto_lt</item>
+    </style>
+
+    <style name="FontText.LoginLabel">
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?attr/textColorPrimary</item>
+        <item name="android:textSize">22sp</item>
+        <item name="font">roboto_lt</item>
+    </style>
+
+    <style name="FontText.About">
+        <item name="android:textColor">?attr/textColorPrimary</item>
+    </style>
+
+    <style name="FontText.About.Title">
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">36sp</item>
+        <item name="font">roboto_lt</item>
+        <item name="android:shadowColor">@color/bright_accent</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="FontText.About.Stats">
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">26sp</item>
+        <item name="font">roboto_lt</item>
+    </style>
+
+    <style name="FontText.About.Stats.Bold">
+        <item name="font">roboto_bd</item>
+    </style>
+
+    <style name="FontText.About.Description">
+        <item name="font">roboto_rg</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="FontText.LoginButton">
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?attr/textColorPrimary</item>
+        <item name="android:textSize">22sp</item>
+        <item name="font">roboto_lt</item>
+        <item name="textScalingEnabled">false</item>
+    </style>
+
+    <style name="FontText.Tab">
+        <item name="android:textColor">?attr/textColorPrimary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="textScalingEnabled">false</item>
+        <item name="font">roboto_lt</item>
+    </style>
+
+    <style name="FontText.Reply">
+        <item name="android:textColor">?attr/textColorPrimary</item>
+        <item name="android:textSize">15sp</item>
+        <item name="font">roboto_rg</item>
+    </style>
+
+    <style name="FontText.Reply.Username">
+        <item name="android:textSize">18sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="font">roboto_bd</item>
+    </style>
+
+    <style name="FontText.Submit">
+        <item name="android:textColor">?attr/textColorPrimary</item>
+        <item name="font">roboto_lt</item>
+    </style>
+
+    <style name="FontText.Submit.Subtitle">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="FontText.StoryList">
+        <item name="font">roboto_rg</item>
+    </style>
+    <!--
+             <item name="android:shadowColor">?attr/shdwStoryText</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    -->
+
+    <style name="FontText.StoryList.Title">
+        <item name="android:textColor">?attr/textColorPrimary</item>
+        <item name="android:textSize">14.5sp</item>
+    </style>
+
+    <style name="FontText.StoryList.Number">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?attr/textColorSecondary</item>
+        <item name="font">roboto_bd</item>
+    </style>
+
+    <style name="FontText.StoryList.Detail">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?attr/textColorSecondary</item>
+    </style>
+
+    <style name="FontText.Contribute">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_marginBottom">13.33dp</item>
+    </style>
+
+    <style name="FontText.Contribute.Title">
+        <item name="font">roboto_lt</item>
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="FontText.Contribute.Content">
+        <item name="font">roboto_rg</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="FontText.Loading">
+        <item name="font">roboto_lt</item>
+        <item name="android:textColor">?attr/textColorPrimary</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="FontText.Loading.Error">
+        <item name="font">roboto_rg</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="FontText.WebFragment"></style>
+
+    <style name="FontText.WebFragment.Domain">
+        <item name="font">roboto_rg</item>
+        <item name="android:textColor">?attr/textColorPrimary</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!-- FONT EDIT -->
+    <style name="FontEdit">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">?attr/textColorPrimaryDisableable</item>
+        <item name="android:textColorHint">?attr/textColorTertiary</item>
+        <item name="android:background">?fontEditBackground</item>
+    </style>
+
+    <!-- ICON VIEW -->
+    <style name="IconView"></style>
+
+    <style name="IconView.SlideoutMenu">
+        <item name="android:duplicateParentState">true</item>
+        <item name="icon_colors">?attr/slideoutTextColor</item>
+        <item name="android:scaleType">center</item>
+    </style>
+
+    <style name="IconView.ActionBar">
+        <item name="android:layout_width">@dimen/actionbar_height</item>
+        <item name="android:layout_height">@dimen/actionbar_underline_offset</item>
+        <item name="android:scaleType">center</item>
+    </style>
+
+    <style name="IconView.ActionBar.Dark">
+        <item name="icon_colors">@drawable/st_color_ic_actionbar_dark</item>
+    </style>
+
+    <style name="IconView.ActionBar.Light">
+        <item name="icon_colors">@color/grey_30</item>
+    </style>
+
+    <style name="IconView.ActionBar.Overflow">
+        <item name="android:layout_width">@dimen/actionbar_height</item>
+        <item name="android:layout_height">@dimen/actionbar_underline_offset</item>
+        <item name="android:scaleType">center</item>
+        <item name="icon_colors">?attr/textColorPrimary</item>
+    </style>
+
+    <style name="Login"></style>
+
+    <style name="Login.Button">
+        <item name="android:background">?attr/btnOpac10</item>
+        <item name="android:layout_marginBottom">13.33dp</item>
+        <item name="android:layout_marginTop">13.33dp</item>
+        <item name="android:paddingBottom">6.66dp</item>
+        <item name="android:paddingTop">6.66dp</item>
+    </style>
+
+</resources>

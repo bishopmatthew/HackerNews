@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- PRESSED -->
+    <item android:state_checked="false" android:state_pressed="true"><shape android:shape="rectangle">
+            <solid android:color="@color/bright_accent"></solid>
+        </shape></item>
+
+    <!-- CHECKED -->
+    <item android:state_checked="true"><layer-list>
+
+            <!-- LINE -->
+            <item><shape>
+                    <solid android:color="@color/bright_accent" />
+                </shape></item>
+            <!-- MAIN -->
+
+            <item android:bottom="5dp"><shape android:shape="rectangle">
+                    <solid android:color="@color/grey_88" />
+                </shape></item>
+            <!-- NOISE -->
+            <item android:bottom="5dp"><bitmap android:src="@drawable/nse_5_mono" android:tileMode="repeat"></bitmap></item>
+        </layer-list></item>
+
+    <!-- DEFAULT -->
+    <item><layer-list>
+
+            <!-- This is the line -->
+            <item><shape>
+                    <solid android:color="@color/bright_accent" />
+                </shape></item>
+            <!-- This is the main color -->
+            <item android:bottom="3dp"><shape android:shape="rectangle">
+                    <solid android:color="@color/grey_88" />
+                </shape></item>
+            <!-- This is the noise -->
+            <item android:bottom="3dp"><bitmap android:src="@drawable/nse_5_mono" android:tileMode="repeat"></bitmap></item>
+        </layer-list></item>
+
+</selector>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="comment_depth_colors_light">
+        <item>@color/depth_orange_light</item>
+        <item>@color/depth_yellow</item>
+        <item>@color/depth_orange_dark</item>
+        <item>@color/depth_red</item>
+        <item>@color/depth_purple</item>
+    </array>
+    <array name="comment_depth_colors_dark">
+        <item>@color/holo_blue_light</item>
+        <item>@color/holo_blue_dark</item>
+        <item>@color/holo_purple</item>
+        <item>@color/holo_red_dark</item>
+        <item>@color/holo_orange_dark</item>
+    </array>
+
+</resources>

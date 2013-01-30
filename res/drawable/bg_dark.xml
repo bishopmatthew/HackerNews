@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- This is the main color -->
+    <item>
+        <shape android:shape="rectangle" >
+            <solid android:color="@color/grey_17" />
+        </shape>
+    </item>
+
+    <!-- This is the noise -->
+    <item>
+        <bitmap
+            android:src="@drawable/nse_5_mono"
+            android:tileMode="repeat" >
+        </bitmap>
+    </item>
+
+</layer-list>

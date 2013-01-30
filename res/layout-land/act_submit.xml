@@ -1,0 +1,98 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_scroll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:id="@+id/cnt_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_margin="13.33dp"
+        android:orientation="vertical" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_title"
+            style="@style/FontText.Submit.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="6.66dp"
+            android:layout_marginTop="6.66dp"
+            android:text="@string/title" />
+
+        <com.airlocksoftware.holo.type.FontEdit
+            android:id="@+id/edit_title"
+            style="@style/FontEdit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/txt_title"
+            android:layout_marginLeft="60dp"
+            android:hint="@string/enter_title"
+            android:singleLine="true" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="fill_parent"
+            android:layout_height="1.5dp"
+            android:layout_below="@+id/edit_title"
+            android:layout_marginTop="13.33dp"
+            android:background="@color/bright_accent" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_url"
+            style="@style/FontText.Submit.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider"
+            android:layout_marginRight="6.66dp"
+            android:layout_marginTop="13.33dp"
+            android:text="@string/url" />
+
+        <com.airlocksoftware.holo.type.FontEdit
+            android:id="@+id/edit_url"
+            style="@style/FontEdit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/txt_url"
+            android:layout_marginLeft="60dp"
+            android:hint="@string/enter_url_here"
+            android:inputType="textUri"
+            android:singleLine="true" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_or"
+            style="@style/FontText.Submit.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_url"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6.66dp"
+            android:text="@string/or" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_selftext"
+            style="@style/FontText.Submit.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_or"
+            android:layout_marginRight="6.66dp"
+            android:text="@string/text" />
+
+        <com.airlocksoftware.holo.type.FontEdit
+            android:id="@+id/edit_selftext"
+            style="@style/FontEdit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/txt_selftext"
+            android:layout_marginLeft="60dp"
+            android:hint="@string/enter_text_here" />
+
+        <View
+            android:id="@+id/spacer"
+            android:layout_below="@+id/edit_selftext"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp" />
+    </RelativeLayout>
+
+</ScrollView>

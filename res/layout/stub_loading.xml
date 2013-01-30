@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loading"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="?attr/bgDefault" >
+
+    <com.airlocksoftware.holo.type.FontText
+        android:id="@+id/txt"
+        style="@style/FontText.ActionBarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:paddingRight="8dp"
+        android:text="@string/loading_" />
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/txt"
+        android:indeterminateOnly="true" />
+
+</RelativeLayout>

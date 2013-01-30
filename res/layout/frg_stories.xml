@@ -1,0 +1,30 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews"
+    android:id="@+id/cnt_stories"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="?attr/listCacheColorHint"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="true" />
+
+    <include
+        android:id="@+id/cnt_error"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        layout="@layout/vw_loadinglist_error" />
+
+    <include
+        android:id="@+id/cnt_loading"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        layout="@layout/vw_loadinglist_loading" />
+
+</FrameLayout>

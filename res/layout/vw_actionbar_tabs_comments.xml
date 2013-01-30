@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews"
+    android:id="@+id/cnt_tabs"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/actionbar_height"
+    android:orientation="horizontal" >
+
+    <com.airlocksoftware.holo.checkable.CheckableView
+        android:id="@+id/tab_comment"
+        android:layout_width="@dimen/actionbar_height"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="?attr/btnActionBarTab" >
+
+        <com.airlocksoftware.holo.image.IconView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="center"
+            app:icon_colors="?attr/textColorPrimary"
+            app:icon_src="@drawable/ic_action_comment" />
+    </com.airlocksoftware.holo.checkable.CheckableView>
+
+    <com.airlocksoftware.holo.checkable.CheckableView
+        android:id="@+id/tab_article"
+        android:layout_width="@dimen/actionbar_height"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="?attr/btnActionBarTab" >
+
+        <com.airlocksoftware.holo.image.IconView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="center"
+            app:icon_colors="?attr/textColorPrimary"
+            app:icon_src="@drawable/ic_action_article" />
+    </com.airlocksoftware.holo.checkable.CheckableView>
+
+</LinearLayout>
