@@ -21,13 +21,12 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 	private Page mPage;
 	private Request mRequest;
 	private String mUsername;
-//	private String mMoreFnid;
+	// private String mMoreFnid;
 	private StoryResponse mResponse;
 	private boolean mResultsToDeliver = false;
-
+	
 	// Constants
 	private static final String TAG = StoryLoader.class.getSimpleName();
-
 	private static final String SUBMISSIONS_TIMESTAMP_ID = "Submissions";
 	private static final String PAGE_TIMESTAMP_ID = "Page";
 
@@ -58,6 +57,7 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 
 	/** Loads the requested page of stories, either from news.ycombinator.com or from the cache. **/
 	private StoryResponse loadStories(Page page, Request request) {
+		
 		CacheDbOpener opener = new CacheDbOpener(getContext());
 		DbInterface db = new DbInterface(getContext(), opener);
 		StoryResponse response = null;

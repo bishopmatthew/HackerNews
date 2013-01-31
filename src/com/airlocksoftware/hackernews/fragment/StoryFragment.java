@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,9 +17,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airlocksoftware.database.DbInterface;
 import com.airlocksoftware.hackernews.R;
 import com.airlocksoftware.hackernews.activity.MainActivity;
 import com.airlocksoftware.hackernews.adapter.StoryAdapter;
+import com.airlocksoftware.hackernews.cache.CacheDbOpener;
 import com.airlocksoftware.hackernews.interfaces.SharePopupInterface;
 import com.airlocksoftware.hackernews.interfaces.TabletLayout;
 import com.airlocksoftware.hackernews.loader.StoryLoader;
@@ -79,7 +82,7 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 			getLoaderManager().restartLoader(0, null, StoryFragment.this);
 		}
 	};
-
+	
 	// Constants
 	public static final String PAGE = StoryFragment.class.getSimpleName() + ".page";
 	@SuppressWarnings("unused")
@@ -94,7 +97,7 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-
+		
 		// get StoryFragment.Callbacks
 		if (activity instanceof StoryFragment.Callbacks) {
 			mCallbacks = (Callbacks) activity;
