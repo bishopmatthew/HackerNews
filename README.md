@@ -25,9 +25,9 @@ DatabaseUtils is a really simple ORM that uses reflection to do CRUD operations 
 
 Clone both repositories, and then import them into eclipse. Then add them as library projects to HackerNews.
 
-# Architecture
+# Design Overview
 
-I've outlined the architecture in in [this wiki article](https://github.com/bishopmatthew/HackerNews/wiki/Architecture). This is also probably a good place to learn if you're interested in writing Android apps.
+I've outlined the design in in [this wiki article](https://github.com/bishopmatthew/HackerNews/wiki/Design-Overview). This might also be helpful if you're interested in writing Android apps.
 
 # How to help
 
