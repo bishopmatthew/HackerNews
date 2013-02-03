@@ -11,8 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 
-import com.airlocksoftware.database.DbInterface;
-import com.airlocksoftware.hackernews.cache.CacheDbOpener;
+import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.data.ConnectionManager;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.model.Vote;
@@ -33,9 +32,8 @@ public class AsyncVotingService extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected Void doInBackground(Void... empty) {
 		UserPrefs prefs = new UserPrefs(mApplicationContext);
-		CacheDbOpener opener = new CacheDbOpener(mApplicationContext);
-		DbInterface dbi = new DbInterface(mApplicationContext, opener);
-		SQLiteDatabase db = dbi.getDb();
+		SQLiteDatabase db = DbHelperSingleton.getInstance(mApplicationContext)
+																					.getWritableDatabase();
 		Cursor c = db.rawQuery("SELECT * FROM " + new Vote().getTableName(), null);
 
 		if (c.moveToFirst()) {
@@ -44,7 +42,7 @@ public class AsyncVotingService extends AsyncTask<Void, Void, Void> {
 				vote.readFromCursor(c);
 				if (upvote(vote, prefs.getUserCookie())) {
 					// if successful, remove vote from queue
-					vote.delete(dbi);
+					vote.delete(db);
 
 					// TODO if a vote has already happened, response is the same
 				}
@@ -52,8 +50,6 @@ public class AsyncVotingService extends AsyncTask<Void, Void, Void> {
 			}
 		}
 		c.close();
-
-		opener.close();
 		return null;
 	}
 

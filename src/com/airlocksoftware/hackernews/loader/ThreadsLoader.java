@@ -1,10 +1,10 @@
 package com.airlocksoftware.hackernews.loader;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.airlocksoftware.database.DbInterface;
-import com.airlocksoftware.hackernews.cache.CacheDbOpener;
+import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.model.Request;
 import com.airlocksoftware.hackernews.model.Result;
 import com.airlocksoftware.hackernews.model.Timestamp;
@@ -24,8 +24,8 @@ public class ThreadsLoader extends AsyncTaskLoader<ThreadsResponse> {
 
 	@Override
 	public ThreadsResponse loadInBackground() {
-		CacheDbOpener opener = new CacheDbOpener(getContext());
-		DbInterface db = new DbInterface(getContext(), opener);
+		SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
+																					.getWritableDatabase();
 
 		ThreadsResponse response = null;
 
@@ -48,7 +48,6 @@ public class ThreadsLoader extends AsyncTaskLoader<ThreadsResponse> {
 			response.timestamp.create(db);
 		}
 
-		opener.close();
 		return response;
 	}
 

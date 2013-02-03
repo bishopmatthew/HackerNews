@@ -3,11 +3,11 @@ package com.airlocksoftware.hackernews.loader;
 import java.util.List;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-import com.airlocksoftware.database.DbInterface;
-import com.airlocksoftware.hackernews.cache.CacheDbOpener;
+import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.model.Page;
 import com.airlocksoftware.hackernews.model.Request;
 import com.airlocksoftware.hackernews.model.Result;
@@ -24,7 +24,7 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 	// private String mMoreFnid;
 	private StoryResponse mResponse;
 	private boolean mResultsToDeliver = false;
-	
+
 	// Constants
 	private static final String TAG = StoryLoader.class.getSimpleName();
 	private static final String SUBMISSIONS_TIMESTAMP_ID = "Submissions";
@@ -57,9 +57,9 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 
 	/** Loads the requested page of stories, either from news.ycombinator.com or from the cache. **/
 	private StoryResponse loadStories(Page page, Request request) {
-		
-		CacheDbOpener opener = new CacheDbOpener(getContext());
-		DbInterface db = new DbInterface(getContext(), opener);
+
+		SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
+																					.getWritableDatabase();
 		StoryResponse response = null;
 
 		// handle cache
@@ -108,7 +108,6 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 			}
 		}
 
-		opener.close();
 		mResultsToDeliver = true;
 		mResponse = response;
 		return response;
@@ -117,8 +116,8 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 
 	/** Loads StoryResposne from a user's submissions page, and caches the moreFnid (if any) in the timestamp db. **/
 	private StoryResponse loadSubmissions(String username, Request request) {
-		CacheDbOpener opener = new CacheDbOpener(getContext());
-		DbInterface db = new DbInterface(getContext(), opener);
+		SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
+																					.getWritableDatabase();
 
 		StoryResponse response = null;
 
@@ -143,7 +142,6 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 			response.timestamp.create(db);
 		}
 
-		opener.close();
 		mResultsToDeliver = true;
 		mResponse = response;
 		return response;

@@ -10,21 +10,20 @@ import com.airlocksoftware.hackernews.model.Timestamp;
 import com.airlocksoftware.hackernews.model.Vote;
 
 /**
- * create custom DatabaseHelper class that extends SQLiteOpenHelper
+ * SQLiteOpenHelper singleton. Should be ok that the database is never closed as per:
+ * http://www.androiddesignpatterns.com/2012/05/correctly-managing-your-sqlite-database.html
  */
 public class DbHelperSingleton extends SQLiteOpenHelper {
 
 	private static DbHelperSingleton mInstance = null;
-	
-	private Context mContext;
-	
+
 	private static final String DATABASE_NAME = "hacker_news_cache.db";
 	private static final int DATABASE_VERSION = 2;
 
 	public static DbHelperSingleton getInstance(Context context) {
 		/**
-		 * use the application context as suggested by CommonsWare.
-		 * this will ensure that you dont accidentally leak an Activitys
+		 * Use the application context as suggested by CommonsWare.
+		 * this will ensure that you don't accidentally leak an Activity's
 		 * context (see this article for more information:
 		 * http://developer.android.com/resources/articles/avoiding-memory-leaks.html)
 		 */
@@ -40,7 +39,6 @@ public class DbHelperSingleton extends SQLiteOpenHelper {
 	 */
 	private DbHelperSingleton(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		this.mContext = context;
 	}
 
 	@Override

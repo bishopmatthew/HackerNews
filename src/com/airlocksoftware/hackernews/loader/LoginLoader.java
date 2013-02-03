@@ -4,8 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.airlocksoftware.database.DbInterface;
-import com.airlocksoftware.hackernews.cache.CacheDbOpener;
+import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.data.LoginManager;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.model.Comment;
@@ -43,9 +42,8 @@ public class LoginLoader extends AsyncTaskLoader<Result> {
 			prefs.savePassword(mPassword);
 
 			// delete all caches after logging in
-			CacheDbOpener opener = new CacheDbOpener(getContext());
-			DbInterface dbi = new DbInterface(getContext(), opener);
-			SQLiteDatabase db = dbi.getDb();
+			SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
+																						.getWritableDatabase();
 
 			db.delete(new Story().getTableName(), null, null);
 			db.delete(new Comment().getTableName(), null, null);

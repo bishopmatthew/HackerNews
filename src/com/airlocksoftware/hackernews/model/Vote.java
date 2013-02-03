@@ -1,6 +1,7 @@
 package com.airlocksoftware.hackernews.model;
 
-import com.airlocksoftware.database.DbInterface;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.airlocksoftware.database.SqlObject;
 
 /**
@@ -19,7 +20,7 @@ public class Vote extends SqlObject {
 	public Vote() {
 	}
 
-	public boolean create(DbInterface db) {
+	public boolean create(SQLiteDatabase db) {
 		return super.create(db);
 	}
 

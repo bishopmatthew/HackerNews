@@ -12,14 +12,14 @@ public class ConnectionManager {
 	public static final String SUBMISSIONS_URL = "/submitted?id=";
 	public static final String SUBMIT_URL = "/submit";
 	public static final String USER_AGENT = System.getProperty("http.agent");
-	public static final int TIMEOUT_MILLIS = 20 * 1000; // 20 seconds
+	public static final int TIMEOUT_MILLIS = 40 * 1000;
 
 	/** Connects to news.ycombinator.com using the cookie you've provided **/
 	public static Connection authConnect(String baseUrlExtension, String userCookie) {
 		return anonConnect(baseUrlExtension).cookie("user", userCookie);
 	}
 
-	/** Connects to news.ycombinator.com with no user cookie authorization **/
+	/** Connects to news.ycombinator.com with no user cookie authentication **/
 	public static Connection anonConnect(String baseUrlExtension) {
 		return Jsoup.connect(ConnectionManager.BASE_URL + baseUrlExtension)
 								.timeout(TIMEOUT_MILLIS)

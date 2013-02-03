@@ -6,15 +6,16 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 
-import com.airlocksoftware.database.DbInterface;
+import com.airlocksoftware.database.DbUtils;
 import com.airlocksoftware.database.SqlObject;
 import com.airlocksoftware.hackernews.activity.LoginActivity;
 import com.airlocksoftware.hackernews.activity.LoginActivity.PostAction;
-import com.airlocksoftware.hackernews.cache.CacheDbOpener;
+import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.loader.AsyncVotingService;
 
@@ -28,12 +29,10 @@ public class Comment extends SqlObject {
 	public String ago;
 	public String html;
 	public int depth;
-
 	public String replyUrl;
 	public String whence;
 	public String auth;
 	public boolean isUpvoted = false;
-
 	public long storyId;
 
 	public static final String COMMENT_ID = "commentId";
@@ -41,14 +40,12 @@ public class Comment extends SqlObject {
 	public static final String AGO = "ago";
 	public static final String HTML = "html";
 	public static final String DEPTH = "depth";
-
 	public static final String REPLY_URL = "replyUrl";
 	public static final String WHENCE = "whence";
 	public static final String AUTH = "auth";
 	public static final String IS_UPVOTED = "isUpvoted";
 	public static final String IS_FOLDED = "isFolded";
 	public static final String CHILD_COUNT = "childCount";
-
 	public static final String STORY_ID = "storyId";
 
 	public static final long CACHE_EXPIRATION = 1000 * 60 * 30; // 30 minutes
@@ -81,15 +78,13 @@ public class Comment extends SqlObject {
 			vote.username = data.getUsername();
 			vote.whence = whence;
 			vote.itemId = commentId;
-			CacheDbOpener opener = new CacheDbOpener(context);
-			DbInterface db = new DbInterface(context, opener);
+			SQLiteDatabase db = DbHelperSingleton.getInstance(context)
+																						.getWritableDatabase();
 			vote.create(db);
 
 			// update comments upvote status
 			isUpvoted = true;
 			update(db);
-
-			opener.close();
 
 			// run async voting service
 			AsyncVotingService service = new AsyncVotingService(context);
@@ -107,16 +102,15 @@ public class Comment extends SqlObject {
 	}
 
 	@Override
-	public boolean create(DbInterface db) {
+	public boolean create(SQLiteDatabase db) {
 		return super.create(db);
 	}
 
 	/** Loads a comment from the cache base on on it's commentId **/
-	public static Comment readFromCommentId(DbInterface db, long cId) {
+	public static Comment readFromCommentId(SQLiteDatabase db, long cId) {
 		Comment comment = new Comment();
-		Cursor c = db.getDb()
-									.query(comment.getTableName(), comment.getColNames(), COMMENT_ID + "=?",
-											new String[] { Long.toString(cId) }, null, null, null);
+		Cursor c = db.query(comment.getTableName(), comment.getColNames(), COMMENT_ID + "=?",
+				new String[] { Long.toString(cId) }, null, null, null);
 
 		if (c.moveToFirst()) {
 			comment.readFromCursor(c);
@@ -127,12 +121,11 @@ public class Comment extends SqlObject {
 	}
 
 	/** Loads a list of comments form the cache based on the parent storyId. **/
-	public static List<Comment> getFromCache(DbInterface db, long sId) {
+	public static List<Comment> getFromCache(SQLiteDatabase db, long sId) {
 		Comment firstComment = new Comment();
 		List<Comment> comments = null;
-		Cursor c = db.getDb()
-									.query(firstComment.getTableName(), firstComment.getColNames(), STORY_ID + "=?",
-											new String[] { Long.toString(sId) }, null, null, null);
+		Cursor c = db.query(firstComment.getTableName(), firstComment.getColNames(), STORY_ID + "=?",
+				new String[] { Long.toString(sId) }, null, null, null);
 		if (c.moveToFirst()) {
 			comments = new ArrayList<Comment>();
 			firstComment.readFromCursor(c);
@@ -151,10 +144,9 @@ public class Comment extends SqlObject {
 	}
 
 	/** Deletes any cached comment rows matching storyId **/
-	public static void clearCache(DbInterface db, String sId) {
+	public static void clearCache(SQLiteDatabase db, String sId) {
 		Comment comment = new Comment();
-		db.getDb()
-			.delete(comment.getTableName(), STORY_ID + "=?", new String[] { sId });
+		db.delete(comment.getTableName(), STORY_ID + "=?", new String[] { sId });
 	}
 
 	/**
@@ -162,20 +154,17 @@ public class Comment extends SqlObject {
 	 * 
 	 * @param timestamp
 	 **/
-	public static void cacheValues(DbInterface db, List<Comment> comments, Timestamp timestamp) {
+	public static void cacheValues(SQLiteDatabase db, List<Comment> comments, Timestamp timestamp) {
 		// make sure we have a comment to run queries against
 		if (comments == null || comments.size() < 1) return;
 		Comment first = comments.get(0);
 		if (first == null) first = new Comment();
 
 		// delete any old comments (Timestamp.TIME < System.currentTimeMillis() - CACHE_EXPIRATION)
-		Cursor c = db.getDb()
-									.query(
-											timestamp.getTableName(),
-											timestamp.getColNames(),
-											Timestamp.TIME + "<? AND " + Timestamp.TIME + ">? ",
-											new String[] { Long.toString(System.currentTimeMillis() - CACHE_EXPIRATION),
-													Long.toString(JAN_1_2012) }, null, null, null);
+		Cursor c = db.query(timestamp.getTableName(), timestamp.getColNames(), Timestamp.TIME + "<? AND " + Timestamp.TIME
+				+ ">? ",
+				new String[] { Long.toString(System.currentTimeMillis() - CACHE_EXPIRATION), Long.toString(JAN_1_2012) }, null,
+				null, null);
 
 		if (c.moveToFirst()) {
 			for (int i = 1; i < c.getCount(); i++) {
@@ -191,7 +180,7 @@ public class Comment extends SqlObject {
 
 		// delete old
 		Timestamp toDelete = new Timestamp();
-		toDelete.id = db.getId(timestamp.getTableName(), Timestamp.SECONDARY_ID, timestamp.secondaryId);
+		toDelete.id = DbUtils.getId(db, timestamp.getTableName(), Timestamp.SECONDARY_ID, timestamp.secondaryId);
 		toDelete.delete(db);
 
 		// create new

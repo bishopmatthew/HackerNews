@@ -3,10 +3,10 @@ package com.airlocksoftware.hackernews.loader;
 import java.util.List;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.airlocksoftware.database.DbInterface;
-import com.airlocksoftware.hackernews.cache.CacheDbOpener;
+import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.fragment.CommentsFragment;
 import com.airlocksoftware.hackernews.model.Comment;
 import com.airlocksoftware.hackernews.model.Request;
@@ -39,8 +39,8 @@ public class CommentsLoader extends AsyncTaskLoader<CommentsResponse> {
 			return new CommentsResponse(Result.EMPTY);
 		}
 
-		CacheDbOpener opener = new CacheDbOpener(getContext());
-		DbInterface db = new DbInterface(getContext(), opener);
+		SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
+																					.getWritableDatabase();
 		CommentsResponse response = null;
 
 		List<Comment> comments = null;
@@ -74,13 +74,11 @@ public class CommentsLoader extends AsyncTaskLoader<CommentsResponse> {
 				Comment.cacheValues(db, response.comments, response.timestamp);
 			}
 		}
-		
+
 		// generate the Spanned html
-		for (Comment c : response.comments) { // TODO Github Issue #1
+		for (Comment c : response.comments) {
 			c.generateSpannedHtml();
 		}
-
-		opener.close();
 
 		return response;
 	}

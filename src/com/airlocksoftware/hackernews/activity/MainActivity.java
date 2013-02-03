@@ -311,7 +311,6 @@ public class MainActivity extends SlideoutMenuActivity implements SharePopupInte
 			FragmentManager fm = getSupportFragmentManager();
 			FragmentTransaction ft = fm.beginTransaction();
 			mStoryFragment = StoryFragment.newInstance(mPage);
-			Log.d(TAG, "Created StoryFragment" + mStoryFragment.hashCode());
 			ft.replace(R.id.frg_storylist, mStoryFragment, STORY_FRAG_TAG);
 			ft.disallowAddToBackStack();
 			ft.commit();

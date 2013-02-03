@@ -8,12 +8,12 @@ import org.apache.commons.lang3.StringUtils;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
-import com.airlocksoftware.database.DbInterface;
 import com.airlocksoftware.database.SqlObject;
 import com.airlocksoftware.hackernews.activity.LoginActivity;
 import com.airlocksoftware.hackernews.activity.LoginActivity.PostAction;
-import com.airlocksoftware.hackernews.cache.CacheDbOpener;
+import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.loader.AsyncVotingService;
 
@@ -93,15 +93,13 @@ public class Story extends SqlObject {
 			vote.username = data.getUsername();
 			vote.whence = whence;
 			vote.itemId = storyId;
-			CacheDbOpener opener = new CacheDbOpener(context);
-			DbInterface db = new DbInterface(context, opener);
+			SQLiteDatabase db = DbHelperSingleton.getInstance(context)
+																						.getWritableDatabase();
 			vote.create(db);
 
 			// update comments upvote status
 			isUpvoted = true;
 			update(db);
-
-			opener.close();
 
 			// run async voting service
 			AsyncVotingService service = new AsyncVotingService(context);
@@ -118,15 +116,14 @@ public class Story extends SqlObject {
 	}
 
 	@Override
-	public boolean create(DbInterface db) {
+	public boolean create(SQLiteDatabase db) {
 		return super.create(db);
 	}
 
-	public static Story cachedById(DbInterface db, long sId) {
+	public static Story cachedById(SQLiteDatabase db, long sId) {
 		Story story = new Story();
-		Cursor c = db.getDb()
-									.query(story.getTableName(), story.getColNames(), STORY_ID + "=?",
-											new String[] { Long.toString(sId) }, null, null, null);
+		Cursor c = db.query(story.getTableName(), story.getColNames(), STORY_ID + "=?",
+				new String[] { Long.toString(sId) }, null, null, null);
 
 		if (c.moveToFirst()) {
 			story.readFromCursor(c);
@@ -140,12 +137,11 @@ public class Story extends SqlObject {
 	}
 
 	/** Gets stories linked to this page from the cache **/
-	public static List<Story> cachedByPage(DbInterface db, Page Page) {
+	public static List<Story> cachedByPage(SQLiteDatabase db, Page Page) {
 		Story firstStory = new Story();
 		List<Story> stories = new ArrayList<Story>();
-		Cursor c = db.getDb()
-									.query(firstStory.getTableName(), firstStory.getColNames(), PAGE + "=?",
-											new String[] { Page.toString() }, null, null, null);
+		Cursor c = db.query(firstStory.getTableName(), firstStory.getColNames(), PAGE + "=?",
+				new String[] { Page.toString() }, null, null, null);
 		if (c.moveToFirst()) {
 			firstStory.readFromCursor(c);
 			stories.add(firstStory);
@@ -163,14 +159,13 @@ public class Story extends SqlObject {
 	}
 
 	/** Deletes any cached rows matching page **/
-	public static void clearCache(DbInterface db, Page page) {
+	public static void clearCache(SQLiteDatabase db, Page page) {
 		Story story = new Story();
-		db.getDb()
-			.delete(story.getTableName(), PAGE + "=?", new String[] { page.toString() });
+		db.delete(story.getTableName(), PAGE + "=?", new String[] { page.toString() });
 	}
 
 	/** Adds these values to the cache, copying over replyFnid & commentsTimestamp **/
-	public static void cacheValues(DbInterface db, List<Story> stories) {
+	public static void cacheValues(SQLiteDatabase db, List<Story> stories) {
 		for (Story story : stories) {
 			story.create(db);
 		}

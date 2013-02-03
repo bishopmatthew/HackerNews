@@ -1,8 +1,8 @@
 package com.airlocksoftware.hackernews.model;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
-import com.airlocksoftware.database.DbInterface;
 import com.airlocksoftware.database.SqlObject;
 
 /** Used to store the timestamp of when pages were last downloaded. **/
@@ -21,31 +21,29 @@ public class Timestamp extends SqlObject {
 	public Timestamp() {
 	}
 
-	public boolean create(DbInterface db) {
+	public boolean create(SQLiteDatabase db) {
 		return super.create(db);
 	}
 
-	public static Timestamp cachedByPrimaryId(DbInterface db, String id) {
-		Timestamp stamp = new Timestamp();
-		Cursor c = db.getDb()
-									.query(stamp.getTableName(), stamp.getColNames(), PRIMARY_ID + "=?", new String[] { id }, null, null,
-											null);
+	public static Timestamp cachedByPrimaryId(SQLiteDatabase db, String id) {
+		Timestamp timestamp = new Timestamp();
+		Cursor c = db.query(timestamp.getTableName(), timestamp.getColNames(), PRIMARY_ID + "=?", new String[] { id },
+				null, null, null);
 
 		if (c.moveToFirst()) {
-			stamp.readFromCursor(c);
+			timestamp.readFromCursor(c);
 			c.close();
-			return stamp;
+			return timestamp;
 		} else {
 			c.close();
 			return null;
 		}
 	}
 
-	public static Timestamp cachedByBothIds(DbInterface db, String pId, String sId) {
+	public static Timestamp cachedByBothIds(SQLiteDatabase db, String pId, String sId) {
 		Timestamp stamp = new Timestamp();
-		Cursor c = db.getDb()
-									.query(stamp.getTableName(), stamp.getColNames(), PRIMARY_ID + "=? AND " + SECONDARY_ID + "=?",
-											new String[] { pId, sId }, null, null, null);
+		Cursor c = db.query(stamp.getTableName(), stamp.getColNames(), PRIMARY_ID + "=? AND " + SECONDARY_ID + "=?",
+				new String[] { pId, sId }, null, null, null);
 
 		if (c.moveToFirst()) {
 			stamp.readFromCursor(c);
@@ -55,9 +53,8 @@ public class Timestamp extends SqlObject {
 		return (stamp.primaryId != null) ? stamp : null;
 	}
 
-	public static void clearCache(DbInterface db, String pId, String sId) {
+	public static void clearCache(SQLiteDatabase db, String pId, String sId) {
 		Timestamp timestamp = new Timestamp();
-		db.getDb()
-			.delete(timestamp.getTableName(), PRIMARY_ID + "=? AND " + SECONDARY_ID + "=?", new String[] { pId, sId });
+		db.delete(timestamp.getTableName(), PRIMARY_ID + "=? AND " + SECONDARY_ID + "=?", new String[] { pId, sId });
 	}
 }
