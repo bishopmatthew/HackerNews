@@ -10,7 +10,7 @@ import com.airlocksoftware.hackernews.R;
 public class AboutActivity extends SlideoutMenuActivity {
 
 	private static final Uri WEBSITE = Uri.parse("http://www.airlocksoftware.com");
-	private static final Uri GITHUB = Uri.parse("http://www.github.com");
+	private static final Uri GITHUB = Uri.parse("http://github.com/bishopmatthew/HackerNews");
 	private static final Uri MARKET_URL = Uri.parse("market://details?id=com.airlocksoftware.hackernews");
 
 	@Override
