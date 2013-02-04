@@ -18,9 +18,9 @@ import android.widget.RelativeLayout.LayoutParams;
 
 import com.airlocksoftware.hackernews.R;
 import com.airlocksoftware.hackernews.activity.MainActivity;
+import com.airlocksoftware.hackernews.activity.MainActivity.CommentsTab;
 import com.airlocksoftware.hackernews.activity.ReplyActivity;
 import com.airlocksoftware.hackernews.activity.UserActivity;
-import com.airlocksoftware.hackernews.activity.MainActivity.CommentsTab;
 import com.airlocksoftware.hackernews.model.Comment;
 import com.airlocksoftware.hackernews.model.Story;
 import com.airlocksoftware.hackernews.view.SharePopup;

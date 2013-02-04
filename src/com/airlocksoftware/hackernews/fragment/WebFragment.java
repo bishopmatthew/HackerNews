@@ -22,11 +22,13 @@ import com.airlocksoftware.holo.actionbar.ActionBarButton;
 import com.airlocksoftware.holo.actionbar.ActionBarButton.Priority;
 import com.airlocksoftware.holo.actionbar.interfaces.ActionBarClient;
 import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
+import com.airlocksoftware.holo.webview.WebViewPagerCompat;
 
 public class WebFragment extends Fragment implements ActionBarClient {
 
 	private String mUrl;
 
+	ViewGroup mRootView;
 	private WebView mWebView;
 	private ProgressBar mProgress;
 	private ActionBarButton mRefreshButton;
@@ -69,12 +71,12 @@ public class WebFragment extends Fragment implements ActionBarClient {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.frg_webview, container, false);
-		
-		findViews(v);
+		mRootView = (ViewGroup) inflater.inflate(R.layout.frg_webview, container, false);
+
+		findViews(inflater, mRootView);
 		setupWebSettings();
 		setupScrollingOptions();
-		
+
 		mWebView.setWebChromeClient(mWebChromeClient);
 		mWebView.setWebViewClient(mWebViewClient);
 
@@ -82,9 +84,9 @@ public class WebFragment extends Fragment implements ActionBarClient {
 			mWebView.loadUrl(mUrl);
 		}
 
-		return v;
+		return mRootView;
 	}
-	
+
 	WebChromeClient mWebChromeClient = new WebChromeClient() {
 		public void onProgressChanged(WebView view, int progress) {
 			super.onProgressChanged(view, progress);
@@ -99,7 +101,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
 			}
 		}
 	};
-	
+
 	WebViewClient mWebViewClient = new WebViewClient() {
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			view.loadUrl(url);
@@ -125,9 +127,13 @@ public class WebFragment extends Fragment implements ActionBarClient {
 		settings.setRenderPriority(RenderPriority.LOW); // helps fix performance issues in CommentsActivity
 	}
 
-	private void findViews(View v) {
-		mWebView = (WebView) v.findViewById(R.id.webview);
-		mProgress = (ProgressBar) v.findViewById(R.id.progressbar);
+	private void findViews(LayoutInflater inflater, ViewGroup root) {
+		// have to add webview programatically with an ApplicationContext
+		// as per http://stackoverflow.com/questions/3130654/memory-leak-in-webview
+		mWebView = new WebViewPagerCompat(inflater.getContext()
+																							.getApplicationContext());
+		root.addView(mWebView);
+		mProgress = (ProgressBar) root.findViewById(R.id.progressbar);
 	}
 
 	@Override
@@ -142,6 +148,13 @@ public class WebFragment extends Fragment implements ActionBarClient {
 	public void onSaveInstanceState(Bundle outState) {
 		outState.putString(URL, mUrl);
 		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		mRootView.removeAllViews();
+		mWebView.destroy();
 	}
 
 	@Override

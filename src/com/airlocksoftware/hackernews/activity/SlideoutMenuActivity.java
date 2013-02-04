@@ -54,6 +54,7 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 	// Constants
 	// private static final String NEED_REFRESH = SlideoutMenuActivity.class.getSimpleName() + ".needRefresh";
 	private static final int UNCHECKED_ID = -1;
+	private static final boolean HONEYCOMB_OR_GREATER = android.os.Build.VERSION.SDK_INT >= 11;
 
 	@Override
 	public void onCreate(Bundle savedState) {
@@ -61,7 +62,7 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 		mUserPrefs = new UserPrefs(this);
 		retrieveTheme();
 		setWindowBackground();
-		BugSenseHandler.initAndStartSession(SlideoutMenuActivity.this, getString(R.string.bugsense_api_key));
+		BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_api_key));
 
 		// initialize ActionBarActivity layout after setting theme and window background
 		super.initialize();
