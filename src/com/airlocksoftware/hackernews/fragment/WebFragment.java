@@ -46,8 +46,10 @@ public class WebFragment extends Fragment implements ActionBarClient {
 	private OnClickListener mBrowserListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(mUrl));
-			getActivity().startActivity(intent);
+			if (mUrl != null) {
+				Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(mUrl));
+				getActivity().startActivity(intent);
+			}
 		}
 	};
 
