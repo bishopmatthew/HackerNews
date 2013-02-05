@@ -1,7 +1,7 @@
 Hacker News
 ==========
 
-![Screenshot of the app](http://airlocksoftware.com/img/hackernews-3.png)
+![Screenshot of the app](http://i.imgur.com/XxS04KP.png)
 
 An open source Hacker News client for Android phones & tablets.
 
