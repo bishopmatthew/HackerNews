@@ -134,8 +134,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
 	private void findViews(LayoutInflater inflater, ViewGroup root) {
 		// have to add webview programatically with an ApplicationContext
 		// as per http://stackoverflow.com/questions/3130654/memory-leak-in-webview
-		mWebView = new WebViewPagerCompat(inflater.getContext()
-																							.getApplicationContext());
+		mWebView = new WebViewPagerCompat(inflater.getContext());
 		root.addView(mWebView);
 		mProgress = (ProgressBar) root.findViewById(R.id.progressbar);
 	}
