@@ -7,7 +7,7 @@ An open source Hacker News client for Android phones & tablets.
 
 ![Get it on Google Play!](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)
 
-[Google Play Store](https://play.google.com/store/apps/details?id=com.airlocksoftware.hackernews)
+[Available on the Google Play Store](https://play.google.com/store/apps/details?id=com.airlocksoftware.hackernews)
 
 # How to build
 
