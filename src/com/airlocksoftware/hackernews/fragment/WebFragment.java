@@ -1,5 +1,7 @@
 package com.airlocksoftware.hackernews.fragment;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -46,7 +48,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
 	private OnClickListener mBrowserListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			if (mUrl != null) {
+			if (StringUtils.isNotBlank(mUrl)) {
 				Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(mUrl));
 				getActivity().startActivity(intent);
 			}
