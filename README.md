@@ -1,7 +1,9 @@
-HackerNews
+Hacker News
 ==========
 
-An open source Hacker News client for Android.
+![Screenshot of the app](http://airlocksoftware.com/img/hackernews-3.png)
+
+An open source Hacker News client for Android phones & tablets.
 
 ![Get it on Google Play!](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)
 
