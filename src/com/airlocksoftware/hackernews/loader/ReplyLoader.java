@@ -41,7 +41,7 @@ public class ReplyLoader extends AsyncTaskLoader<Result> {
 
 		try {
 			UserPrefs data = new UserPrefs(getContext());
-			Element replyInput = getResplyInput(data);
+			Element replyInput = getReplyInput(data);
 			String replyFnid = replyInput.attr("value");
 			String response = sendReply(data, replyFnid);
 			if (StringUtils.isNotBlank(response)) result = Result.SUCCESS;
@@ -54,6 +54,7 @@ public class ReplyLoader extends AsyncTaskLoader<Result> {
 		return result;
 	}
 
+	/** POSTS the reply**/
 	private String sendReply(UserPrefs data, String replyFnid) throws IOException {
 		return ConnectionManager.authConnect(REPLY_EXTENSION, data.getUserCookie())
 														.data("fnid", replyFnid)
@@ -64,8 +65,8 @@ public class ReplyLoader extends AsyncTaskLoader<Result> {
 														.text();
 	}
 
-	private Element getResplyInput(UserPrefs data) throws IOException {
-		return ConnectionManager.authConnect(ConnectionManager.itemIdToUrl(mId), data.getUserCookie())
+	private Element getReplyInput(UserPrefs data) throws IOException {
+		return ConnectionManager.authConnect(ConnectionManager.itemIdToUrlExtension(mId), data.getUserCookie())
 														.get()
 														.select("input[name=fnid]")
 														.first();

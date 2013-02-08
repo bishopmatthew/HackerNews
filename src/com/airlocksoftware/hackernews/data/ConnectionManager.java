@@ -26,8 +26,14 @@ public class ConnectionManager {
 								.userAgent(ConnectionManager.USER_AGENT);
 	}
 
-	public static String itemIdToUrl(long id) {
+	/** Converts an id into a string containing the extension (everything that goes after .com) of the URL **/
+	public static String itemIdToUrlExtension(long id) {
 		return ITEMS_URL + Long.toString(id);
+	}
+
+	/** Converts an id into a string the full URL for that id. **/
+	public static String itemIdToUrl(long id) {
+		return BASE_URL + itemIdToUrlExtension(id);
 	}
 
 }
