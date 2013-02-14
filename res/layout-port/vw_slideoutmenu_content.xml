@@ -74,6 +74,21 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/best" />
         </com.airlocksoftware.holo.checkable.CheckableView>
+        
+        <com.airlocksoftware.holo.checkable.CheckableView
+            android:id="@+id/active_button"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/slideout_list_item_height"
+            android:layout_weight="1"
+            android:background="?attr/slideoutBtnBg" >
+
+            <com.airlocksoftware.holo.type.FontText
+                style="@style/FontText.SlideoutMenu.List"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/active" />
+        </com.airlocksoftware.holo.checkable.CheckableView>
 
         <com.airlocksoftware.holo.checkable.CheckableView
             android:id="@+id/new_button"

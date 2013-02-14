@@ -53,6 +53,9 @@ public class StoryParser {
 		case NEW:
 			urlExtension += "newest";
 			break;
+		case ACTIVE:
+			urlExtension += "active";
+			break;
 		default:
 			break;
 		}

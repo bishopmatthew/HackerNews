@@ -34,7 +34,7 @@
         <item name="android:maxLines">1</item>
         <item name="android:paddingLeft">@dimen/slideout_list_item_height</item>
         <item name="android:textColor">?attr/slideoutTextColor</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="font">roboto_lt</item>
     </style>
 
