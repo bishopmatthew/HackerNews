@@ -349,6 +349,10 @@ public class MainActivity extends SlideoutMenuActivity implements SharePopupInte
 			titleResId = R.string.best;
 			menuItemResId = R.id.best_button;
 			break;
+		case ACTIVE:
+			titleResId = R.string.active;
+			menuItemResId = R.id.active_button;
+			break;
 		case NEW:
 			titleResId = R.string.new_page;
 			menuItemResId = R.id.new_button;
