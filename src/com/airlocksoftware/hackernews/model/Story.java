@@ -115,9 +115,8 @@ public class Story extends SqlObject {
 		}
 	}
 
-	@Override
 	public boolean create(SQLiteDatabase db) {
-		return super.create(db);
+		return super.createAndGenerateId(db);
 	}
 
 	public static Story cachedById(SQLiteDatabase db, long sId) {

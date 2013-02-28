@@ -101,9 +101,8 @@ public class Comment extends SqlObject {
 		}
 	}
 
-	@Override
 	public boolean create(SQLiteDatabase db) {
-		return super.create(db);
+		return super.createAndGenerateId(db);
 	}
 
 	/** Loads a comment from the cache base on on it's commentId **/

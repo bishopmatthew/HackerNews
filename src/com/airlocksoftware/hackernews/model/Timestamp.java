@@ -22,7 +22,7 @@ public class Timestamp extends SqlObject {
 	}
 
 	public boolean create(SQLiteDatabase db) {
-		return super.create(db);
+		return super.createAndGenerateId(db);
 	}
 
 	public static Timestamp cachedByPrimaryId(SQLiteDatabase db, String id) {

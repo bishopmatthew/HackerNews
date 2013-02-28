@@ -21,7 +21,7 @@ public class Vote extends SqlObject {
 	}
 
 	public boolean create(SQLiteDatabase db) {
-		return super.create(db);
+		return super.createAndGenerateId(db);
 	}
 
 }
