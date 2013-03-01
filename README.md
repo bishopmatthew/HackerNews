@@ -11,7 +11,7 @@ An open source Hacker News client for Android phones & tablets.
 
 # How to build
 
-You'll need 4 jar files (or a more recent version):
+**You'll need 4 jar files (or a more recent version):**
 
 - [bugsense3.2.jar](https://www.bugsense.com/docs)
 - [commons-lang3-3.1.jar](http://commons.apache.org/lang/download_lang.cgi)
@@ -20,7 +20,7 @@ You'll need 4 jar files (or a more recent version):
 
 Create a "libs" folder at the project root and add these jars to it.
 
-Additionally, you'll need two of my library projects:
+**Additionally, you'll need two of my library projects:**
 
 - [HoloTheme](https://github.com/bishopmatthew/HoloTheme)
 - [DatabaseUtils](https://github.com/bishopmatthew/DatabaseUtils)
@@ -30,6 +30,8 @@ HoloTheme is a collection of useful code I share between projects. Some of it is
 DatabaseUtils is a really simple ORM that uses reflection to do CRUD operations on objects that extends SqlObject. 
 
 Clone both repositories, and then import them into eclipse. Then add them as library projects to HackerNews.
+
+**Finally**, you will need to either put the API key for your own [Bugsense](http://www.bugsense.com/) account into `res/strings.xml` as `bugsense_api_key`, or remove the `BugSenseHandler.initAndStartSession()` call in [SlideoutMenuActivity](https://github.com/bishopmatthew/HackerNews/blob/master/src/com/airlocksoftware/hackernews/activity/SlideoutMenuActivity.java#L65)
 
 # Design Overview
 
