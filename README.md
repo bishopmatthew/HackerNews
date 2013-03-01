@@ -31,7 +31,7 @@ DatabaseUtils is a really simple ORM that uses reflection to do CRUD operations 
 
 Clone both repositories, and then import them into eclipse. Then add them as library projects to HackerNews.
 
-**Finally**, you will need to either put the API key for your own [Bugsense](http://www.bugsense.com/) account into `res/strings.xml` as `bugsense_api_key`, or remove the `BugSenseHandler.initAndStartSession()` call in [SlideoutMenuActivity](https://github.com/bishopmatthew/HackerNews/blob/master/src/com/airlocksoftware/hackernews/activity/SlideoutMenuActivity.java#L65)
+**Finally, you will need to either put the API key for your own [Bugsense](http://www.bugsense.com/) account** into `res/strings.xml` as `bugsense_api_key`, or **remove the `BugSenseHandler.initAndStartSession()` call** in [SlideoutMenuActivity](https://github.com/bishopmatthew/HackerNews/blob/master/src/com/airlocksoftware/hackernews/activity/SlideoutMenuActivity.java#L65)
 
 # Design Overview
 
