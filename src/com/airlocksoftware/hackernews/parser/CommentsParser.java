@@ -206,27 +206,17 @@ public class CommentsParser {
 		comment.ago = getAgo(comhead);
 		comment.commentId = getCommentId(comhead);
 
-		comment.isUpvoted = getIsUpvoted(commentContainer);
+		Element voteAnchor = commentContainer.parent()
+																					.select("a[href^=vote")
+																					.first();
+		comment.isUpvoted = voteAnchor == null;
 		if (isLoggedIn && !comment.isUpvoted) {
-			String[] voteStringArray = getVoteString(commentContainer);
-			comment.whence = voteStringArray[voteStringArray.length - 1];
-			comment.auth = voteStringArray[7];
+			String[] voteHref = voteAnchor.attr("href")
+																		.split("[=&]");
+			comment.whence = voteHref[voteHref.length - 1];
+			comment.auth = voteHref[7];
 		}
 		return comment;
-	}
-
-	private static String[] getVoteString(Element commentContainer) {
-		return commentContainer.parent()
-														.select("a[href^=vote")
-														.first()
-														.attr("href")
-														.split("[=&]");
-	}
-
-	private static boolean getIsUpvoted(Element commentContainer) {
-		return commentContainer.parent()
-														.select("img[src=http://ycombinator.com/images/grayarrow.gif]")
-														.size() != 1;
 	}
 
 	private static long getCommentId(Element comhead) {
@@ -274,12 +264,12 @@ public class CommentsParser {
 	}
 
 	private static int getDepth(Element commentContainer) {
-		// CHANGED FROM 
-//		Element upvoteImg = commentContainer.parent()
-//				.select("img[src^=http://ycombinator.com/images/]")
-//				.first();
+		// CHANGED FROM
+		// Element upvoteImg = commentContainer.parent()
+		// .select("img[src^=http://ycombinator.com/images/]")
+		// .first();
 		// IN RESPONSE TO CHANGE IN HTML FROM news.ycombinator.com
-		
+
 		Element upvoteImg = commentContainer.parent()
 																				.select("img[src^=s.gif]")
 																				.first();

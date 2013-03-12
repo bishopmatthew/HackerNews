@@ -69,10 +69,10 @@ public class StoryParser {
 		}
 		String urlExtension = StringUtils.isNotBlank(moreFnid) ? "/" + moreFnid : "/submitted?id=" + username;
 		StoryResponse response = parseStories(context, Page.USER, urlExtension);
-		if(StringUtils.isNotBlank(moreFnid) && response.result == Result.SUCCESS) {
+		if (StringUtils.isNotBlank(moreFnid) && response.result == Result.SUCCESS) {
 			// switch result to MORE
 			response.result = Result.MORE;
-		} 
+		}
 		return response;
 	}
 
@@ -196,14 +196,17 @@ public class StoryParser {
 				story.isUpvoted = true;
 				story.whence = null;
 				story.auth = null;
-				if (parseHasUpvoteButton(title)) {
-					String[] voteUp = title.select("a[href^=vote]")
-																	.attr("href")
-																	.split("[=&]");
+
+				Element voteAnchor = title.select("a[href^=vote]")
+																	.first();
+				
+				if (voteAnchor != null) {
+					String[] voteHref = voteAnchor.attr("href")
+							.split("[=&]");
 
 					story.isUpvoted = false;
-					story.whence = voteUp[voteUp.length - 1];
-					story.auth = voteUp[7];
+					story.whence = voteHref[voteHref.length - 1];
+					story.auth = voteHref[7];
 				}
 			}
 
@@ -242,10 +245,10 @@ public class StoryParser {
 																		.split("\\s")[0]);
 	}
 
-	private static boolean parseHasUpvoteButton(Element title) {
-		Elements voteButtons = title.select("img[src=http://ycombinator.com/images/grayarrow.gif]");
-		return voteButtons.size() == 1;
-	}
+//	private static boolean parseHasUpvoteButton(Element voteAnchor) {
+//		Elements voteButtons = voteAnchor.select("img[src=http://ycombinator.com/images/grayarrow.gif]");
+//		return voteButtons.size() == 1;
+//	}
 
 	private static long parseStoryId(Element subtext) {
 		return Long.parseLong(subtext.select("a[href^=item]")
