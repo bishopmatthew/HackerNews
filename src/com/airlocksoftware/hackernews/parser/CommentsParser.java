@@ -274,8 +274,14 @@ public class CommentsParser {
 	}
 
 	private static int getDepth(Element commentContainer) {
+		// CHANGED FROM 
+//		Element upvoteImg = commentContainer.parent()
+//				.select("img[src^=http://ycombinator.com/images/]")
+//				.first();
+		// IN RESPONSE TO CHANGE IN HTML FROM news.ycombinator.com
+		
 		Element upvoteImg = commentContainer.parent()
-																				.select("img[src^=http://ycombinator.com/images/]")
+																				.select("img[src^=s.gif]")
 																				.first();
 		return Integer.parseInt(upvoteImg.attr("width")) / 40;
 	}

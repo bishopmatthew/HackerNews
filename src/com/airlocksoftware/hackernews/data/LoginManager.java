@@ -5,8 +5,9 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 import org.jsoup.nodes.Document;
 
-
 public class LoginManager {
+
+	private static final String LOGIN_URL_EXTENSION = "/newslogin?whence=news";
 
 	/**
 	 * Attempts to log the user into http://news.ycombinator.com. If successful, returns a user authentication cookie.
@@ -14,9 +15,10 @@ public class LoginManager {
 	 **/
 	public static String login(String username, String password) {
 		try {
-			Document loginPage = ConnectionManager.anonConnect("/newslogin?whence=news")
-																						.get();
-
+			Response loginResponse = ConnectionManager.anonConnect(LOGIN_URL_EXTENSION)
+																								.method(Method.GET)
+																								.execute();
+			Document loginPage = loginResponse.parse();
 			String fnid = loginPage.select("input[name=fnid]")
 															.attr("value");
 
@@ -24,6 +26,9 @@ public class LoginManager {
 																						.data("fnid", fnid)
 																						.data("u", username)
 																						.data("p", password)
+																						.header("Origin", ConnectionManager.BASE_URL)
+																						.followRedirects(true)
+																						.referrer(ConnectionManager.BASE_URL + LOGIN_URL_EXTENSION)
 																						.method(Method.POST)
 																						.execute();
 
@@ -36,7 +41,4 @@ public class LoginManager {
 		}
 		return null;
 	}
-	
-	
-
 }

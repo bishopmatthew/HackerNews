@@ -6,7 +6,7 @@ import org.jsoup.Jsoup;
 /** Static methods for connecting to the http://news.ycombinator.com **/
 public class ConnectionManager {
 
-	public static final String BASE_URL = "http://news.ycombinator.com";
+	public static final String BASE_URL = "https://news.ycombinator.com";
 	public static final String ITEMS_URL = "/item?id=";
 	public static final String THREADS_URL = "/threads?id=";
 	public static final String SUBMISSIONS_URL = "/submitted?id=";
