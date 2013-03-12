@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.airlocksoftware.hackernews"
     android:installLocation="auto"
-    android:versionCode="10"
-    android:versionName="2.0.4" >
+    android:versionCode="11"
+    android:versionName="2.0.5" >
 
     <uses-sdk
         android:minSdkVersion="8"
