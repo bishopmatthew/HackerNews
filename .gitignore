@@ -22,3 +22,6 @@ res/values/bugsense.xml
 
 # Ignore the lib files
 lib/
+
+# Ignore Mac hidden dir file
+*.DS_Store
