@@ -19,3 +19,15 @@ local.properties
 .classpath
 .project
 res/values/bugsense.xml
+
+# Ignore the lib files
+libs/
+
+# Ignore Mac hidden dir file
+*.DS_Store
+
+# Ignore Android Studio (IntelliJ) hidden files
+*.iml
+*.ipr
+*.iws
+.idea/
