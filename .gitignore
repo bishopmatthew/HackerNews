@@ -25,3 +25,9 @@ lib/
 
 # Ignore Mac hidden dir file
 *.DS_Store
+
+# Ignore Android Studio (IntelliJ) hidden files
+*.iml
+*.ipr
+*.iws
+.idea/
