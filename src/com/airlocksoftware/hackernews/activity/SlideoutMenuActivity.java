@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,6 +32,8 @@ import com.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 /** Extends the ActionBarActivity from HoloTheme to add a SlidingMenu **/
 public abstract class SlideoutMenuActivity extends ActionBarActivity implements RestartableActivity {
+
+	private static final String TAG = SlideoutMenuActivity.class.getSimpleName();
 
 	private CheckableViewManager mSlideCheckManager;
 	private UserPrefs mUserPrefs;
@@ -62,7 +65,25 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 		mUserPrefs = new UserPrefs(this);
 		retrieveTheme();
 		setWindowBackground();
-		BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_api_key));
+
+		// Wrap BugSenseHandler init in try/catch to avoid FC's
+		// Incompatible BugSense libraries cause FC's in newer Android versions
+		try {
+			// Initialize the BugSenseHandler for BugSense error reporting
+			BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_api_key));
+
+			Log.d(TAG, "BugSenseHandler initialized successfully");
+
+		// Fatal exceptions won't be caught, but this is another good measure.
+		} catch (Exception e) {
+			// Make a safe closure
+			// This method is safe to run even if the BugSenseHandler does NOT init properly
+			BugSenseHandler.closeSession(getApplicationContext());
+
+			// Warn the console about this instance
+			Log.e(TAG, "BugSenseHandler failed to initialize", e);
+
+		}
 
 		// initialize ActionBarActivity layout after setting theme and window background
 		super.initialize();
