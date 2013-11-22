@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.airlocksoftware.hackernews.R;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.data.UserPrefs.Theme;
@@ -25,7 +24,6 @@ import com.airlocksoftware.holo.checkable.CheckableViewManager;
 import com.airlocksoftware.holo.checkable.CheckableViewManager.OnCheckedViewChangedListener;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
-import com.bugsense.trace.BugSenseHandler;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
@@ -62,7 +60,9 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 		mUserPrefs = new UserPrefs(this);
 		retrieveTheme();
 		setWindowBackground();
-		BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_api_key));
+		
+		/* TODO I'm over the quota anyways -- going to move to Crashlytics in the next version. */
+//		BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_api_key));
 
 		// initialize ActionBarActivity layout after setting theme and window background
 		super.initialize();

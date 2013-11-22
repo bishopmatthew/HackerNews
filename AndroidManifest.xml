@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.airlocksoftware.hackernews"
     android:installLocation="auto"
-    android:versionCode="12"
-    android:versionName="2.0.6" >
+    android:versionCode="13"
+    android:versionName="2.1.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -32,11 +32,11 @@
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/about" />
-        <activity
-            android:name=".activity.DonationActivity"
-            android:excludeFromRecents="true"
-            android:label="@string/donate"
-            android:launchMode="singleTask" />
+        <!--<activity-->
+            <!--android:name=".activity.DonationActivity"-->
+            <!--android:excludeFromRecents="true"-->
+            <!--android:label="@string/donate"-->
+            <!--android:launchMode="singleTask" />-->
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/login" />

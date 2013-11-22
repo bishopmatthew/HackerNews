@@ -1,13 +1,12 @@
 package com.airlocksoftware.hackernews.data;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import org.apache.commons.lang3.StringUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /** Encapsulates methods for interacting with SharedPreferences that the user's preferences. **/
 public class UserPrefs {
@@ -159,7 +158,7 @@ public class UserPrefs {
 	// }
 
 	public enum Theme {
-		LIGHT, DARK;
+		LIGHT, DARK
 	}
 
 	public Theme getTheme() {

@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
@@ -15,18 +16,14 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.airlocksoftware.hackernews.R;
 import com.airlocksoftware.hackernews.activity.MainActivity;
 import com.airlocksoftware.hackernews.adapter.StoryAdapter;
+import com.airlocksoftware.hackernews.data.AppData;
 import com.airlocksoftware.hackernews.interfaces.SharePopupInterface;
 import com.airlocksoftware.hackernews.interfaces.TabletLayout;
 import com.airlocksoftware.hackernews.loader.StoryLoader;
-import com.airlocksoftware.hackernews.model.Comment;
-import com.airlocksoftware.hackernews.model.Page;
-import com.airlocksoftware.hackernews.model.Request;
-import com.airlocksoftware.hackernews.model.Result;
-import com.airlocksoftware.hackernews.model.Story;
+import com.airlocksoftware.hackernews.model.*;
 import com.airlocksoftware.hackernews.parser.StoryParser.StoryResponse;
 import com.airlocksoftware.hackernews.view.SharePopup;
 import com.airlocksoftware.holo.actionbar.ActionBarButton;
@@ -45,6 +42,7 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 	private Request mRequest = Request.NEW;
 	private Result mLastResult = Result.EMPTY;
 	private boolean mIsLoading = false;
+	private boolean mShouldRestoreListState;
 
 	// Activity interfaces
 	TabletLayout mTabletLayout = null;
@@ -150,7 +148,18 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 			mAdapter.onRestoreInstanceState(savedInstanceState);
 		}
 
+		mShouldRestoreListState = true;
+
 		refreshContentVisibility();
+	}
+
+	@Override
+	public void onPause() {
+		/* Save list state to shared prefs (since we kill the activity when we switch to the comments list) */
+		FragmentActivity activity = getActivity();
+		if(activity == null) return;
+		new AppData(activity).saveStoryListPosition(mList.getFirstVisiblePosition());
+		super.onPause();
 	}
 
 	@SuppressWarnings("deprecation")
@@ -207,10 +216,12 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
+		/* Save to bundle */
 		if (!mCallbacks.storyFragmentIsInLayout()) return;
 		outState.putSerializable(PAGE, mPage);
 		outState = mAdapter.onSaveInstanceState(outState);
 		super.onSaveInstanceState(outState);
+
 	}
 
 	// Loader interface
@@ -264,6 +275,12 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 		showMoreLink();
 		checkForExpiredCache(response);
 		refreshContentVisibility();
+
+		if(mShouldRestoreListState) {
+			mShouldRestoreListState = false;
+			int listPosition = new AppData(getActivity()).getStoryListPosition();
+			mList.setSelectionFromTop(listPosition, 0);
+		}
 	}
 
 	private void checkForExpiredCache(StoryResponse response) {
