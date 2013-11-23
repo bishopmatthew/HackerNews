@@ -13,10 +13,10 @@ An open source Hacker News client for Android phones & tablets.
 
 **You'll need 4 jar files (or a more recent version):**
 
-- [bugsense3.2.jar](https://www.bugsense.com/docs)
+- [bugsense-3.5.jar](https://www.bugsense.com/docs)
 - [commons-lang3-3.1.jar](http://commons.apache.org/lang/download_lang.cgi)
-- [gson2.2.2.jar](http://code.google.com/p/google-gson/)
-- [jsoup-1.7.1.jar](http://jsoup.org/)
+- [gson-2.2.2.jar](http://code.google.com/p/google-gson/)
+- [jsoup-1.7.2.jar](http://jsoup.org/)
 
 Create a "libs" folder at the project root and add these jars to it.
 
