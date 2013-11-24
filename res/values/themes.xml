@@ -80,7 +80,6 @@
         <item name="colorOpac10">@color/black_10_opac</item>
         <item name="bgSpinner">@drawable/spinner_background_light</item>
         <item name="listCacheColorHint">@color/cacheColorHintLight</item>
-        <item name="listCacheColorHint">@color/cacheColorHintLight</item>
 
         <!-- ONLY APPLIES FROM API 11+ -->
         <item name="android:fastScrollThumbDrawable">@drawable/fastscroll_thumb_holo</item>
