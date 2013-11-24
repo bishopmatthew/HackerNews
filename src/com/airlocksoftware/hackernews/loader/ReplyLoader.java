@@ -13,70 +13,76 @@ import com.airlocksoftware.hackernews.data.ConnectionManager;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.model.Result;
 
-/** Handles sending replies to Comments and Stories. **/
+/**
+ * Handles sending replies to Comments and Stories. *
+ */
 public class ReplyLoader extends AsyncTaskLoader<Result> {
 
-	String mText;
-	long mId = -1;
+    String mText;
+    long mId = -1;
 
-	private static final String REPLY_EXTENSION = "/r";
+    private static final String REPLY_EXTENSION = "/r";
 
-	/** no data passed, not ready to send **/
-	public ReplyLoader(Context context) {
-		super(context);
-	}
+    /**
+     * no data passed, not ready to send *
+     */
+    public ReplyLoader(Context context) {
+        super(context);
+    }
 
-	public ReplyLoader(Context context, long id, String text) {
-		super(context);
-		mId = id;
-		mText = text;
-	}
+    public ReplyLoader(Context context, long id, String text) {
+        super(context);
+        mId = id;
+        mText = text;
+    }
 
-	@Override
-	public Result loadInBackground() {
-		// no data passed, not ready to send
-		if (mId == -1 || StringUtils.isBlank(mText)) return Result.EMPTY;
+    @Override
+    public Result loadInBackground() {
+        // no data passed, not ready to send
+        if (mId == -1 || StringUtils.isBlank(mText)) return Result.EMPTY;
 
-		Result result = Result.FAILURE; // default
+        Result result = Result.FAILURE; // default
 
-		try {
-			UserPrefs data = new UserPrefs(getContext());
-			Element replyInput = getReplyInput(data);
-			String replyFnid = replyInput.attr("value");
-			String response = sendReply(data, replyFnid);
-			if (StringUtils.isNotBlank(response)) result = Result.SUCCESS;
+        try {
+            UserPrefs data = new UserPrefs(getContext());
+            Element replyInput = getReplyInput(data);
+            String replyFnid = replyInput.attr("value");
+            String response = sendReply(data, replyFnid);
+            if (StringUtils.isNotBlank(response)) result = Result.SUCCESS;
 
-		} catch (Exception e) {
-			// any exception here probably means we have NO_CONNECTION or there's an error with the website.
-			e.printStackTrace();
-		}
+        } catch (Exception e) {
+            // any exception here probably means we have NO_CONNECTION or there's an error with the website.
+            e.printStackTrace();
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	/** POSTS the reply**/
-	private String sendReply(UserPrefs data, String replyFnid) throws IOException {
-		return ConnectionManager.authConnect(REPLY_EXTENSION, data.getUserCookie())
-														.data("fnid", replyFnid)
-														.data("text", mText)
-														.method(Method.POST)
-														.execute()
-														.parse()
-														.text();
-	}
+    /**
+     * POSTS the reply*
+     */
+    private String sendReply(UserPrefs data, String replyFnid) throws IOException {
+        return ConnectionManager.authConnect(REPLY_EXTENSION, data.getUserCookie())
+                .data("fnid", replyFnid)
+                .data("text", mText)
+                .method(Method.POST)
+                .execute()
+                .parse()
+                .text();
+    }
 
-	private Element getReplyInput(UserPrefs data) throws IOException {
-		return ConnectionManager.authConnect(ConnectionManager.itemIdToUrlExtension(mId), data.getUserCookie())
-														.get()
-														.select("input[name=fnid]")
-														.first();
-	}
+    private Element getReplyInput(UserPrefs data) throws IOException {
+        return ConnectionManager.authConnect(ConnectionManager.itemIdToUrlExtension(mId), data.getUserCookie())
+                .get()
+                .select("input[name=fnid]")
+                .first();
+    }
 
-	/**
-	 * Handles a request to start the Loader.
-	 */
-	@Override
-	protected void onStartLoading() {
-		forceLoad();
-	}
+    /**
+     * Handles a request to start the Loader.
+     */
+    @Override
+    protected void onStartLoading() {
+        forceLoad();
+    }
 }

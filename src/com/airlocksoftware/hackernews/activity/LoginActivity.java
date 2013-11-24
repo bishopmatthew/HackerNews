@@ -25,234 +25,234 @@ import com.airlocksoftware.holo.utils.ViewUtils;
  * Activity for logging in to news.ycombinator.com. The user will be forwarded to this activity if they try to perform a
  * operation that requires authentication while not logged in. The action the user was attempting to perform is passed
  * in via the extras bundle as a PostAction, which is then performed automatically once the user is authenticated.
- * 
+ * <p/>
  * Currently username & passwords are stored in SharedPreferences, which seems to be ok as per [1]. It doesn't make
  * much sense to encrypt the data when the encryption algorithm would be client side and the source would be available.
  * [1]: http://stackoverflow.com/questions/785973/what-is-the-most-appropriate-way-to-store-user-settings-in-android-
  * application
- * 
+ * <p/>
  * TODO Add a checkbox for "remember my password" and only save credentials if checked
- **/
+ */
 public class LoginActivity extends SlideoutMenuActivity implements LoaderCallbacks<Result> {
 
-	private String mUsername = null;
-	private String mPassword = null;
+    private String mUsername = null;
+    private String mPassword = null;
 
-	private PostAction mPostAction;
+    private PostAction mPostAction;
 
-	// used for post-actions VOTE & REPLY
-	private Story mStory;
-	private Comment mComment;
+    // used for post-actions VOTE & REPLY
+    private Story mStory;
+    private Comment mComment;
 
-	// use for post-actions SUBMIT
-	private String mSubTitle;
-	private String mSubText;
+    // use for post-actions SUBMIT
+    private String mSubTitle;
+    private String mSubText;
 
-	private EditText mEditUsername;
-	private EditText mEditPassword;
-	private View mLoginButton;
-	private View mLoginIndicator;
+    private EditText mEditUsername;
+    private EditText mEditPassword;
+    private View mLoginButton;
+    private View mLoginIndicator;
 
-	private View.OnClickListener mSubmitBtnListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			performSubmit();
-		}
-	};
+    private View.OnClickListener mSubmitBtnListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            performSubmit();
+        }
+    };
 
-	private OnEditorActionListener mSubmitKeyboardListener = new OnEditorActionListener() {
-		@Override
-		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-			if (actionId == EditorInfo.IME_ACTION_DONE) {
+    private OnEditorActionListener mSubmitKeyboardListener = new OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-				performSubmit();
+                performSubmit();
 
-				// hide keyboard
-				InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-				inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                // hide keyboard
+                InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
-				return true;
-			} else return false;
-		}
-	};
+                return true;
+            } else return false;
+        }
+    };
 
-	public enum PostAction {
-		UPVOTE, REPLY, SUBMIT;
-	}
-	
-	public enum LoginResult {
-		EMPTY, SUCCESS, FAILURE;
-	}
+    public enum PostAction {
+        UPVOTE, REPLY, SUBMIT;
+    }
 
-	// CONSTANTS
-	public static final String POST_ACTION = LoginActivity.class.getSimpleName() + ".postAction";
-	public static final String POST_STORY = LoginActivity.class.getSimpleName() + ".postStory";
-	public static final String POST_COMMENT = LoginActivity.class.getSimpleName() + ".postComment";
-	public static final String POST_SUB_TITLE = LoginActivity.class.getSimpleName() + ".postSubTitle";
-	public static final String POST_SUB_TEXT = LoginActivity.class.getSimpleName() + ".postSubText";
-	public static final String USERNAME = LoginActivity.class.getSimpleName() + ".username";
-	public static final String PASSWORD = LoginActivity.class.getSimpleName() + ".password";
+    public enum LoginResult {
+        EMPTY, SUCCESS, FAILURE;
+    }
 
-	// ACTIVITY LIFECYCLE
-	@Override
-	public void onCreate(Bundle savedState) {
-		super.onCreate(savedState);
+    // CONSTANTS
+    public static final String POST_ACTION = LoginActivity.class.getSimpleName() + ".postAction";
+    public static final String POST_STORY = LoginActivity.class.getSimpleName() + ".postStory";
+    public static final String POST_COMMENT = LoginActivity.class.getSimpleName() + ".postComment";
+    public static final String POST_SUB_TITLE = LoginActivity.class.getSimpleName() + ".postSubTitle";
+    public static final String POST_SUB_TEXT = LoginActivity.class.getSimpleName() + ".postSubText";
+    public static final String USERNAME = LoginActivity.class.getSimpleName() + ".username";
+    public static final String PASSWORD = LoginActivity.class.getSimpleName() + ".password";
 
-		setContentView(R.layout.act_login);
-		ViewUtils.fixBackgroundRepeat(findViewById(R.id.root_act_login));
+    // ACTIVITY LIFECYCLE
+    @Override
+    public void onCreate(Bundle savedState) {
+        super.onCreate(savedState);
 
-		findViews();
-		retrieveBundles(savedState, getIntent().getExtras());
+        setContentView(R.layout.act_login);
+        ViewUtils.fixBackgroundRepeat(findViewById(R.id.root_act_login));
 
-		// get settings from SharedPrefs
-		UserPrefs userData = new UserPrefs(this);
-		if (userData.isLoggedIn()) {
-			Toast t = Toast.makeText(this, "Already logged in", Toast.LENGTH_SHORT);
-			t.show();
-			finish();
-		}
+        findViews();
+        retrieveBundles(savedState, getIntent().getExtras());
 
-		// setup UI
-		getActionBarView().getController()
-											.setTitleText(getString(R.string.login));
-		setActiveMenuItem(-1); // clear check
-		showContent();
+        // get settings from SharedPrefs
+        UserPrefs userData = new UserPrefs(this);
+        if (userData.isLoggedIn()) {
+            Toast t = Toast.makeText(this, "Already logged in", Toast.LENGTH_SHORT);
+            t.show();
+            finish();
+        }
 
-		// start loader
-		getSupportLoaderManager().initLoader(0, null, this);
-	}
+        // setup UI
+        getActionBarView().getController()
+                .setTitleText(getString(R.string.login));
+        setActiveMenuItem(-1); // clear check
+        showContent();
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		mUsername = mEditUsername.getText()
-															.toString();
-		mPassword = mEditPassword.getText()
-															.toString();
-		if (mPostAction != null) outState.putSerializable(POST_ACTION, mPostAction);
-		if (mStory != null) outState.putSerializable(POST_STORY, mStory);
-		if (mComment != null) outState.putSerializable(POST_COMMENT, mComment);
-		if (mSubTitle != null) outState.putSerializable(POST_SUB_TITLE, mSubTitle);
-		if (mSubText != null) outState.putSerializable(POST_SUB_TEXT, mSubText);
-		if (mUsername != null) outState.putString(USERNAME, mUsername);
-		if (mPassword != null) outState.putString(PASSWORD, mPassword);
-		super.onSaveInstanceState(outState);
-	}
+        // start loader
+        getSupportLoaderManager().initLoader(0, null, this);
+    }
 
-	@Override
-	public void finish() {
-		super.finish();
-		// TODO need to restart other activities in back stack if we've logged in
-	}
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        mUsername = mEditUsername.getText()
+                .toString();
+        mPassword = mEditPassword.getText()
+                .toString();
+        if (mPostAction != null) outState.putSerializable(POST_ACTION, mPostAction);
+        if (mStory != null) outState.putSerializable(POST_STORY, mStory);
+        if (mComment != null) outState.putSerializable(POST_COMMENT, mComment);
+        if (mSubTitle != null) outState.putSerializable(POST_SUB_TITLE, mSubTitle);
+        if (mSubText != null) outState.putSerializable(POST_SUB_TEXT, mSubText);
+        if (mUsername != null) outState.putString(USERNAME, mUsername);
+        if (mPassword != null) outState.putString(PASSWORD, mPassword);
+        super.onSaveInstanceState(outState);
+    }
 
-	// Loader callbacks
-	@Override
-	public Loader<Result> onCreateLoader(int id, Bundle args) {
-		return new LoginLoader(this, mUsername, mPassword);
-	}
+    @Override
+    public void finish() {
+        super.finish();
+        // TODO need to restart other activities in back stack if we've logged in
+    }
 
-	@Override
-	public void onLoadFinished(Loader<Result> loader, Result result) {
-		if (result == Result.EMPTY) {
-			return; // this means the request was from initLoader()
-		}
+    // Loader callbacks
+    @Override
+    public Loader<Result> onCreateLoader(int id, Bundle args) {
+        return new LoginLoader(this, mUsername, mPassword);
+    }
 
-		if (result == Result.SUCCESS) {
-			Toast t = Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT);
-			t.show();
-			doPostAction();
-			finish();
-		} else {
-			showError();
-			Toast t = Toast.makeText(this, getString(R.string.login_failure), Toast.LENGTH_LONG);
-			t.show();
-		}
+    @Override
+    public void onLoadFinished(Loader<Result> loader, Result result) {
+        if (result == Result.EMPTY) {
+            return; // this means the request was from initLoader()
+        }
 
-	}
+        if (result == Result.SUCCESS) {
+            Toast t = Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT);
+            t.show();
+            doPostAction();
+            finish();
+        } else {
+            showError();
+            Toast t = Toast.makeText(this, getString(R.string.login_failure), Toast.LENGTH_LONG);
+            t.show();
+        }
 
-	private void doPostAction() {
-		if (mPostAction == null) return;
+    }
 
-		switch (mPostAction) {
-		case UPVOTE:
-			if (mComment != null) mStory.upvote(this);
-			else if (mStory != null) mStory.upvote(this);
-			break;
-		case REPLY:
-			if (mComment != null) ReplyActivity.startCommentReplyActivity(this, mComment);
-			else if (mStory != null) ReplyActivity.startStoryReplyActivity(this, mStory);
-			break;
-		case SUBMIT:
-			SubmitActivity.startSubmitActivity(this, mSubTitle, mSubText);
-			break;
-		}
-	}
+    private void doPostAction() {
+        if (mPostAction == null) return;
 
-	@Override
-	public void onLoaderReset(Loader<Result> loader) {
-		// No implementation necessary
-	}
+        switch (mPostAction) {
+            case UPVOTE:
+                if (mComment != null) mStory.upvote(this);
+                else if (mStory != null) mStory.upvote(this);
+                break;
+            case REPLY:
+                if (mComment != null) ReplyActivity.startCommentReplyActivity(this, mComment);
+                else if (mStory != null) ReplyActivity.startStoryReplyActivity(this, mStory);
+                break;
+            case SUBMIT:
+                SubmitActivity.startSubmitActivity(this, mSubTitle, mSubText);
+                break;
+        }
+    }
 
-	// private methods
-	protected void performSubmit() {
-		mUsername = mEditUsername.getText()
-															.toString();
-		mPassword = mEditPassword.getText()
-															.toString();
+    @Override
+    public void onLoaderReset(Loader<Result> loader) {
+        // No implementation necessary
+    }
 
-		showLoading();
+    // private methods
+    protected void performSubmit() {
+        mUsername = mEditUsername.getText()
+                .toString();
+        mPassword = mEditPassword.getText()
+                .toString();
 
-		getSupportLoaderManager().restartLoader(0, null, LoginActivity.this);
-	}
+        showLoading();
 
-	private void findViews() {
-		mEditUsername = (EditText) findViewById(R.id.edit_username);
-		mEditPassword = (EditText) findViewById(R.id.edit_password);
-		mLoginButton = findViewById(R.id.btn_login);
-		mLoginIndicator = findViewById(R.id.login_indicator);
+        getSupportLoaderManager().restartLoader(0, null, LoginActivity.this);
+    }
 
-		mLoginButton.setOnClickListener(mSubmitBtnListener);
-		mEditPassword.setOnEditorActionListener(mSubmitKeyboardListener);
-	}
+    private void findViews() {
+        mEditUsername = (EditText) findViewById(R.id.edit_username);
+        mEditPassword = (EditText) findViewById(R.id.edit_password);
+        mLoginButton = findViewById(R.id.btn_login);
+        mLoginIndicator = findViewById(R.id.login_indicator);
 
-	private void retrieveBundles(Bundle savedState, Bundle extras) {
-		if (savedState != null) {
-			mPostAction = (PostAction) savedState.getSerializable(POST_ACTION);
-			mStory = (Story) savedState.getSerializable(POST_STORY);
-			mComment = (Comment) savedState.getSerializable(POST_COMMENT);
-			mSubTitle = savedState.getString(POST_SUB_TITLE);
-			mSubText = savedState.getString(POST_SUB_TEXT);
-			mUsername = savedState.getString(USERNAME);
-			mPassword = savedState.getString(PASSWORD);
-		}
+        mLoginButton.setOnClickListener(mSubmitBtnListener);
+        mEditPassword.setOnEditorActionListener(mSubmitKeyboardListener);
+    }
 
-		if (extras != null) {
-			mPostAction = (PostAction) extras.getSerializable(POST_ACTION);
-			mStory = (Story) extras.getSerializable(POST_STORY);
-			mComment = (Comment) extras.getSerializable(POST_COMMENT);
-			mSubTitle = extras.getString(POST_SUB_TITLE);
-			mSubText = extras.getString(POST_SUB_TEXT);
-		}
-	}
+    private void retrieveBundles(Bundle savedState, Bundle extras) {
+        if (savedState != null) {
+            mPostAction = (PostAction) savedState.getSerializable(POST_ACTION);
+            mStory = (Story) savedState.getSerializable(POST_STORY);
+            mComment = (Comment) savedState.getSerializable(POST_COMMENT);
+            mSubTitle = savedState.getString(POST_SUB_TITLE);
+            mSubText = savedState.getString(POST_SUB_TEXT);
+            mUsername = savedState.getString(USERNAME);
+            mPassword = savedState.getString(PASSWORD);
+        }
 
-	private void showLoading() {
-		mEditUsername.setEnabled(false);
-		mEditPassword.setEnabled(false);
-		mLoginButton.setVisibility(View.GONE);
-		mLoginIndicator.setVisibility(View.VISIBLE);
-	}
+        if (extras != null) {
+            mPostAction = (PostAction) extras.getSerializable(POST_ACTION);
+            mStory = (Story) extras.getSerializable(POST_STORY);
+            mComment = (Comment) extras.getSerializable(POST_COMMENT);
+            mSubTitle = extras.getString(POST_SUB_TITLE);
+            mSubText = extras.getString(POST_SUB_TEXT);
+        }
+    }
 
-	private void showContent() {
-		mEditUsername.setEnabled(true);
-		mEditPassword.setEnabled(true);
-		mLoginButton.setVisibility(View.VISIBLE);
-		mLoginIndicator.setVisibility(View.GONE);
-	}
+    private void showLoading() {
+        mEditUsername.setEnabled(false);
+        mEditPassword.setEnabled(false);
+        mLoginButton.setVisibility(View.GONE);
+        mLoginIndicator.setVisibility(View.VISIBLE);
+    }
 
-	private void showError() {
-		mEditUsername.setEnabled(true);
-		mEditPassword.setEnabled(true);
-		mLoginButton.setVisibility(View.VISIBLE);
-		mLoginIndicator.setVisibility(View.GONE);
-	}
+    private void showContent() {
+        mEditUsername.setEnabled(true);
+        mEditPassword.setEnabled(true);
+        mLoginButton.setVisibility(View.VISIBLE);
+        mLoginIndicator.setVisibility(View.GONE);
+    }
+
+    private void showError() {
+        mEditUsername.setEnabled(true);
+        mEditPassword.setEnabled(true);
+        mLoginButton.setVisibility(View.VISIBLE);
+        mLoginIndicator.setVisibility(View.GONE);
+    }
 
 }

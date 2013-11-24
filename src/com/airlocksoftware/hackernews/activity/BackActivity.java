@@ -11,37 +11,37 @@ import com.slidingmenu.lib.SlidingMenu;
  * Extends the SlideoutMenu activity to:
  * - finish the activity when the ActionBar "up" button is pressed
  * - display the SlidingMenu on long press
- **/
+ */
 public class BackActivity extends SlideoutMenuActivity {
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		SlidingMenu menu = super.getSlidingMenu();
-		menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		super.removeMenuCheckState();
-		
-		ActionBarView ab = getActionBarView();
-		View upButton = ab.getUpButton();
+        SlidingMenu menu = super.getSlidingMenu();
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        super.removeMenuCheckState();
 
-		ab.getUpIndicator()
-			.iconSource(R.drawable.ic_actionup_back);
+        ActionBarView ab = getActionBarView();
+        View upButton = ab.getUpButton();
 
-		upButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				BackActivity.this.finish();
-			}
-		});
+        ab.getUpIndicator()
+                .iconSource(R.drawable.ic_actionup_back);
 
-		upButton.setOnLongClickListener(new View.OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View v) {
-				toggle();
-				return true;
-			}
-		});
+        upButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BackActivity.this.finish();
+            }
+        });
 
-	}
+        upButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                toggle();
+                return true;
+            }
+        });
+
+    }
 }

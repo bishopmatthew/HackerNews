@@ -4,6 +4,6 @@ import com.airlocksoftware.hackernews.view.SharePopup;
 
 public interface SharePopupInterface {
 
-	public SharePopup getSharePopup();
+    public SharePopup getSharePopup();
 
 }

@@ -19,115 +19,115 @@ import com.airlocksoftware.hackernews.parser.CommentsParser.CommentsResponse;
 /**
  * Loads the comments page specified by storyId. If possible, tries to load the data from the db cache. Otherwise it
  * downloads the HTML of the comments page, parses it, caches it, and returns the data as a CommentsResponse.
- **/
+ */
 public class CommentsLoader extends AsyncTaskLoader<CommentsResponse> {
 
-	public Request mRequest;
-	public long mStoryId;
+    public Request mRequest;
+    public long mStoryId;
 
-	public CommentsLoader(Context context, Request request, long storyId) {
-		super(context);
-		mStoryId = storyId;
-		mRequest = request;
-	}
+    public CommentsLoader(Context context, Request request, long storyId) {
+        super(context);
+        mStoryId = storyId;
+        mRequest = request;
+    }
 
-	@Override
-	public CommentsResponse loadInBackground() {
+    @Override
+    public CommentsResponse loadInBackground() {
 
-		if (mStoryId == CommentsFragment.NO_STORY_ID || mStoryId == 0) {
-			// either this is a first run or a YCombinator jobs post
-			return new CommentsResponse(Result.EMPTY);
-		}
+        if (mStoryId == CommentsFragment.NO_STORY_ID || mStoryId == 0) {
+            // either this is a first run or a YCombinator jobs post
+            return new CommentsResponse(Result.EMPTY);
+        }
 
-		SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
-																					.getWritableDatabase();
-		CommentsResponse response = null;
+        SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
+                .getWritableDatabase();
+        CommentsResponse response = null;
 
-		List<Comment> comments = null;
-		Story story = null;
-		Timestamp timestamp = null;
+        List<Comment> comments = null;
+        Story story = null;
+        Timestamp timestamp = null;
 
-		if (mRequest == Request.NEW) {
-			story = Story.cachedById(db, mStoryId);
-			comments = Comment.getFromCache(db, mStoryId);
-			timestamp = Timestamp.cachedByBothIds(db, CommentsParser.COMMENT_TIMESTAMP_ID, Long.toString(mStoryId));
+        if (mRequest == Request.NEW) {
+            story = Story.cachedById(db, mStoryId);
+            comments = Comment.getFromCache(db, mStoryId);
+            timestamp = Timestamp.cachedByBothIds(db, CommentsParser.COMMENT_TIMESTAMP_ID, Long.toString(mStoryId));
 
-			if (story != null && comments != null && comments.size() > 0 && timestamp != null) {
-				response = new CommentsResponse(Result.SUCCESS);
-				response.comments = comments;
-				response.timestamp = timestamp;
-				response.story = story;
-			}
-		}
+            if (story != null && comments != null && comments.size() > 0 && timestamp != null) {
+                response = new CommentsResponse(Result.SUCCESS);
+                response.comments = comments;
+                response.timestamp = timestamp;
+                response.story = story;
+            }
+        }
 
-		if (response == null) {
-			response = CommentsParser.parseCommentsPage(getContext(), mStoryId);
-			if (response.result != Result.FAILURE) {
-				// if the story has selfText, copy it to story & save
-				if (story != null) {
-					response.story.position = story.position;
-					response.story.id = story.id;
-					response.story.update(db);
-				} else response.story.create(db);
+        if (response == null) {
+            response = CommentsParser.parseCommentsPage(getContext(), mStoryId);
+            if (response.result != Result.FAILURE) {
+                // if the story has selfText, copy it to story & save
+                if (story != null) {
+                    response.story.position = story.position;
+                    response.story.id = story.id;
+                    response.story.update(db);
+                } else response.story.create(db);
 
-				// cache the comments
-				Comment.cacheValues(db, response.comments, response.timestamp);
-			}
-		}
+                // cache the comments
+                Comment.cacheValues(db, response.comments, response.timestamp);
+            }
+        }
 
-		// generate the Spanned html
-		for (Comment c : response.comments) {
-			c.generateSpannedHtml();
-		}
+        // generate the Spanned html
+        for (Comment c : response.comments) {
+            c.generateSpannedHtml();
+        }
 
-		return response;
-	}
+        return response;
+    }
 
-	/**
-	 * Handles a request to start the Loader.
-	 */
-	@Override
-	protected void onStartLoading() {
-		forceLoad();
-	}
+    /**
+     * Handles a request to start the Loader.
+     */
+    @Override
+    protected void onStartLoading() {
+        forceLoad();
+    }
 
-	@Override
-	public void deliverResult(CommentsResponse response) {
-		if (isReset()) {
-			// An async query came in while the loader is stopped. We
-			// don't need the result.
-		}
+    @Override
+    public void deliverResult(CommentsResponse response) {
+        if (isReset()) {
+            // An async query came in while the loader is stopped. We
+            // don't need the result.
+        }
 
-		if (isStarted()) {
-			// If the Loader is currently started, we can immediately
-			// deliver its results.
-			super.deliverResult(response);
-		}
-	}
+        if (isStarted()) {
+            // If the Loader is currently started, we can immediately
+            // deliver its results.
+            super.deliverResult(response);
+        }
+    }
 
-	/**
-	 * Handles a request to stop the Loader.
-	 */
-	@Override
-	protected void onStopLoading() {
-		// Attempt to cancel the current load task if possible.
-		cancelLoad();
-	}
+    /**
+     * Handles a request to stop the Loader.
+     */
+    @Override
+    protected void onStopLoading() {
+        // Attempt to cancel the current load task if possible.
+        cancelLoad();
+    }
 
-	/**
-	 * Handles a request to cancel a load.
-	 */
-	@Override
-	public void onCanceled(CommentsResponse response) {
-		super.onCanceled(response);
-	}
+    /**
+     * Handles a request to cancel a load.
+     */
+    @Override
+    public void onCanceled(CommentsResponse response) {
+        super.onCanceled(response);
+    }
 
-	/**
-	 * Handles a request to completely reset the Loader.
-	 */
-	@Override
-	protected void onReset() {
-		super.onReset();
-	}
+    /**
+     * Handles a request to completely reset the Loader.
+     */
+    @Override
+    protected void onReset() {
+        super.onReset();
+    }
 
 }
