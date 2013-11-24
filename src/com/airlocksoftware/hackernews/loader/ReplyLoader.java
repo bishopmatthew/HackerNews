@@ -2,7 +2,7 @@ package com.airlocksoftware.hackernews.loader;
 
 import java.io.IOException;
 
-import org.apache.commons.lang3.StringUtils;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 import org.jsoup.Connection.Method;
 import org.jsoup.nodes.Element;
 

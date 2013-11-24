@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.apache.commons.lang3.StringUtils;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

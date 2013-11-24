@@ -46,7 +46,7 @@ import com.airlocksoftware.holo.webview.DisableableViewPager;
 import com.crashlytics.android.Crashlytics;
 import com.slidingmenu.lib.SlidingMenu;
 
-import org.apache.commons.lang3.StringUtils;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 
 /**
  * The MainActivity is the host for the StoryFragment, CommentsFragment, and WebFragment.

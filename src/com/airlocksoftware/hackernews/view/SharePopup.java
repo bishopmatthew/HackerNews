@@ -2,7 +2,7 @@ package com.airlocksoftware.hackernews.view;
 
 import java.util.Collection;
 
-import org.apache.commons.lang3.StringUtils;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 
 import android.content.Context;
 import android.content.Intent;

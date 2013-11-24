@@ -2,7 +2,7 @@ package com.airlocksoftware.hackernews.loader;
 
 import java.util.Calendar;
 
-import org.apache.commons.lang3.StringUtils;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 
 import android.content.Context;
 import android.os.AsyncTask;

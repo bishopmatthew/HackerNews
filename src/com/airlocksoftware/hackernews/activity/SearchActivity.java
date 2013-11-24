@@ -1,9 +1,5 @@
 package com.airlocksoftware.hackernews.activity;
 
-import java.util.Arrays;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -25,12 +21,15 @@ import com.airlocksoftware.hackernews.loader.SearchLoader;
 import com.airlocksoftware.hackernews.loader.SearchLoader.SearchResult;
 import com.airlocksoftware.hackernews.model.Request;
 import com.airlocksoftware.hackernews.model.Result;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 import com.airlocksoftware.holo.actionbar.ActionBarButton;
 import com.airlocksoftware.holo.actionbar.ActionBarButton.Priority;
 import com.airlocksoftware.holo.adapters.SpinnerArrayAdapter;
 import com.airlocksoftware.holo.type.FontEdit;
 import com.airlocksoftware.holo.type.FontSpinner;
 import com.airlocksoftware.holo.utils.ViewUtils;
+
+import java.util.Arrays;
 
 /**
  * Perform searches using the www.hnsearch.com API. EditText goes in the ActionBar, and the SortType and SearchType as

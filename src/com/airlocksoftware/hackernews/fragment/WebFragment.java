@@ -1,6 +1,6 @@
 package com.airlocksoftware.hackernews.fragment;
 
-import org.apache.commons.lang3.StringUtils;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

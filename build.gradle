@@ -1,21 +1,35 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'http://download.crashlytics.com/maven' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.+'
+        classpath 'com.android.tools.build:gradle:0.6.+'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
     }
 }
 apply plugin: 'android'
 
+/* Disabled plugin because it can't resolve my API key from a String resource. */
+//apply plugin: 'crashlytics'
+
+repositories {
+    mavenCentral()
+    maven { url 'http://download.crashlytics.com/maven' }
+}
+
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
+    compile 'com.android.support:support-v4:18.0.+'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'org.jsoup:jsoup:1.7.+'
+    compile 'com.crashlytics.android:crashlytics:1.+'
+    compile files('libs/databaseutils.jar')
     compile project(':libs:HoloTheme')
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19"
+    buildToolsVersion "19.0.0"
 
     sourceSets {
         main {

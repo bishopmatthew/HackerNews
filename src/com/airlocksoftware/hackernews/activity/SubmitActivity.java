@@ -1,6 +1,6 @@
 package com.airlocksoftware.hackernews.activity;
 
-import org.apache.commons.lang3.StringUtils;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 
 import android.content.Context;
 import android.content.Intent;

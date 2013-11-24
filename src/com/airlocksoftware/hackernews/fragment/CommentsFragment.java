@@ -3,7 +3,7 @@ package com.airlocksoftware.hackernews.fragment;
 import java.io.Serializable;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 
 import android.app.Activity;
 import android.content.Context;
