@@ -32,6 +32,7 @@ libs/
 .idea/
 build/
 .gradle/
+out/
 
 # Ignore api keys
 res/values/crashlytics_api_key.xml

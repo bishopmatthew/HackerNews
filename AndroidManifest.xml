@@ -70,7 +70,7 @@
 		 If you are building this yourself either use your own API key or comment out this line and the
 		 line "Crashlytics.start()" from MainActivity.
 		 -->
-        <meta-data android:name="com.crashlytics.ApiKey" android:value="@string/crashlytics_api_key"/>
+        <meta-data android:name="com.crashlytics.ApiKey" android:value="0c452d3dd63c088d484dbeddd06e2cf8a87f659c"/>
     </application>
 
 </manifest>

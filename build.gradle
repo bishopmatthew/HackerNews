@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'android'
 
 /* Disabled plugin because it can't resolve my API key from a String resource. */
-//apply plugin: 'crashlytics'
+apply plugin: 'crashlytics'
 
 repositories {
     mavenCentral()
