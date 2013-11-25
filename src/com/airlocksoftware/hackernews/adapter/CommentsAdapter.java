@@ -1,8 +1,5 @@
 package com.airlocksoftware.hackernews.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.method.LinkMovementMethod;
@@ -30,6 +27,9 @@ import com.airlocksoftware.holo.type.FontText;
 import com.airlocksoftware.holo.utils.AnimUtils;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Adapter for CommentsFragment. Uses ViewHolder class to cache Views that need to have data re-bound when it changes.
