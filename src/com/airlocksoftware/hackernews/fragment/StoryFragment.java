@@ -158,7 +158,7 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
     public void onPause() {
         /* Save list state to shared prefs (since we kill the activity when we switch to the comments list) */
         FragmentActivity activity = getActivity();
-        if (activity == null) return;
+        if (activity == null || mList == null) return;
         new AppData(activity).saveStoryListPosition(mList.getFirstVisiblePosition());
         super.onPause();
     }
