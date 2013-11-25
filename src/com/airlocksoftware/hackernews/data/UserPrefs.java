@@ -14,27 +14,30 @@ import java.util.Calendar;
  */
 public class UserPrefs {
 
+    public static final String NAME = UserPrefs.class.getSimpleName();
+
     // State
     private Context mContext;
     private SharedPreferences mPrefs;
     private SharedPreferences.Editor mEditor;
 
     // Constants
-    public static final String PREFS_NAME = UserPrefs.class.getSimpleName() + ".hn_user_data";
-    public static final String USERNAME = UserPrefs.class.getSimpleName() + ".username";
-    public static final String PASSWORD = UserPrefs.class.getSimpleName() + ".password";
-    public static final String USER_COOKIE = UserPrefs.class.getSimpleName() + ".user_cookie";
-    public static final String USER_COOKIE_TIMESTAMP = UserPrefs.class.getSimpleName() + ".user_cookie_timestamp";
+    public static final String PREFS_NAME = NAME + ".hn_user_data";
+    public static final String USERNAME = NAME + ".username";
+    public static final String PASSWORD = NAME + ".password";
+    public static final String USER_COOKIE = NAME + ".user_cookie";
+    public static final String USER_COOKIE_TIMESTAMP = NAME + ".user_cookie_timestamp";
 
-    public static final String BUGSENSE_ENABLED = UserPrefs.class.getSimpleName() + ".bugsense_enabled";
-    public static final String OPEN_IN_BROWSER = UserPrefs.class.getSimpleName() + ".open_in_browser";
-    public static final String THEME = UserPrefs.class.getSimpleName() + ".theme";
-    public static final String SEARCH_SORT_TYPE = UserPrefs.class.getSimpleName() + ".searchSortType";
-    public static final String SEARCH_TYPE = UserPrefs.class.getSimpleName() + ".searchType";
+    public static final String BUGSENSE_ENABLED = NAME + ".bugsense_enabled";
+    public static final String OPEN_IN_BROWSER = NAME + ".open_in_browser";
+    private static final String OPEN_IN_NEW_TAB = NAME + ".open_in_new_tab";
+    public static final String THEME = NAME + ".theme";
+    public static final String SEARCH_SORT_TYPE = NAME + ".searchSortType";
+    public static final String SEARCH_TYPE = NAME + ".searchType";
 
-    public static final String USE_COUNT = UserPrefs.class.getSimpleName() + ".useCount";
-    public static final String LAST_USE = UserPrefs.class.getSimpleName() + ".lastUse";
-    public static final String SHOW_GIVE_BACK = UserPrefs.class.getSimpleName() + ".showGiveBack";
+    public static final String USE_COUNT = NAME + ".useCount";
+    public static final String LAST_USE = NAME + ".lastUse";
+    public static final String SHOW_GIVE_BACK = NAME + ".showGiveBack";
 
     @SuppressLint("SimpleDateFormat")
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
@@ -125,6 +128,16 @@ public class UserPrefs {
 
     public void saveOpenInBrowser(boolean enabled) {
         mEditor.putBoolean(OPEN_IN_BROWSER, enabled);
+        mEditor.commit();
+    }
+
+    public boolean getOpenInNewTab() {
+        boolean enabled = mPrefs.getBoolean(OPEN_IN_NEW_TAB, true);
+        return enabled;
+    }
+
+    public void saveOpenInNewTab(boolean enabled) {
+        mEditor.putBoolean(OPEN_IN_NEW_TAB, enabled);
         mEditor.commit();
     }
 

@@ -2,7 +2,6 @@ package com.airlocksoftware.hackernews.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import com.airlocksoftware.hackernews.activity.ReplyActivity;
 import com.airlocksoftware.hackernews.activity.UserActivity;
 import com.airlocksoftware.hackernews.model.Comment;
 import com.airlocksoftware.hackernews.model.Story;
+import com.airlocksoftware.hackernews.utils.NewTabLinkMovementMethod;
 import com.airlocksoftware.hackernews.view.SharePopup;
 import com.airlocksoftware.holo.adapters.GroupAdapter;
 import com.airlocksoftware.holo.image.IconView;
@@ -136,7 +136,8 @@ public class CommentsAdapter extends GroupAdapter<Comment> {
         holder.foldedContainer.setOnLongClickListener(ctrlListener);
         holder.commentTxt.setOnClickListener(foldListener);
         holder.commentTxt.setOnLongClickListener(ctrlListener);
-        holder.commentTxt.setMovementMethod(LinkMovementMethod.getInstance());
+        holder.commentTxt.setMovementMethod(NewTabLinkMovementMethod.getInstance());
+//        holder.commentTxt.setMovementMethod(LinkMovementMethod.getInstance());
 
         holder.userBtn.setOnClickListener(userListener);
         holder.replyBtn.setOnClickListener(replyListener);

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.PointF;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +25,8 @@ import com.airlocksoftware.hackernews.interfaces.TabletLayout;
 import com.airlocksoftware.hackernews.loader.AsyncLoginUpdater;
 import com.airlocksoftware.hackernews.model.Page;
 import com.airlocksoftware.hackernews.model.Story;
+import com.airlocksoftware.hackernews.utils.LinkUtils;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 import com.airlocksoftware.hackernews.view.SearchOverflow;
 import com.airlocksoftware.hackernews.view.SharePopup;
 import com.airlocksoftware.hackernews.view.TextSettingsOverflow;
@@ -45,8 +46,6 @@ import com.airlocksoftware.holo.utils.ViewUtils;
 import com.airlocksoftware.holo.webview.DisableableViewPager;
 import com.crashlytics.android.Crashlytics;
 import com.slidingmenu.lib.SlidingMenu;
-
-import com.airlocksoftware.hackernews.utils.StringUtils;
 
 /**
  * The MainActivity is the host for the StoryFragment, CommentsFragment, and WebFragment.
@@ -287,7 +286,7 @@ public class MainActivity extends SlideoutMenuActivity implements SharePopupInte
     private void setupCommentsLayout(Bundle savedInstanceState) {
         if (mIsJobsPost && mOpenInBrowser) {
             // send it straight to browser
-            startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(mStory.url)));
+            LinkUtils.handleUrlIntent(this, mStory.url);
         }
 
         super.setActiveMenuItem(-1);

@@ -1,15 +1,8 @@
 package com.airlocksoftware.hackernews.fragment;
 
-import java.io.Serializable;
-import java.util.List;
-
-import com.airlocksoftware.hackernews.utils.StringUtils;
-
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -34,6 +27,8 @@ import com.airlocksoftware.hackernews.model.Request;
 import com.airlocksoftware.hackernews.model.Result;
 import com.airlocksoftware.hackernews.model.Story;
 import com.airlocksoftware.hackernews.parser.CommentsParser.CommentsResponse;
+import com.airlocksoftware.hackernews.utils.LinkUtils;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 import com.airlocksoftware.hackernews.view.SharePopup;
 import com.airlocksoftware.holo.actionbar.ActionBarButton;
 import com.airlocksoftware.holo.actionbar.ActionBarButton.Priority;
@@ -42,6 +37,9 @@ import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
 import com.airlocksoftware.holo.image.IconView;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Displays a page of comments with the parent story as a header. Uses CommentsLoader to get data from the cache or the
@@ -104,8 +102,7 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
     private View.OnClickListener mBrowserListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(mStory.url));
-            getActivity().startActivity(intent);
+            LinkUtils.handleUrlIntent(getActivity(), mStory.url);
         }
     };
 
@@ -257,7 +254,6 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
     @Override
     public void onResume() {
         super.onResume();
-
         // set mTempComments to null here because on orientation change onLoadFinished is called (twice) from
         // Fragment.performStart(). onResume is called after that so we clear mTempComments.
         mTempComments = null;

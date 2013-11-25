@@ -2,8 +2,6 @@ package com.airlocksoftware.hackernews.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +16,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.airlocksoftware.hackernews.R;
+import com.airlocksoftware.hackernews.utils.LinkUtils;
 import com.airlocksoftware.hackernews.utils.StringUtils;
 import com.airlocksoftware.holo.actionbar.ActionBarButton;
 import com.airlocksoftware.holo.actionbar.ActionBarButton.Priority;
@@ -48,14 +47,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
         @Override
         public void onClick(View v) {
             if (StringUtils.isNotBlank(mUrl)) {
-                Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(mUrl));
-
-                /* Potential fix to allow things to be opened in a new tab */
-                Bundle b = new Bundle();
-                b.putBoolean("new_window", true); /* sets new window */
-                intent.putExtras(b);
-
-                getActivity().startActivity(intent);
+                LinkUtils.handleUrlIntent(getActivity(), mUrl);
             }
         }
     };

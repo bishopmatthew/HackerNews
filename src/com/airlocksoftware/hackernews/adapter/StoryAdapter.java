@@ -1,16 +1,9 @@
 package com.airlocksoftware.hackernews.adapter;
 
-import java.io.Serializable;
-import java.util.List;
-
-import com.airlocksoftware.hackernews.utils.StringUtils;
-
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +21,8 @@ import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.fragment.StoryFragment;
 import com.airlocksoftware.hackernews.interfaces.TabletLayout;
 import com.airlocksoftware.hackernews.model.Story;
+import com.airlocksoftware.hackernews.utils.LinkUtils;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 import com.airlocksoftware.hackernews.view.SharePopup;
 import com.airlocksoftware.holo.adapters.GroupAdapter;
 import com.airlocksoftware.holo.image.IconView;
@@ -35,6 +30,9 @@ import com.airlocksoftware.holo.type.FontText;
 import com.airlocksoftware.holo.utils.AnimUtils;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Adapter for StoryFragment and SubmissionsFragment. *
@@ -294,7 +292,7 @@ public class StoryAdapter extends GroupAdapter<Story> {
 
             // check for open in browser
             if (openInBrowser && tab == CommentsTab.ARTICLE) {
-                mContext.startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(holder.story.url)));
+                LinkUtils.handleUrlIntent(mContext, holder.story.url);
             }
 
             // if this is in a MainActivity, let mStoryCallbacks handle it
