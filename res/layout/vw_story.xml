@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cnt_story"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
@@ -164,7 +164,7 @@
             android:layout_toRightOf="@+id/txt_num_comments"
             android:paddingTop="3dp"
             android:scaleType="center"
-            app:icon_colors="@color/grey_50"
+            app:icon_colors="@color/gray_50"
             app:icon_shadowColors="?attr/shdwStoryText"
             app:icon_shadowDx="0dp"
             app:icon_shadowDy="1dp"

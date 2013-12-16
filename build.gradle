@@ -6,12 +6,13 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:0.6.+'
         classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+        classpath 'com.squareup.dagger:dagger-compiler:1.1.+'
+        classpath 'com.jakewharton.hugo:hugo-plugin:1.0.0'
     }
 }
 apply plugin: 'android'
-
-/* Disabled plugin because it can't resolve my API key from a String resource. */
 apply plugin: 'crashlytics'
+apply plugin: 'hugo'
 
 repositories {
     mavenCentral()
@@ -19,16 +20,33 @@ repositories {
 }
 
 dependencies {
-	compile 'com.android.support:support-v4:18.0.+'
 	compile 'com.google.code.gson:gson:2.2.4'
 	compile 'org.jsoup:jsoup:1.7.+'
 	compile 'com.crashlytics.android:crashlytics:1.+'
-	compile 'com.android.support:appcompat-v7:+'
+    compile 'com.squareup:otto:1.3.+'
+    compile 'com.squareup.dagger:dagger-compiler:1.1.+'
+    compile 'com.squareup.dagger:dagger:1.1.+'
+    compile 'com.jakewharton:butterknife:4.0.+'
+    compile 'com.jakewharton.timber:timber:2.0.+'
+
+    /* Local dependencies (available at http://www.github.com/bishopmatthew) */
+    compile files('libs/databaseutils.jar')
+    compile project(':libs:HoloTheme')
+
+    /* Test deps */
+    instrumentTestCompile fileTree(dir: 'libs/test-libs', include: '*.jar')
+    instrumentTestCompile 'com.google.guava:guava:14.0.1'
 }
 
 android {
     compileSdkVersion 19
     buildToolsVersion "19.0.0"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
+    }
 
     sourceSets {
         main {
@@ -54,3 +72,18 @@ android {
         release.setRoot('build-types/release')
     }
 }
+
+//android.applicationVariants.all { variant ->
+//    //Where to place the generated code
+//    variant.ext.set("dagger_gen_${variant.dirName}", file("${project.buildDir}/source/dagger_gen/${variant.dirName}"))
+//
+//    //Do the actual preprocessor things
+//    variant.javaCompile.doFirst {
+//        File out = variant.ext.get("dagger_gen_${variant.dirName}")
+//        out.mkdirs()
+//        variant.javaCompile.options.compilerArgs += [
+//                '-processorpath', configurations.preprocess.getAsPath(),
+//                '-s', out
+//        ]
+//    }
+//}

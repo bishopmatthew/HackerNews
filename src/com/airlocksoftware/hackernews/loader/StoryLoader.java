@@ -18,159 +18,177 @@ import com.airlocksoftware.hackernews.parser.StoryParser.StoryResponse;
 
 public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 
-    private Page mPage;
-    private Request mRequest;
-    private String mUsername;
-    // private String mMoreFnid;
-    private StoryResponse mResponse;
-    private boolean mResultsToDeliver = false;
+  private Page mPage;
 
-    // Constants
-    private static final String TAG = StoryLoader.class.getSimpleName();
-    private static final String SUBMISSIONS_TIMESTAMP_ID = "Submissions";
-    private static final String PAGE_TIMESTAMP_ID = "Page";
+  private Request mRequest;
 
-    /**
-     * Parse stories from Front Page, Ask, Best, or New *
-     */
-    public StoryLoader(Context context, Page page, Request request) {
-        super(context);
-        mPage = page;
-        mRequest = request;
-        mUsername = null;
+  private String mUsername;
+
+  // private String mMoreFnid;
+  private StoryResponse mResponse;
+
+  private boolean mResultsToDeliver = false;
+
+  // Constants
+  private static final String TAG = StoryLoader.class.getSimpleName();
+
+  private static final String SUBMISSIONS_TIMESTAMP_ID = "Submissions";
+
+  private static final String PAGE_TIMESTAMP_ID = "Page";
+
+  /**
+   * Parse stories from Front Page, Ask, Best, or New *
+   */
+  public StoryLoader(Context context, Page page, Request request) {
+    super(context);
+    mPage = page;
+    mRequest = request;
+    mUsername = null;
+  }
+
+  /**
+   * Parse stories from the user's submissions page *
+   */
+  public StoryLoader(Context context, String username, Request request) {
+    super(context);
+    mPage = null;
+    mRequest = request;
+    mUsername = username;
+  }
+
+  @Override
+  public StoryResponse loadInBackground() {
+    StoryResponse response;
+    if (mUsername != null) {
+      response = loadSubmissions(mUsername, mRequest);
+    } else if (mPage != null) {
+      response = loadStories(mPage, mRequest);
+    } else {
+      throw new RuntimeException("Both the username & page passed to StoryLoader were null");
+    }
+    return response;
+  }
+
+  /**
+   * Loads the requested page of stories, either from news.ycombinator.com or from the cache. *
+   */
+  private StoryResponse loadStories(Page page, Request request) {
+
+    SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
+            .getWritableDatabase();
+    StoryResponse response = null;
+
+    // handle cache
+    Timestamp timestamp = Timestamp.cachedByBothIds(db, PAGE_TIMESTAMP_ID, page.toString());
+    if (timestamp != null && request == Request.NEW) {
+      List<Story> stories = Story.cachedByPage(db, page);
+      if (stories.size() > 0) {
+        response = new StoryResponse();
+        response.stories = stories;
+        response.result = Result.SUCCESS;
+        response.timestamp = timestamp;
+      }
     }
 
-    /**
-     * Parse stories from the user's submissions page *
-     */
-    public StoryLoader(Context context, String username, Request request) {
-        super(context);
-        mPage = null;
-        mRequest = request;
-        mUsername = username;
-    }
+    // no hit in the cache or it's a MORE or REFRESH request
+    if (response == null) {
+      String moreFnid = null;
+      if (request == Request.MORE && timestamp != null) {
+        moreFnid = timestamp.fnid;
+      }
+      response = StoryParser.parseStoryList(getContext(), page, request, moreFnid);
 
-    @Override
-    public StoryResponse loadInBackground() {
-        StoryResponse response;
-        if (mUsername != null) response = loadSubmissions(mUsername, mRequest);
-        else if (mPage != null) response = loadStories(mPage, mRequest);
-        else throw new RuntimeException("Both the username & page passed to StoryLoader were null");
-        return response;
-    }
+      switch (response.result) {
+        case SUCCESS:
+          Story.clearCache(db, page);
+          Story.cacheValues(db, response.stories);
+          break;
+        case MORE:
+          Story.cacheValues(db, response.stories);
+          break;
+        case FAILURE:
+          if (moreFnid != null) {
+            response.result = Result.FNID_EXPIRED;
+          }
+        default:
+          break;
+      }
 
-    /**
-     * Loads the requested page of stories, either from news.ycombinator.com or from the cache. *
-     */
-    private StoryResponse loadStories(Page page, Request request) {
-
-        SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
-                .getWritableDatabase();
-        StoryResponse response = null;
-
-        // handle cache
-        Timestamp timestamp = Timestamp.cachedByBothIds(db, PAGE_TIMESTAMP_ID, page.toString());
-        if (timestamp != null && request == Request.NEW) {
-            List<Story> stories = Story.cachedByPage(db, page);
-            if (stories.size() > 0) {
-                response = new StoryResponse();
-                response.stories = stories;
-                response.result = Result.SUCCESS;
-                response.timestamp = timestamp;
-            }
+      // need to cache new moreFnid
+      if (response.timestamp != null) {
+        // delete old one
+        if (timestamp != null) {
+          timestamp.delete(db);
         }
 
-        // no hit in the cache or it's a MORE or REFRESH request
-        if (response == null) {
-            String moreFnid = null;
-            if (request == Request.MORE && timestamp != null) moreFnid = timestamp.fnid;
-            response = StoryParser.parseStoryList(getContext(), page, request, moreFnid);
+        // create new one
+        response.timestamp.primaryId = PAGE_TIMESTAMP_ID;
+        response.timestamp.secondaryId = page.toString();
+        response.timestamp.create(db);
 
-            switch (response.result) {
-                case SUCCESS:
-                    Story.clearCache(db, page);
-                    Story.cacheValues(db, response.stories);
-                    break;
-                case MORE:
-                    Story.cacheValues(db, response.stories);
-                    break;
-                case FAILURE:
-                    if (moreFnid != null) response.result = Result.FNID_EXPIRED;
-                default:
-                    break;
-            }
-
-            // need to cache new moreFnid
-            if (response.timestamp != null) {
-                // delete old one
-                if (timestamp != null) timestamp.delete(db);
-
-                // create new one
-                response.timestamp.primaryId = PAGE_TIMESTAMP_ID;
-                response.timestamp.secondaryId = page.toString();
-                response.timestamp.create(db);
-
-                Log.d(TAG, "new Story FNID = " + response.timestamp.fnid);
-            }
-        }
-
-        mResultsToDeliver = true;
-        mResponse = response;
-        return response;
-
+        Log.d(TAG, "new Story FNID = " + response.timestamp.fnid);
+      }
     }
 
-    /**
-     * Loads StoryResposne from a user's submissions page, and caches the moreFnid (if any) in the timestamp db. *
-     */
-    private StoryResponse loadSubmissions(String username, Request request) {
-        SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
-                .getWritableDatabase();
+    mResultsToDeliver = true;
+    mResponse = response;
+    return response;
 
-        StoryResponse response = null;
+  }
 
-        // check for more
-        Timestamp timestamp = Timestamp.cachedByPrimaryId(db, SUBMISSIONS_TIMESTAMP_ID);
-        if (request == Request.MORE && timestamp != null && timestamp.secondaryId.equals(username)) {
-            response = StoryParser.parseUserSubmissions(getContext(), username, timestamp.fnid);
-        }
+  /**
+   * Loads StoryResposne from a user's submissions page, and caches the moreFnid (if any) in the timestamp db. *
+   */
+  private StoryResponse loadSubmissions(String username, Request request) {
+    SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
+            .getWritableDatabase();
 
-        // either this is a new request or we have no moreFnid
-        if (response == null) {
-            response = StoryParser.parseUserSubmissions(getContext(), username, null);
-        }
+    StoryResponse response = null;
 
-        // delete the old one if it exists
-        if (timestamp != null) timestamp.delete(db);
-
-        // need to cache new moreFnid (if any)
-        if (response.timestamp != null) {
-            response.timestamp.primaryId = SUBMISSIONS_TIMESTAMP_ID;
-            response.timestamp.secondaryId = username;
-            response.timestamp.create(db);
-        }
-
-        mResultsToDeliver = true;
-        mResponse = response;
-        return response;
+    // check for more
+    Timestamp timestamp = Timestamp.cachedByPrimaryId(db, SUBMISSIONS_TIMESTAMP_ID);
+    if (request == Request.MORE && timestamp != null && timestamp.secondaryId.equals(username)) {
+      response = StoryParser.parseUserSubmissions(getContext(), username, timestamp.fnid);
     }
 
-    /**
-     * Handles a request to start the Loader.
-     */
-    @Override
-    protected void onStartLoading() {
-        if (mResponse != null && mResultsToDeliver) {
-            deliverResult(mResponse);
-        } else {
-            forceLoad();
-        }
+    // either this is a new request or we have no moreFnid
+    if (response == null) {
+      response = StoryParser.parseUserSubmissions(getContext(), username, null);
     }
 
-    @Override
-    public void deliverResult(StoryResponse response) {
-        mResultsToDeliver = false;
-        super.deliverResult(response);
+    // delete the old one if it exists
+    if (timestamp != null) {
+      timestamp.delete(db);
     }
+
+    // need to cache new moreFnid (if any)
+    if (response.timestamp != null) {
+      response.timestamp.primaryId = SUBMISSIONS_TIMESTAMP_ID;
+      response.timestamp.secondaryId = username;
+      response.timestamp.create(db);
+    }
+
+    mResultsToDeliver = true;
+    mResponse = response;
+    return response;
+  }
+
+  /**
+   * Handles a request to start the Loader.
+   */
+  @Override
+  protected void onStartLoading() {
+    if (mResponse != null && mResultsToDeliver) {
+      deliverResult(mResponse);
+    } else {
+      forceLoad();
+    }
+  }
+
+  @Override
+  public void deliverResult(StoryResponse response) {
+    mResultsToDeliver = false;
+    super.deliverResult(response);
+  }
 
 }

@@ -11,25 +11,27 @@ import com.airlocksoftware.hackernews.parser.UserParser;
  */
 public class AboutUserLoader extends AsyncTaskLoader<User> {
 
-    String mUsername;
+  String mUsername;
 
-    public AboutUserLoader(Context context, String username) {
-        super(context);
-        mUsername = username;
-    }
+  public AboutUserLoader(Context context, String username) {
+    super(context);
+    mUsername = username;
+  }
 
-    @Override
-    public User loadInBackground() {
-        if (mUsername == null) return null;
-        return UserParser.parseUser(mUsername);
+  @Override
+  public User loadInBackground() {
+    if (mUsername == null) {
+      return null;
     }
+    return UserParser.parseUser(mUsername);
+  }
 
-    /**
-     * Handles a request to start the Loader.
-     */
-    @Override
-    protected void onStartLoading() {
-        forceLoad();
-    }
+  /**
+   * Handles a request to start the Loader.
+   */
+  @Override
+  protected void onStartLoading() {
+    forceLoad();
+  }
 
 }

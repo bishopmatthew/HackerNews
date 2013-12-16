@@ -111,4 +111,8 @@
     <string name="error_submitting">There was a problem with your submission. Please include either self-text or a url (including http://), but not both.</string>
     <string name="active">Active</string>
 
+    <!-- V3 -->
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
 </resources>

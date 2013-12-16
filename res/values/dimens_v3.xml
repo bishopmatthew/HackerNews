@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Padding (based on an 8dp grid) -->
+    <dimen name="pad_quarter">2dp</dimen>
+    <dimen name="pad_half">4dp</dimen>
+    <dimen name="pad">8dp</dimen>
+    <dimen name="pad_x1_5">12dp</dimen>
+    <dimen name="pad_x2">16dp</dimen>
+    <dimen name="pad_x3">24dp</dimen>
+    <dimen name="pad_x4">32dp</dimen>
+    <dimen name="pad_x5">40dp</dimen>
+    <dimen name="pad_x6">48dp</dimen>
+    <dimen name="pad_x8">64dp</dimen>
+    <dimen name="pad_x12">96dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="text_size_micro">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_large">22sp</dimen>
+
+</resources>

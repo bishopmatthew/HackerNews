@@ -16,90 +16,96 @@ import com.airlocksoftware.hackernews.model.Result;
 
 public class SubmitLoader extends AsyncTaskLoader<Result> {
 
-    final String mSelfText, mUrl, mTitle;
-    final SendMode mSendMode;
+  final String mSelfText, mUrl, mTitle;
 
-    // Constants
-    private static final String REPLY_EXTENSION = "/r";
-    private static final String NEWEST_PAGE = "http://news.ycombinator.com/newest";
+  final SendMode mSendMode;
 
-    public SubmitLoader(Context context, SendMode sendMode, String title, String content) {
-        super(context);
-        mSendMode = sendMode;
-        switch (mSendMode) {
-            case URL:
-                mSelfText = "";
-                mTitle = title;
-                mUrl = content;
-                break;
-            case SELF_TEXT:
-                mSelfText = content;
-                mTitle = title;
-                mUrl = "";
-                break;
-            default:
-                mSelfText = mUrl = mTitle = null;
-                break;
-        }
+  // Constants
+  private static final String REPLY_EXTENSION = "/r";
+
+  private static final String NEWEST_PAGE = "http://news.ycombinator.com/newest";
+
+  public SubmitLoader(Context context, SendMode sendMode, String title, String content) {
+    super(context);
+    mSendMode = sendMode;
+    switch (mSendMode) {
+      case URL:
+        mSelfText = "";
+        mTitle = title;
+        mUrl = content;
+        break;
+      case SELF_TEXT:
+        mSelfText = content;
+        mTitle = title;
+        mUrl = "";
+        break;
+      default:
+        mSelfText = mUrl = mTitle = null;
+        break;
+    }
+  }
+
+  @Override
+  public Result loadInBackground() {
+    if (mSendMode == SendMode.EMPTY) {
+      return Result.EMPTY;
     }
 
-    @Override
-    public Result loadInBackground() {
-        if (mSendMode == SendMode.EMPTY) return Result.EMPTY;
+    Result result = Result.FAILURE;
 
-        Result result = Result.FAILURE;
+    UserPrefs data = new UserPrefs(getContext());
+    try {
 
-        UserPrefs data = new UserPrefs(getContext());
-        try {
+      String replyFnid = getReplyFnid(data);
+      Connection.Response response = sendSubmission(data, replyFnid);
+      boolean success = validateResponse(response);
+      if (success) {
+        result = Result.SUCCESS;
+      }
 
-            String replyFnid = getReplyFnid(data);
-            Connection.Response response = sendSubmission(data, replyFnid);
-            boolean success = validateResponse(response);
-            if (success) result = Result.SUCCESS;
-
-        } catch (Exception e) {
-            // any exception here probably means we have NO_CONNECTION or there's an error with the website.
-            e.printStackTrace();
-        }
-
-        return result;
+    } catch (Exception e) {
+      // any exception here probably means we have NO_CONNECTION or there's an error with the website.
+      e.printStackTrace();
     }
 
-    private boolean validateResponse(Connection.Response response) {
-        // this used to work
-        boolean success = response.statusCode() == 302 && response.headers()
-                .get("Location")
-                .equals("newest");
-        // this currently works
-        success = success || response.statusCode() == 200 && response.url()
-                .toString()
-                .equals(NEWEST_PAGE);
-        return success;
-    }
+    return result;
+  }
 
-    private Response sendSubmission(UserPrefs data, String replyFnid) throws IOException {
-        return ConnectionManager.authConnect(REPLY_EXTENSION, data.getUserCookie())
-                .data("fnid", replyFnid)
-                .data("t", mTitle)
-                .data("u", mUrl)
-                .data("x", mSelfText)
-                .method(Method.POST)
-                .execute();
-    }
+  private boolean validateResponse(Connection.Response response) {
+    // this used to work
+    boolean success = response.statusCode() == 302 && response.headers()
+            .get("Location")
+            .equals("newest");
+    // this currently works
+    success = success || response.statusCode() == 200 && response.url()
+            .toString()
+            .equals(NEWEST_PAGE);
+    return success;
+  }
 
-    private String getReplyFnid(UserPrefs data) throws IOException {
-        return ConnectionManager.authConnect(ConnectionManager.SUBMIT_URL, data.getUserCookie())
-                .get()
-                .select("input[name=fnid]")
-                .first()
-                .attr("value");
-    }
+  private Response sendSubmission(UserPrefs data, String replyFnid) throws IOException {
+    return ConnectionManager.authConnect(REPLY_EXTENSION, data.getUserCookie())
+            .data("fnid", replyFnid)
+            .data("t", mTitle)
+            .data("u", mUrl)
+            .data("x", mSelfText)
+            .method(Method.POST)
+            .execute();
+  }
 
-    /**
-     * Handles a request to start the Loader.
-     */
-    @Override
-    protected void onStartLoading() {
-        forceLoad();
-    }
+  private String getReplyFnid(UserPrefs data) throws IOException {
+    return ConnectionManager.authConnect(ConnectionManager.SUBMIT_URL, data.getUserCookie())
+            .get()
+            .select("input[name=fnid]")
+            .first()
+            .attr("value");
+  }
+
+  /**
+   * Handles a request to start the Loader.
+   */
+  @Override
+  protected void onStartLoading() {
+    forceLoad();
+  }
 }

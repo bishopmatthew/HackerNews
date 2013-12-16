@@ -1,28 +1,29 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews"
-    android:id="@+id/cnt_comments"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-
-    <ListView
-        android:id="@android:id/list"
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/cnt_comments"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:cacheColorHint="?attr/listCacheColorHint"
-        android:divider="@null"
-        android:fadingEdge="none"
-        android:fastScrollEnabled="true" />
+        >
+
+    <ListView
+            android:id="@android:id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="?attr/listCacheColorHint"
+            android:divider="@null"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="true"/>
 
     <include
-        android:id="@+id/cnt_emtpy"
-        layout="@layout/vw_loadinglist_empty" />
+            android:id="@+id/cnt_empty"
+            layout="@layout/vw_loadinglist_empty"/>
 
     <include
-        android:id="@+id/cnt_loading"
-        layout="@layout/vw_loadinglist_loading" />
+            android:id="@+id/cnt_loading"
+            layout="@layout/vw_loadinglist_loading"/>
 
     <include
-        android:id="@+id/cnt_error"
-        layout="@layout/vw_loadinglist_error" />
+            android:id="@+id/cnt_error"
+            layout="@layout/vw_loadinglist_error"/>
 
 </FrameLayout>

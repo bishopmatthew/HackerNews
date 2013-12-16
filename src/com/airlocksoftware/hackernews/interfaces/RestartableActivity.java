@@ -5,6 +5,6 @@ package com.airlocksoftware.hackernews.interfaces;
  */
 public interface RestartableActivity {
 
-    public void restartActivity();
+  public void restartActivity();
 
 }

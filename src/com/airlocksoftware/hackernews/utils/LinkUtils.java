@@ -12,16 +12,18 @@ import com.airlocksoftware.hackernews.data.UserPrefs;
  */
 public class LinkUtils {
 
-    public static void handleUrlIntent(Context context, String url) {
-        Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url));
-        intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
+  public static void handleUrlIntent(Context context, String url) {
+    Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url));
+    intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
 
         /* Potential fix to allow things to be opened in a new tab */
-        UserPrefs prefs = new UserPrefs(context);
-        boolean openInNewTab = prefs.getOpenInNewTab();
-        if(openInNewTab) intent.putExtra("new_window", true);
-
-        context.startActivity(intent);
+    UserPrefs prefs = new UserPrefs(context);
+    boolean openInNewTab = prefs.getOpenInNewTab();
+    if (openInNewTab) {
+      intent.putExtra("new_window", true);
     }
+
+    context.startActivity(intent);
+  }
 
 }

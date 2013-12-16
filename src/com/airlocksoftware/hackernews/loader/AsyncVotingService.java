@@ -22,67 +22,70 @@ import com.airlocksoftware.hackernews.model.Vote;
  */
 public class AsyncVotingService extends AsyncTask<Void, Void, Void> {
 
-    private static final String BAD_UPVOTE_RESPONSE = "Can't make that vote.";
-    private Context mApplicationContext;
+  private static final String BAD_UPVOTE_RESPONSE = "Can't make that vote.";
 
-    public AsyncVotingService(Context applicationContext) {
-        mApplicationContext = applicationContext;
-    }
+  private Context mApplicationContext;
 
-    @Override
-    protected Void doInBackground(Void... empty) {
-        UserPrefs prefs = new UserPrefs(mApplicationContext);
-        SQLiteDatabase db = DbHelperSingleton.getInstance(mApplicationContext)
-                .getWritableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM " + new Vote().getTableName(), null);
+  public AsyncVotingService(Context applicationContext) {
+    mApplicationContext = applicationContext;
+  }
 
-        if (c.moveToFirst()) {
-            for (int i = 0; i < c.getCount(); i++) {
-                Vote vote = new Vote();
-                vote.readFromCursor(c);
-                if (upvote(vote, prefs.getUserCookie())) {
-                    // if successful, remove vote from queue
-                    vote.delete(db);
+  @Override
+  protected Void doInBackground(Void... empty) {
+    UserPrefs prefs = new UserPrefs(mApplicationContext);
+    SQLiteDatabase db = DbHelperSingleton.getInstance(mApplicationContext)
+            .getWritableDatabase();
+    Cursor c = db.rawQuery("SELECT * FROM " + new Vote().getTableName(), null);
 
-                    // TODO if a vote has already happened, response is the same
-                }
-                c.moveToNext();
-            }
+    if (c.moveToFirst()) {
+      for (int i = 0; i < c.getCount(); i++) {
+        Vote vote = new Vote();
+        vote.readFromCursor(c);
+        if (upvote(vote, prefs.getUserCookie())) {
+          // if successful, remove vote from queue
+          vote.delete(db);
+
+          // TODO if a vote has already happened, response is the same
         }
-        c.close();
-        return null;
+        c.moveToNext();
+      }
     }
+    c.close();
+    return null;
+  }
 
-    @Override
-    protected void onCancelled(Void empty) {
+  @Override
+  protected void onCancelled(Void empty) {
 
-    }
+  }
 
-    private boolean upvote(Vote vote, String cookie) {
-        String voteUrl = getVoteUrl(vote);
-        Connection connection = ConnectionManager.authConnect(voteUrl, cookie);
-        try {
-            Connection.Response response = getResponse(connection);
-            if (response.statusCode() == 200) {
-                if (response.body() != null) return true;
-                Document doc = response.parse();
-                String text = doc.text();
-                return !text.equals(BAD_UPVOTE_RESPONSE);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+  private boolean upvote(Vote vote, String cookie) {
+    String voteUrl = getVoteUrl(vote);
+    Connection connection = ConnectionManager.authConnect(voteUrl, cookie);
+    try {
+      Connection.Response response = getResponse(connection);
+      if (response.statusCode() == 200) {
+        if (response.body() != null) {
+          return true;
         }
-        return false;
+        Document doc = response.parse();
+        String text = doc.text();
+        return !text.equals(BAD_UPVOTE_RESPONSE);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+    return false;
+  }
 
-    private Connection.Response getResponse(Connection connection) throws IOException {
-        return connection.method(Method.GET)
-                .timeout(ConnectionManager.TIMEOUT_MILLIS)
-                .execute();
-    }
+  private Connection.Response getResponse(Connection connection) throws IOException {
+    return connection.method(Method.GET)
+            .timeout(ConnectionManager.TIMEOUT_MILLIS)
+            .execute();
+  }
 
-    private String getVoteUrl(Vote vote) {
-        return "/vote?for=" + Long.toString(vote.itemId) + "&dir=up&by=" + vote.username + "&auth=" + vote.auth
-                + "&whence=" + vote.whence;
-    }
+  private String getVoteUrl(Vote vote) {
+    return "/vote?for=" + Long.toString(vote.itemId) + "&dir=up&by=" + vote.username + "&auth=" + vote.auth
+            + "&whence=" + vote.whence;
+  }
 }

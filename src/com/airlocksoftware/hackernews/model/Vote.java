@@ -10,18 +10,21 @@ import com.airlocksoftware.database.SqlObject;
  */
 public class Vote extends SqlObject {
 
-    public long itemId;
-    public String username;
-    public String auth;
-    public String whence;
+  public long itemId;
 
-    public boolean success;
+  public String username;
 
-    public Vote() {
-    }
+  public String auth;
 
-    public boolean create(SQLiteDatabase db) {
-        return super.createAndGenerateId(db);
-    }
+  public String whence;
+
+  public boolean success;
+
+  public Vote() {
+  }
+
+  public boolean create(SQLiteDatabase db) {
+    return super.createAndGenerateId(db);
+  }
 
 }

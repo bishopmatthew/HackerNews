@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    <FrameLayout
+        android:id="@+id/cnt_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+        
+
+    <fragment
+            android:name="com.airlocksoftware.v3.fragment.MenuFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            />
+
+    <ViewStub
+            android:id="@+id/debug_menu"
+            android:layout="@layout/vw_debug_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            />
+
+</android.support.v4.widget.DrawerLayout>

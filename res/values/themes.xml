@@ -36,9 +36,9 @@
         <item name="slideoutTextColor">@drawable/st_color_txt_slideout_light</item>
 
         <!-- TEXT -->
-        <item name="textColorPrimary">@color/grey_15</item>
-        <item name="textColorSecondary">@color/grey_30</item>
-        <item name="textColorTertiary">@color/grey_40</item>
+        <item name="textColorPrimary">@color/gray_15</item>
+        <item name="textColorSecondary">@color/gray_30</item>
+        <item name="textColorTertiary">@color/gray_40</item>
         <item name="textColorPrimaryDisableable">@drawable/st_color_txt_disableable_light</item>
 
         <!-- EDIT TEXT -->
@@ -47,9 +47,9 @@
         <!-- STORY -->
         <item name="btnStory">@drawable/btn_story_light</item>
         <item name="shdwStoryText">@color/white</item>
-        <item name="bgStoryAndCommentControls">@color/grey_80</item>
+        <item name="bgStoryAndCommentControls">@color/gray_80</item>
         <item name="bgStorylistTablet">@drawable/bg_storylist_tablet_light</item>
-        <item name="cacheColorHintStorylistTablet">@color/grey_98</item>
+        <item name="cacheColorHintStorylistTablet">@color/gray_98</item>
 
         <!-- COMMENT -->
         <item name="commentDepthColors">@array/comment_depth_colors_light</item>
@@ -58,7 +58,7 @@
 
         <!-- COMMENT HEADER -->
         <item name="commentsHeaderBg">@color/black_5_opac</item>
-        <item name="commentsHeaderControlsBg">@color/grey_80</item>
+        <item name="commentsHeaderControlsBg">@color/gray_80</item>
         <item name="commentsHeaderDivider">@color/white</item>
 
         <!-- USER ACTIVITY -->
@@ -75,7 +75,7 @@
         <!-- MISC -->
         <item name="bgDefault">@drawable/bg_light_opt</item>
         <item name="bgDefaultColor">@color/cacheColorHintLight</item>
-        <item name="dividerColor">@color/grey_80</item>
+        <item name="dividerColor">@color/gray_80</item>
         <item name="btnOpac10">@drawable/btn_opac_10_light</item>
         <item name="colorOpac10">@color/black_10_opac</item>
         <item name="bgSpinner">@drawable/spinner_background_light</item>
@@ -115,9 +115,9 @@
         <item name="slideoutTextColor">@drawable/st_color_txt_slideout_dark</item>
 
         <!-- TEXT -->
-        <item name="textColorPrimary">@color/grey_90</item>
-        <item name="textColorSecondary">@color/grey_75</item>
-        <item name="textColorTertiary">@color/grey_60</item>
+        <item name="textColorPrimary">@color/gray_90</item>
+        <item name="textColorSecondary">@color/gray_75</item>
+        <item name="textColorTertiary">@color/gray_60</item>
         <item name="textColorPrimaryDisableable">@drawable/st_color_txt_disableable_dark</item>
 
         <!-- EDIT TEXT -->
@@ -128,7 +128,7 @@
         <item name="shdwStoryText">@color/black</item>
         <item name="bgStoryAndCommentControls">@color/black</item>
         <item name="bgStorylistTablet">@drawable/bg_storylist_tablet_dark</item>
-        <item name="cacheColorHintStorylistTablet">@color/grey_7</item>
+        <item name="cacheColorHintStorylistTablet">@color/gray_7</item>
 
         <!-- COMMENT -->
         <item name="commentDepthColors">@array/comment_depth_colors_dark</item>
@@ -137,7 +137,7 @@
 
         <!-- COMMENT HEADER -->
         <item name="commentsHeaderBg">@color/white_5_opac</item>
-        <item name="commentsHeaderControlsBg">@color/grey_25</item>
+        <item name="commentsHeaderControlsBg">@color/gray_25</item>
         <item name="commentsHeaderDivider">@color/black</item>
 
         <!-- USER ACTIVITY -->
@@ -154,12 +154,91 @@
         <!-- MISC -->
         <item name="bgDefault">@drawable/bg_dark_opt</item>
         <item name="bgDefaultColor">@color/cacheColorHintDark</item>
-        <item name="dividerColor">@color/grey_50</item>
+        <item name="dividerColor">@color/gray_50</item>
         <item name="btnOpac10">@drawable/btn_opac_10_dark</item>
         <item name="bgSpinner">@drawable/spinner_background_dark</item>
         <item name="colorOpac10">@color/white_10_opac</item>
         <item name="listCacheColorHint">@color/cacheColorHintDark</item>
         <item name="overflowMenuWidth">@dimen/overflow_menu_width</item>
+
+        <!-- ONLY APPLIES FROM API 11+ -->
+        <item name="android:fastScrollThumbDrawable">@drawable/fastscroll_thumb_holo</item>
+    </style>
+
+    <style name="V3.Light" parent="@android:style/Theme.Holo.Light">
+        <item name="themeName">LIGHT</item>
+
+        <!-- ANDROID -->
+        <item name="android:windowBackground">@drawable/bg_light_opt</item>
+
+        <!-- ACTIONBAR ACTIVITY -->
+        <item name="bgActionBarActivityFrame">@null</item>
+
+        <!-- ACTIONBAR -->
+        <item name="actionBarBg">@drawable/bg_actionbar_light</item>
+        <item name="actionBarUpIcon">@drawable/st_ic_action_up</item>
+        <item name="actionBarTitleTextStyle">@style/FontText.ActionBar.Title</item>
+        <!-- ACTIONBAR BUTTON -->
+        <item name="actionBarButtonIconStyle">@style/IconView.ActionBar.Light</item>
+        <item name="actionBarButtonBg">@drawable/btn_actionbar_light</item>
+        <item name="actionBarOverflowIcon">@drawable/ic_action_overflow</item>
+        <!-- ACTIONBAR OVERFLOW -->
+        <item name="overflowMenuButtonIconStyle">@style/IconView.ActionBar.Overflow</item>
+        <item name="overflowMenuButtonTextStyle">@style/FontText.ActionBar.Overflow.Light</item>
+        <item name="overflowMenuButtonBg">@drawable/btn_bright_accent</item>
+        <item name="overflowMenuBg">@drawable/bg_actionbar_overflow_light</item>
+        <item name="btnActionBarTab">@drawable/btn_actionbar_tab_light</item>
+
+        <!-- SLIDEOUT MENU -->
+        <item name="slideoutBtnBg">@drawable/btn_slideout_light</item>
+        <item name="slideoutHeaderBg">@drawable/bg_slideout_header_light</item>
+        <item name="slideoutTextColor">@drawable/st_color_txt_slideout_light</item>
+
+        <!-- TEXT -->
+        <item name="textColorPrimary">@color/gray_15</item>
+        <item name="textColorSecondary">@color/gray_30</item>
+        <item name="textColorTertiary">@color/gray_40</item>
+        <item name="textColorPrimaryDisableable">@drawable/st_color_txt_disableable_light</item>
+
+        <!-- EDIT TEXT -->
+        <item name="fontEditBackground">@drawable/edit_text_light</item>
+
+        <!-- STORY -->
+        <item name="btnStory">@drawable/btn_story_light</item>
+        <item name="shdwStoryText">@color/white</item>
+        <item name="bgStoryAndCommentControls">@color/gray_80</item>
+        <item name="bgStorylistTablet">@drawable/bg_storylist_tablet_light</item>
+        <item name="cacheColorHintStorylistTablet">@color/gray_98</item>
+
+        <!-- COMMENT -->
+        <item name="commentDepthColors">@array/comment_depth_colors_light</item>
+        <item name="bgFoldedComment">@color/white</item>
+        <item name="logoEmbossed">@drawable/logo_embossed_light</item>
+
+        <!-- COMMENT HEADER -->
+        <item name="commentsHeaderBg">@color/black_5_opac</item>
+        <item name="commentsHeaderControlsBg">@color/gray_80</item>
+        <item name="commentsHeaderDivider">@color/white</item>
+
+        <!-- USER ACTIVITY -->
+        <item name="bgTab">@drawable/btn_tab_light</item>
+
+        <!-- SHARE -->
+        <item name="btnSharePopup">@drawable/btn_share_popup_light</item>
+        <item name="bgSharePopup">@drawable/bg_sharepopup_light</item>
+
+        <!-- ABOUT -->
+        <item name="bgAboutTextbox">@drawable/bg_textbox_about_light</item>
+        <item name="logoAbout">@drawable/logo_about_black</item>
+
+        <!-- MISC -->
+        <item name="bgDefault">@drawable/bg_light_opt</item>
+        <item name="bgDefaultColor">@color/cacheColorHintLight</item>
+        <item name="dividerColor">@color/gray_80</item>
+        <item name="btnOpac10">@drawable/btn_opac_10_light</item>
+        <item name="colorOpac10">@color/black_10_opac</item>
+        <item name="bgSpinner">@drawable/spinner_background_light</item>
+        <item name="listCacheColorHint">@color/cacheColorHintLight</item>
 
         <!-- ONLY APPLIES FROM API 11+ -->
         <item name="android:fastScrollThumbDrawable">@drawable/fastscroll_thumb_holo</item>

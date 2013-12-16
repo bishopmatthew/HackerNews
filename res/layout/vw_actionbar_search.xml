@@ -1,5 +1,5 @@
 <com.airlocksoftware.holo.type.FontEdit xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/edit_search"
     style="@style/FontEdit"
     android:layout_width="200dp"

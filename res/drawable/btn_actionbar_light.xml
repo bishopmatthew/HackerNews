@@ -6,7 +6,7 @@
 
             <!-- This is the line -->
             <item><shape>
-                    <solid android:color="@color/grey_10" />
+                    <solid android:color="@color/gray_10" />
                 </shape></item>
             <!-- This is the main color -->
             <item android:bottom="1.5dp"><shape android:shape="rectangle">

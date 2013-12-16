@@ -29,183 +29,196 @@ import com.airlocksoftware.hackernews.loader.SearchLoader.SearchResult;
 import com.airlocksoftware.hackernews.model.Request;
 import com.airlocksoftware.hackernews.model.Result;
 import com.airlocksoftware.hackernews.model.SearchItem;
+
 import com.google.gson.Gson;
 
 public class SearchLoader extends AsyncTaskLoader<SearchResult> {
 
-    Request mRequest;
-    String mQuery;
-    SortType mSort;
-    SearchType mType;
+  Request mRequest;
 
-    /**
-     * Which position to request search results for. Use 0 for a new search, and other positive integers as offsets from
-     * 0.
-     */
-    int mStart = 0;
+  String mQuery;
 
-    // Constants
-    @SuppressWarnings("unused")
-    private static final String TAG = SearchLoader.class.getSimpleName();
-    private static final String START_QUERY = "http://api.thriftdb.com/api.hnsearch.com/items/_search";
-    private static final String WEIGHTS = "&weights[title]=1.1&weights[text]=0.7&weights[domain]=2.0&weights[username]=0.1&weights[type]=0.0&boosts[fields][points]=0.15&boosts[fields][num_comments]=0.15&boosts[functions][pow(2,div(div(ms(create_ts,NOW),3600000),72))]=200.0";
+  SortType mSort;
 
-    public static class SearchResult {
-        public SearchResult(Result result) {
-            this.result = result;
-        }
+  SearchType mType;
 
-        public SearchResult() {
-            // default empty constructor
-        }
+  /**
+   * Which position to request search results for. Use 0 for a new search, and other positive integers as offsets from
+   * 0.
+   */
+  int mStart = 0;
 
-        public Result result;
-        public List<SearchItem> items;
-        public int hits = -1;
-        public int start = -1;
+  // Constants
+  @SuppressWarnings("unused")
+  private static final String TAG = SearchLoader.class.getSimpleName();
+
+  private static final String START_QUERY = "http://api.thriftdb.com/api.hnsearch.com/items/_search";
+
+  private static final String WEIGHTS
+          = "&weights[title]=1.1&weights[text]=0.7&weights[domain]=2.0&weights[username]=0.1&weights[type]=0.0&boosts[fields][points]=0.15&boosts[fields][num_comments]=0.15&boosts[functions][pow(2,div(div(ms(create_ts,NOW),3600000),72))]=200.0";
+
+  public static class SearchResult {
+
+    public SearchResult(Result result) {
+      this.result = result;
     }
 
-    public SearchLoader(Context context, Request request, String query, SortType sort, SearchType type, int start) {
-        super(context);
-
-        mRequest = request;
-        mQuery = query;
-        mSort = sort;
-        mType = type;
-        mStart = start;
+    public SearchResult() {
+      // default empty constructor
     }
 
-    @Override
-    public SearchResult loadInBackground() {
-        if (mQuery == null || mSort == null || mType == null || mRequest == Request.EMPTY) {
-            return new SearchResult(Result.EMPTY);
-        }
+    public Result result;
 
-        String response = performSearch();
+    public List<SearchItem> items;
 
-        int hits = -1;
-        List<SearchItem> items = new ArrayList<SearchItem>();
-        SearchResult search = new SearchResult();
+    public int hits = -1;
 
-        try {
-            Gson gson = new Gson();
-            JSONObject obj = new JSONArray(response).getJSONObject(0);
-            hits = obj.getInt("hits");
-            JSONArray results = obj.getJSONArray("results");
+    public int start = -1;
+  }
 
-            for (int i = 0; i < results.length(); i++) {
-                SearchItem searchItem = gson.fromJson(results.getJSONObject(i)
-                        .getString("item"), SearchItem.class);
-                items.add(searchItem);
-            }
+  public SearchLoader(Context context, Request request, String query, SortType sort, SearchType type, int start) {
+    super(context);
 
-        } catch (Exception e) {
-            search.result = Result.FAILURE;
-            e.printStackTrace();
-        }
+    mRequest = request;
+    mQuery = query;
+    mSort = sort;
+    mType = type;
+    mStart = start;
+  }
 
-        search.items = items;
-        search.hits = hits;
-        search.start = mStart;
-        if (search.result == null) search.result = Result.SUCCESS;
-        // search.result = (items != null && hits != -1) ? Result.SUCCESS : Result.EMPTY;
-
-        return search;
+  @Override
+  public SearchResult loadInBackground() {
+    if (mQuery == null || mSort == null || mType == null || mRequest == Request.EMPTY) {
+      return new SearchResult(Result.EMPTY);
     }
 
-    /**
-     * Builds a search url from instance variables, then performs a get of the url. Returns the result as a string. *
-     */
-    private String performSearch() {
-        String searchUrl = buildSearchUrl();
+    String response = performSearch();
 
-        StringBuilder builder = new StringBuilder();
-        HttpClient client = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(searchUrl);
-        try {
-            HttpResponse response = client.execute(httpGet);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if (statusCode == 200) {
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    builder.append(line);
-                }
-            } else {
-                Log.e(searchUrl, "Failed to download file");
-                // notify user of search failure
-            }
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    int hits = -1;
+    List<SearchItem> items = new ArrayList<SearchItem>();
+    SearchResult search = new SearchResult();
 
-        String response = builder.toString();
-        response = "[" + response + "]";
-        return response;
+    try {
+      Gson gson = new Gson();
+      JSONObject obj = new JSONArray(response).getJSONObject(0);
+      hits = obj.getInt("hits");
+      JSONArray results = obj.getJSONArray("results");
+
+      for (int i = 0; i < results.length(); i++) {
+        SearchItem searchItem = gson.fromJson(results.getJSONObject(i)
+                .getString("item"), SearchItem.class);
+        items.add(searchItem);
+      }
+
+    } catch (Exception e) {
+      search.result = Result.FAILURE;
+      e.printStackTrace();
     }
 
-    private String buildSearchUrl() {
+    search.items = items;
+    search.hits = hits;
+    search.start = mStart;
+    if (search.result == null) {
+      search.result = Result.SUCCESS;
+    }
+    // search.result = (items != null && hits != -1) ? Result.SUCCESS : Result.EMPTY;
 
-        StringBuilder builder = new StringBuilder();
+    return search;
+  }
 
-        try {
-            builder.append(START_QUERY)
-                    .append("?q=" + URLEncoder.encode(mQuery, "UTF-8"))
-                    .append(WEIGHTS);
-        } catch (UnsupportedEncodingException e) {
-            // tell user the query was invalid?
-            e.printStackTrace();
+  /**
+   * Builds a search url from instance variables, then performs a get of the url. Returns the result as a string. *
+   */
+  private String performSearch() {
+    String searchUrl = buildSearchUrl();
+
+    StringBuilder builder = new StringBuilder();
+    HttpClient client = new DefaultHttpClient();
+    HttpGet httpGet = new HttpGet(searchUrl);
+    try {
+      HttpResponse response = client.execute(httpGet);
+      StatusLine statusLine = response.getStatusLine();
+      int statusCode = statusLine.getStatusCode();
+      if (statusCode == 200) {
+        HttpEntity entity = response.getEntity();
+        InputStream content = entity.getContent();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+        String line;
+        while ((line = reader.readLine()) != null) {
+          builder.append(line);
         }
-
-        String sortBy;
-
-        switch (mSort) {
-            case RELEVANCE:
-                sortBy = "score";
-                break;
-            case DATE:
-                sortBy = "create_ts";
-                break;
-            case POINTS:
-                sortBy = "points";
-                break;
-            default:
-                throw new RuntimeException("Error: didn't recieve a valid SortType" + mSort.toString());
-        }
-
-        builder.append("&sortby=" + sortBy + "+desc");
-
-        switch (mType) {
-            case ALL:
-                // don't append filter
-                break;
-            case STORIES:
-                builder.append("&filter[fields][type]=" + "submission");
-                break;
-            case COMMENTS:
-                builder.append("&filter[fields][type]=" + "comment");
-                break;
-            case USERS:
-                throw new RuntimeException("The parent activity should have started UserActivity & not started this loader");
-            default:
-                throw new RuntimeException("Error: didn't recieve a valid SearchType" + mType.toString());
-        }
-
-        builder.append("&start=" + Integer.toString(mStart));
-
-        return builder.toString();
+      } else {
+        Log.e(searchUrl, "Failed to download file");
+        // notify user of search failure
+      }
+    } catch (ClientProtocolException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    /**
-     * Handles a request to start the Loader.
-     */
-    @Override
-    protected void onStartLoading() {
-        forceLoad();
+    String response = builder.toString();
+    response = "[" + response + "]";
+    return response;
+  }
+
+  private String buildSearchUrl() {
+
+    StringBuilder builder = new StringBuilder();
+
+    try {
+      builder.append(START_QUERY)
+              .append("?q=" + URLEncoder.encode(mQuery, "UTF-8"))
+              .append(WEIGHTS);
+    } catch (UnsupportedEncodingException e) {
+      // tell user the query was invalid?
+      e.printStackTrace();
     }
+
+    String sortBy;
+
+    switch (mSort) {
+      case RELEVANCE:
+        sortBy = "score";
+        break;
+      case DATE:
+        sortBy = "create_ts";
+        break;
+      case POINTS:
+        sortBy = "points";
+        break;
+      default:
+        throw new RuntimeException("Error: didn't recieve a valid SortType" + mSort.toString());
+    }
+
+    builder.append("&sortby=" + sortBy + "+desc");
+
+    switch (mType) {
+      case ALL:
+        // don't append filter
+        break;
+      case STORIES:
+        builder.append("&filter[fields][type]=" + "submission");
+        break;
+      case COMMENTS:
+        builder.append("&filter[fields][type]=" + "comment");
+        break;
+      case USERS:
+        throw new RuntimeException("The parent activity should have started UserActivity & not started this loader");
+      default:
+        throw new RuntimeException("Error: didn't recieve a valid SearchType" + mType.toString());
+    }
+
+    builder.append("&start=" + Integer.toString(mStart));
+
+    return builder.toString();
+  }
+
+  /**
+   * Handles a request to start the Loader.
+   */
+  @Override
+  protected void onStartLoading() {
+    forceLoad();
+  }
 }

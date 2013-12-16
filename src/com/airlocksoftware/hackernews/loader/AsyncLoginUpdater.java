@@ -16,33 +16,34 @@ import com.airlocksoftware.hackernews.data.UserPrefs;
  */
 public class AsyncLoginUpdater extends AsyncTask<Void, Void, Void> {
 
-    Context mApplicationContext;
-    public static final long COOKIE_EXPIRATION = 1000 * 60 * 60 * 24 * 7; // one weeks
+  Context mApplicationContext;
 
-    /**
-     * Be sure to use an Application context in case of rotation happening while this is running *
-     */
-    public AsyncLoginUpdater(Context applicationContext) {
-        mApplicationContext = applicationContext;
-    }
+  public static final long COOKIE_EXPIRATION = 1000 * 60 * 60 * 24 * 7; // one weeks
 
-    @Override
-    protected Void doInBackground(Void... arg0) {
-        UserPrefs prefs = new UserPrefs(mApplicationContext);
-        long timestamp = prefs.getCookieTimestamp();
-        String username = prefs.getUsername();
-        String password = prefs.getPassword();
-        long currentTime = Calendar.getInstance()
-                .getTimeInMillis();
-        boolean expired = currentTime - timestamp > COOKIE_EXPIRATION;
-        if (expired && StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
-            String newCookie = LoginManager.login(username, password);
-            if (newCookie != null) {
-                // saves new user cookie and updates the timestamp
-                prefs.saveUserCookie(newCookie);
-            }
-        }
-        return null;
+  /**
+   * Be sure to use an Application context in case of rotation happening while this is running *
+   */
+  public AsyncLoginUpdater(Context applicationContext) {
+    mApplicationContext = applicationContext;
+  }
+
+  @Override
+  protected Void doInBackground(Void... arg0) {
+    UserPrefs prefs = new UserPrefs(mApplicationContext);
+    long timestamp = prefs.getCookieTimestamp();
+    String username = prefs.getUsername();
+    String password = prefs.getPassword();
+    long currentTime = Calendar.getInstance()
+            .getTimeInMillis();
+    boolean expired = currentTime - timestamp > COOKIE_EXPIRATION;
+    if (expired && StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
+      String newCookie = LoginManager.login(username, password);
+      if (newCookie != null) {
+        // saves new user cookie and updates the timestamp
+        prefs.saveUserCookie(newCookie);
+      }
     }
+    return null;
+  }
 
 }

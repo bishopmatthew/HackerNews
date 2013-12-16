@@ -230,7 +230,7 @@
     </style>
 
     <style name="IconView.ActionBar.Light">
-        <item name="icon_colors">@color/grey_30</item>
+        <item name="icon_colors">@color/gray_30</item>
     </style>
 
     <style name="IconView.ActionBar.Overflow">
