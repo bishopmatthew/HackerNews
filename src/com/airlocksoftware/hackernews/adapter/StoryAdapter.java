@@ -30,7 +30,7 @@ import com.airlocksoftware.holo.type.FontText;
 import com.airlocksoftware.holo.utils.AnimUtils;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
-import com.airlocksoftware.v3.dagger.HNApp;
+import com.airlocksoftware.v3.app.HNApp;
 import com.airlocksoftware.v3.otto.ShowStoryEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;

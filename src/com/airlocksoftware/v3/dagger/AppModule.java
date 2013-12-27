@@ -19,6 +19,7 @@ import android.content.Context;
 
 import com.airlocksoftware.hackernews.adapter.StoryAdapter;
 import com.airlocksoftware.v3.actionbar.ActionBarTabsView;
+import com.airlocksoftware.v3.app.HNApp;
 import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;

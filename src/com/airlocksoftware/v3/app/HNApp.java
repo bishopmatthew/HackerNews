@@ -1,9 +1,10 @@
-package com.airlocksoftware.v3.dagger;
+package com.airlocksoftware.v3.app;
 
 import android.app.Application;
 import android.content.Context;
 
 import com.airlocksoftware.hackernews.BuildConfig;
+import com.airlocksoftware.v3.dagger.AppModule;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;

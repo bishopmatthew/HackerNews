@@ -20,7 +20,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Startup"
-        android:name="com.airlocksoftware.v3.dagger.HNApp">
+        android:name="com.airlocksoftware.v3.app.HNApp">
         <activity
             android:name="com.airlocksoftware.hackernews.activity.MainActivity"
             android:label="@string/app_name"

@@ -20,7 +20,7 @@ import android.support.v4.app.FragmentActivity;
 
 import com.airlocksoftware.v3.activity.components.BackPressedManager;
 import com.airlocksoftware.v3.dagger.BaseActivityModule;
-import com.airlocksoftware.v3.dagger.HNApp;
+import com.airlocksoftware.v3.app.HNApp;
 import com.squareup.otto.Bus;
 
 import java.util.Arrays;

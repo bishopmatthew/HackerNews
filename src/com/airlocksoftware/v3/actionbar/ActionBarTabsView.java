@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.airlocksoftware.hackernews.R;
-import com.airlocksoftware.v3.dagger.HNApp;
+import com.airlocksoftware.v3.app.HNApp;
 import com.airlocksoftware.v3.otto.TabSelectedEvent;
 import com.squareup.otto.Bus;
 
