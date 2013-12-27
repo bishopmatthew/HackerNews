@@ -16,4 +16,13 @@
         <item>@color/holo_orange_dark</item>
     </array>
 
+    <array name="story_pages">
+        <item>Front Page</item>
+        <item>Ask</item>
+        <item>New</item>
+        <item>Best</item>
+        <item>Active</item>
+        <item>Classic</item>
+    </array>
+
 </resources>

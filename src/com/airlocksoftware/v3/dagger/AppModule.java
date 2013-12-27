@@ -16,8 +16,9 @@
 package com.airlocksoftware.v3.dagger;
 
 import android.content.Context;
-import android.location.LocationManager;
 
+import com.airlocksoftware.hackernews.adapter.StoryAdapter;
+import com.airlocksoftware.v3.actionbar.ActionBarTabsView;
 import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
@@ -25,41 +26,35 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-import static android.content.Context.LOCATION_SERVICE;
-
 /**
  * A module for Android-specific dependencies which require a {@link Context} or {@link android.app.Application} to
  * create.
  */
-@Module(library = true)
-public class AndroidModule {
+@Module(
+        injects = {
+          /* Inject things that don't go anywhere else (generally to get an AppContext or Bus) */
+          StoryAdapter.class,
+          ActionBarTabsView.class
+        },
+        library = true,
+        complete = false
+)
+public class AppModule {
 
   private final HNApp mApp;
 
-  public AndroidModule(HNApp mApp) {
+  public AppModule(HNApp mApp) {
     this.mApp = mApp;
   }
 
-  /**
-   * Allow the application context to be injected but require that it be annotated with {@link HNApp @Annotation} to
+  /** Allow the application context to be injected but require that it be annotated with {@link HNApp @Annotation} to
    * explicitly differentiate it from an activity context.
    */
-  @Provides
-  @Singleton
-  @ForApplication
-  Context provideApplicationContext() {
+  @Provides @Singleton @ForApplication Context provideApplicationContext() {
     return mApp;
   }
 
-  @Provides
-  @Singleton
-  LocationManager provideLocationManager() {
-    return (LocationManager) mApp.getSystemService(LOCATION_SERVICE);
-  }
-
-  @Provides
-  @Singleton
-  Bus provideBus() {
+  @Provides @Singleton Bus provideBus() {
     return new Bus();
   }
 }

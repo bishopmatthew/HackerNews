@@ -1,7 +1,5 @@
 package com.airlocksoftware.hackernews.loader;
 
-import java.util.List;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.AsyncTaskLoader;
@@ -16,24 +14,21 @@ import com.airlocksoftware.hackernews.model.Timestamp;
 import com.airlocksoftware.hackernews.parser.StoryParser;
 import com.airlocksoftware.hackernews.parser.StoryParser.StoryResponse;
 
+import java.util.List;
+
 public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 
   private Page mPage;
-
   private Request mRequest;
-
   private String mUsername;
 
   // private String mMoreFnid;
   private StoryResponse mResponse;
-
   private boolean mResultsToDeliver = false;
 
   // Constants
   private static final String TAG = StoryLoader.class.getSimpleName();
-
   private static final String SUBMISSIONS_TIMESTAMP_ID = "Submissions";
-
   private static final String PAGE_TIMESTAMP_ID = "Page";
 
   /**

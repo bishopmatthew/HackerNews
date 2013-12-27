@@ -1,18 +1,22 @@
 package com.airlocksoftware.hackernews.fragment;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airlocksoftware.hackernews.R;
 import com.airlocksoftware.hackernews.activity.ReplyActivity;
@@ -37,15 +41,24 @@ import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
 import com.airlocksoftware.holo.image.IconView;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
+import com.airlocksoftware.v3.actionbar.QuickReturnActionBarManager;
+import com.airlocksoftware.v3.fragment.BaseFragment;
+import com.airlocksoftware.v3.otto.ShowStoryEvent;
+import com.squareup.otto.Subscribe;
 
 import java.io.Serializable;
 import java.util.List;
+
+import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * Displays a page of comments with the parent story as a header. Uses CommentsLoader to get data from the cache or the
  * web.
  */
-public class CommentsFragment extends Fragment implements ActionBarClient, LoaderCallbacks<CommentsResponse> {
+public class CommentsFragment extends BaseFragment implements ActionBarClient, LoaderCallbacks<CommentsResponse> {
 
   /**
    * The story whose comments we are loading & displaying. Initialized to a new, empty Story to avoid null check on the
@@ -67,8 +80,11 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
   private TabletLayout mTabletLayout;
   private CommentsFragment.Callbacks mCallbacks;
 
+  /* Injected via Dagger */
+  @Inject ActionBar mActionBar;
+
   // Views & Adapters
-  private ListView mList;
+  @InjectView(android.R.id.list) ListView mList;
   private CommentsAdapter mAdapter;
 
   /**
@@ -76,6 +92,7 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
    */
   private List<Comment> mTempComments;
 
+  /* mb TODO create a HeaderView class, provide a bindData() method*/
   private View mHeaderView, mError, mEmpty, mLoading;
   private TextView mHeaderTitle, mHeaderUsername, mHeaderPoints, mHeaderSelfText;
   private IconView mUserIcon, mShareIcon, mUpvoteIcon, mReplyIcon;
@@ -143,6 +160,7 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
 
   private int TEXT_COLOR_PRIMARY;
   private int HIGHLIGHT_COLOR;
+  private QuickReturnActionBarManager mQuickReturnManager;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -150,6 +168,7 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
       return null;
     }
     View view = inflater.inflate(R.layout.frg_comments, container, false);
+    ButterKnife.inject(this, view);
     return view;
   }
 
@@ -158,6 +177,9 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
     Activity activity = getActivity();
+
+    /* Setup quick return */
+    mQuickReturnManager = new QuickReturnActionBarManager(activity, mActionBar, mList);
 
     // cache colors
     Resources res = activity.getResources();
@@ -215,7 +237,6 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
     findHeaderViews();
 
     // get list
-    mList = (ListView) container.findViewById(android.R.id.list);
     mList.addHeaderView(mHeaderView, null, false);
   }
 
@@ -358,6 +379,24 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
     controller.removeButton(mBrowserButton);
   }
 
+
+  @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    inflater.inflate(R.menu.comments, menu);
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch(item.getItemId()) {
+      case R.id.action_text_settings:
+        Toast.makeText(getActivity(), "Display comments text settings controls", Toast.LENGTH_LONG).show();
+        return true;
+      case R.id.action_search:
+        Toast.makeText(getActivity(), "Display comments search", Toast.LENGTH_LONG).show();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
+
   /**
    * Called to set the inital story. Either this method or setStoryId should be called immediately after creating the
    * fragment.
@@ -378,11 +417,20 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
   }
 
   /**
-   * Called to set the inital story. Either this method or setStoryId should be called immediately after creating the
+   * Called to set the inital story. Either this method or setStory should be called immediately after creating the
    * fragment.
    */
   public void setStoryId(long storyId) {
     mStory.storyId = storyId;
+  }
+
+  @Subscribe public void onShowStoryEvent(ShowStoryEvent ev) {
+    Story story = ev.getStory();
+    if(mStory == null) {
+      setStory(story);
+    } else {
+      loadNewStory(story);
+    }
   }
 
   /**

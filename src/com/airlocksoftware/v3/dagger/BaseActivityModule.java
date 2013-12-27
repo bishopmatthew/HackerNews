@@ -1,13 +1,13 @@
 package com.airlocksoftware.v3.dagger;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 
+import com.airlocksoftware.v3.actionbar.MainFragmentActionBarManager;
 import com.airlocksoftware.v3.activity.BaseActivity;
 import com.airlocksoftware.v3.activity.MainActivity;
+import com.airlocksoftware.v3.activity.components.BackPressedManager;
 import com.airlocksoftware.v3.fragment.BaseFragment;
-import com.airlocksoftware.v3.fragment.MainFragment;
 
 import javax.inject.Singleton;
 
@@ -21,17 +21,17 @@ import dagger.Provides;
         injects = {
                 BaseActivity.class,
                 BaseFragment.class,
-                MainActivity.class,
-                MainFragment.class
+                MainFragmentActionBarManager.class,
+                MainActivity.class
         },
         library = true,
         complete = false
 )
-public class ActivityModule {
+public class BaseActivityModule {
 
-  private final Activity mActivity;
+  private final BaseActivity mActivity;
 
-  public ActivityModule(Activity activity) {
+  public BaseActivityModule(BaseActivity activity) {
     mActivity = activity;
   }
 
@@ -39,17 +39,16 @@ public class ActivityModule {
    * Allow the activity context to be injected but require that it be annotated with {@link ForActivity @ForActivity} to
    * explicitly differentiate it from application context.
    */
-  @Provides
-  @Singleton
-  @ForActivity
-  Context provideActivityContext() {
+  @Provides @Singleton @ForActivity Context provideActivityContext() {
     return mActivity;
   }
 
-  @Provides
-  @Singleton
-  ActionBar provideActionBar() {
+  @Provides @Singleton ActionBar provideActionBar() {
     return mActivity.getActionBar();
+  }
+
+  @Provides @Singleton BackPressedManager provideBackPressedManager() {
+    return mActivity.getBackPressedManager();
   }
 
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ActionBarSpinner" parent="@android:style/Widget.Holo.Light.Spinner">
+        <item name="android:background">@drawable/ic_action_spinner_light</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!--
+      ptrHeaderStyle above refers to this style which contains all of the
+      DefaultHeaderTransformer customization values. The name and parent
+      can be anything, but only the attributes defined in
+      library/res/attrs.xml are actually read in.
+    -->
+    <style name="Widget.Custom.PtrHeader" parent="android:Widget">
+        <!-- The background of the header view -->
+        <!--<item name="ptrHeaderBackground">...</item>-->
+
+        <!-- The height of the header view. Please note, only set if in you really need to -->
+        <!--<item name="ptrHeaderHeight">...</item>-->
+
+        <!-- TextAppearance of the header view's title text -->
+        <!--<item name="ptrHeaderTitleTextAppearance">...</item>-->
+
+        <!-- Color to tint the progress bar -->
+        <item name="ptrProgressBarColor">@color/bright_accent</item>
+
+        <!-- Radius of the progress bar corners -->
+        <!--<item name="ptrProgressBarCornerRadius">4dp</item>-->
+
+        <!-- Style of the Progress Bar. Values are either: inside or outside -->
+        <item name="ptrProgressBarStyle">inside</item>
+
+        <!-- The strings to be displayed at the various states -->
+        <!--<item name="ptrPullText">...</item>-->
+        <!--<item name="ptrRefreshingText">...</item>-->
+        <!--<item name="ptrReleaseText">...</item>-->
+    </style>
+</resources>

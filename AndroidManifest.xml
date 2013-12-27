@@ -70,7 +70,7 @@
         
         <!-- Version 3 -->
         <activity android:name="com.airlocksoftware.v3.activity.MainActivity"
-                  android:theme="@style/V3.Light"
+                  android:theme="@style/V3.Light.NEW"
                 >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

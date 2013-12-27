@@ -23,6 +23,7 @@ import com.airlocksoftware.hackernews.model.Request;
 import com.airlocksoftware.hackernews.model.Result;
 import com.airlocksoftware.hackernews.model.Story;
 import com.airlocksoftware.hackernews.model.Timestamp;
+import com.airlocksoftware.v3.api.Api;
 
 public class StoryParser {
 
@@ -202,7 +203,7 @@ public class StoryParser {
         story.url = titleLink.attr("href");
         // if url starts with item?id, it's a self post & may potentially be a url for a jobs post
         if (story.url.startsWith("item?id=")) {
-          potentialJobsUrl = ConnectionManager.BASE_URL + "/" + story.url;
+          potentialJobsUrl = Api.BASE_URL + "/" + story.url;
         }
         story.domain = parseDomain(title);
       } catch (NullPointerException e) {

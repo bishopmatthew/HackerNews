@@ -30,62 +30,52 @@ import com.airlocksoftware.holo.type.FontText;
 import com.airlocksoftware.holo.utils.AnimUtils;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
+import com.airlocksoftware.v3.dagger.HNApp;
+import com.airlocksoftware.v3.otto.ShowStoryEvent;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Produce;
 
 import java.io.Serializable;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Adapter for StoryFragment and SubmissionsFragment. *
  */
 public class StoryAdapter extends GroupAdapter<Story> {
 
-  private long mActiveStoryId;
+  @Inject Bus mBus;
 
+  private Story mActiveStory;
+//  private long mActiveStoryId;
   private SharePopup mShare;
-
   private Context mContext;
-
   private ListView mList;
-
   private StoryFragment.Callbacks mStoryCallbacks;
-
   private TabletLayout mTabletInterface;
-
   private LayoutInflater mInflater;
 
   // cached resource values
   private final int BRIGHT_ACCENT_COLOR;
-
   private final int TEXT_COLOR_PRIMARY;
-
   private final int TEXT_COLOR_SECONDARY;
-
   private final int DARK_ORANGE_COLOR;
-
   private final int GRAY_50_COLOR;
-
   private final String UPVOTE;
-
   private final String UPVOTED;
-
   private final Drawable UPVOTE_INDICATOR;
 
   private static final int STORY_LAYOUT = R.layout.vw_story;
-
   private static final String STORIES = StoryAdapter.class.getSimpleName() + ".stories";
-
   private static final String ACTIVE_STORY = StoryAdapter.class.getSimpleName() + ".activeStory";
 
   private static class ViewHolder {
 
     public Story story;
-
     public FontText title, numPoints, numComments, domain, pointsLabel, upvoteLabel;
-
     public View commentsButton, webButton, ctrlContainer, container, divider;
-
     public FrameLayout upvoteBtn, shareBtn, userBtn;
-
     public IconView upvoteIcon, commentIcon;
 
     /**
@@ -99,14 +89,19 @@ public class StoryAdapter extends GroupAdapter<Story> {
     public boolean upvotedMode = false;
   }
 
-  public StoryAdapter(Context context, ListView list, SharePopup share, StoryFragment.Callbacks storyCallbacks,
+  public StoryAdapter(Context context, ListView list, SharePopup share, StoryFragment.Callbacks callback,
           TabletLayout tabletLayout) {
+
+    /* Save instance variables */
     mContext = context;
     mList = list;
     mShare = share;
-    mStoryCallbacks = storyCallbacks;
+    mStoryCallbacks = callback;
     mTabletInterface = tabletLayout;
     mInflater = LayoutInflater.from(mContext);
+
+    /* Dagger Injection */
+    HNApp.getInstance().inject(this);
 
     // cache reusable resources
     Resources res = mContext.getResources();
@@ -190,9 +185,16 @@ public class StoryAdapter extends GroupAdapter<Story> {
 
   public void setActiveStory(Story story) {
     if (story != null) {
-      mActiveStoryId = story.storyId;
+      mActiveStory = story;
+      mBus.post(produceActiveStory());
+//      mActiveStoryId = story.storyId;
       notifyDataSetChanged();
     }
+  }
+
+
+  @Produce public ShowStoryEvent produceActiveStory() {
+    return new ShowStoryEvent(mActiveStory);
   }
 
   private void bindView(Story story, ViewHolder holder) {
@@ -213,7 +215,7 @@ public class StoryAdapter extends GroupAdapter<Story> {
     // if this is the active story & the view isn't already in activeMode,
     // change background & colors, hide divider, and disable click listeners
     if (mTabletInterface != null && mTabletInterface.isTabletLayout()) {
-      boolean isActiveStory = story.storyId == mActiveStoryId;
+      boolean isActiveStory = story.storyId == mActiveStory.storyId;
       if (isActiveStory != holder.activeMode) {
         bindIsActiveStory(holder, isActiveStory);
       }
@@ -318,7 +320,8 @@ public class StoryAdapter extends GroupAdapter<Story> {
       // if this is in a MainActivity, let mStoryCallbacks handle it
       if (mStoryCallbacks != null) {
         setActiveStory(holder.story);
-        mStoryCallbacks.showCommentsForStory(holder.story, tab);
+//        mStoryCallbacks.showCommentsForStory(holder.story, tab);
+
       } else {
         // this is from SubmissionsFragment, and should start a new CommentsActivity
         MainActivity.startCommentsActivity(mContext, null, holder.story, tab);
@@ -372,14 +375,14 @@ public class StoryAdapter extends GroupAdapter<Story> {
   }
 
   public Bundle onSaveInstanceState(Bundle bundle) {
-    bundle.putLong(ACTIVE_STORY, mActiveStoryId);
+    bundle.putSerializable(ACTIVE_STORY, mActiveStory);
     bundle.putSerializable(STORIES, (Serializable) this.getArray());
     return bundle;
   }
 
   @SuppressWarnings("unchecked")
   public void onRestoreInstanceState(Bundle savedInstanceState) {
-    mActiveStoryId = savedInstanceState.getLong(ACTIVE_STORY);
+    mActiveStory = (Story) savedInstanceState.getSerializable(ACTIVE_STORY);
     List<Story> stories = (List<Story>) savedInstanceState.getSerializable(STORIES);
     clear();
     if (stories != null) {

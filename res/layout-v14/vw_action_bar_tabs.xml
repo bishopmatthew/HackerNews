@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    <LinearLayout
+            android:id="@+id/tab_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="?android:attr/selectableItemBackground"
+            >
+
+        <com.airlocksoftware.holo.image.IconView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/one"
+                app:icon_src="@drawable/ic_action_comment"
+                app:icon_colors="@color/black"
+                />
+
+        <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/one"
+                android:text="Comments"
+                android:textAllCaps="true"
+                android:textSize="12sp"
+                android:textColor="?attr/textColorPrimary"
+                app:typeface="roboto_condensed_bold"
+                />
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/tab_article"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/tab_comments"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="?android:attr/selectableItemBackground"
+            >
+
+
+        <com.airlocksoftware.holo.image.IconView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/one"
+                app:icon_src="@drawable/ic_action_article"
+                app:icon_colors="@color/black"
+                />
+
+        <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/one"
+                android:text="Article"
+                android:textAllCaps="true"
+                android:textSize="12sp"
+                android:textColor="?attr/textColorPrimary"
+                app:typeface="roboto_condensed_bold"
+                />
+
+    </LinearLayout>
+
+    <View
+            android:id="@+id/underline"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/half"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/tab_comments"
+            android:layout_alignRight="@+id/tab_comments"
+            android:background="@color/bright_accent"
+            android:visibility="gone"
+            />
+
+
+</RelativeLayout>

@@ -1,10 +1,5 @@
 package com.airlocksoftware.hackernews.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.airlocksoftware.hackernews.utils.StringUtils;
-
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,6 +11,10 @@ import com.airlocksoftware.hackernews.activity.LoginActivity.PostAction;
 import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.loader.AsyncVotingService;
+import com.airlocksoftware.hackernews.utils.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 /** Encapsulates data about a Story (e.g. articles on the front page). Since it's extending SqlObject, any public, non-static, 
@@ -23,32 +22,20 @@ import com.airlocksoftware.hackernews.loader.AsyncVotingService;
 public class Story extends SqlObject {
 
   public long storyId;
-
   public int position;
-
   public String whence;
-
   public String url;
-
   public String title;
-
   public String domain;
-
   public int numPoints;
-
   public String username;
-
   public int numComments;
-
   public String ago;
-
   public String selfText;
-
   public boolean isUpvoted;
 
   // data used for caching purposes
   public String auth;
-
   public Page page;
 
   // is the Story archived (i.e. can't reply or comment)
@@ -56,71 +43,20 @@ public class Story extends SqlObject {
 
   // constant values need to match field names above
   public static final String STORY_ID = "storyId";
-
   public static final String POSITION = "position";
-
   public static final String WHENCE = "whence";
-
   public static final String URL = "url";
-
   public static final String TITLE = "title";
-
   public static final String DOMAIN = "domain";
-
   public static final String NUM_POINTS = "numPoints";
-
   public static final String USERNAME = "username";
-
   public static final String NUM_COMMENTS = "numComments";
-
   public static final String AGO = "ago";
-
   public static final String SELF_TEXT = "selfText";
-
   public static final String IS_UPVOTED = "isUpvoted";
-
   public static final String AUTH = "auth";
-
   public static final String PAGE = "page";
-
   public static final String IS_ARCHIVED = "isArchived";
-
-  @Override
-  public String toString() {
-    String toReturn = "";
-    toReturn += "postition: " + position;
-    toReturn += "\nstoryId: " + storyId;
-    if (whence != null) {
-      toReturn += "\nwhence: " + whence;
-    }
-    if (url != null) {
-      toReturn += "\nurl: " + url;
-    }
-    if (title != null) {
-      toReturn += "\ntitle: " + title;
-    }
-    if (domain != null) {
-      toReturn += "\ndomain: " + domain;
-    }
-    toReturn += "\npoints: " + numPoints;
-    if (username != null) {
-      toReturn += "\nuser: " + username;
-    }
-    toReturn += "\ncomments: " + numComments;
-    if (ago != null) {
-      toReturn += "\nago: " + ago;
-    }
-    if (auth != null) {
-      toReturn += "\nauth: " + auth;
-    }
-    if (selfText != null && !selfText.equals("")) {
-      toReturn += "\nselfText: " + "yes";
-    }
-    {
-      toReturn += "\nselfText: " + "no";
-    }
-    return toReturn;
-  }
 
   public boolean upvote(Context context) {
     UserPrefs data = new UserPrefs(context);
@@ -155,6 +91,18 @@ public class Story extends SqlObject {
 
   public boolean create(SQLiteDatabase db) {
     return super.createAndGenerateId(db);
+  }
+
+  @Override public String toString() {
+    return "Story{" +
+            "storyId=" + storyId +
+            ", position=" + position +
+            ", url='" + url + '\'' +
+            ", title='" + title + '\'' +
+            ", numPoints=" + numPoints +
+            ", numComments=" + numComments +
+            ", isUpvoted=" + isUpvoted +
+            '}';
   }
 
   public static Story cachedById(SQLiteDatabase db, long sId) {

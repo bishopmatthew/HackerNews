@@ -1,15 +1,16 @@
 package com.airlocksoftware.v3.fragment;
 
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import com.airlocksoftware.hackernews.R;
 import com.airlocksoftware.hackernews.fragment.CommentsFragment;
@@ -17,7 +18,12 @@ import com.airlocksoftware.hackernews.fragment.StoryFragment;
 import com.airlocksoftware.hackernews.fragment.WebFragment;
 import com.airlocksoftware.hackernews.model.Story;
 import com.airlocksoftware.hackernews.utils.StringUtils;
+import com.airlocksoftware.v3.actionbar.MainFragmentActionBarManager;
+import com.airlocksoftware.v3.actionbar.MainFragmentTab;
+import com.airlocksoftware.v3.activity.components.BackPressedManager;
 import com.airlocksoftware.v3.otto.ShowStoryEvent;
+import com.airlocksoftware.v3.viewpager.MultiOnPageChangeListener;
+import com.airlocksoftware.v3.viewpager.PageWrangler;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
@@ -25,19 +31,32 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-import static android.app.ActionBar.Tab;
-
 /**
  * Created by matthewbbishop on 12/7/13.
  */
-public class MainFragment extends BaseFragment implements ViewPager.OnPageChangeListener {
+public class MainFragment extends BaseFragment implements ActionBar.OnNavigationListener {
 
-  /* ActionBar (injected by Activity) */
+  /* Allows fragments (or other components) to register as a BackPressedListener */
+  @Inject BackPressedManager mBackPressedManager;
+
+  /* ActionBar and related */
   @Inject ActionBar mActionBar;
+  /* The internal ActionBar view */
+  private View mActionBarView;
+  private ArrayAdapter mActionBarSpinnerAdapter;
 
   /* ViewPager and adapter */
   @InjectView(R.id.viewpager) ViewPager mViewPager;
   private Adapter mAdapter;
+
+  private MultiOnPageChangeListener mPageChangeListener;
+  private PageWrangler mPageWrangler;
+  private MainFragmentActionBarManager mActionBarManager;
+
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setHasOptionsMenu(true);
+  }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View root = inflater.inflate(R.layout.frg_main, container, false);
@@ -54,7 +73,14 @@ public class MainFragment extends BaseFragment implements ViewPager.OnPageChange
     mAdapter = new Adapter(getChildFragmentManager());
     mViewPager.setAdapter(mAdapter);
     mViewPager.setOffscreenPageLimit(2);
-    mViewPager.setOnPageChangeListener(this);
+
+    /* Allows multiple OnPageChangeListeners */
+    mPageChangeListener = new MultiOnPageChangeListener();
+    mViewPager.setOnPageChangeListener(mPageChangeListener);
+    
+    /* Page wrangler (does the animations between pages) */
+    mPageWrangler = new PageWrangler(mViewPager);
+    mPageChangeListener.addListener(mPageWrangler);
   }
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
@@ -63,65 +89,72 @@ public class MainFragment extends BaseFragment implements ViewPager.OnPageChange
   }
 
   private void initActionBar() {
-    mActionBar.setTitle("HN");
+    /* Manages which content is shown in the ActionBar, including which Fragment is having it's menu shown */
+    View decorView = getActivity().getWindow().getDecorView();
+    mActionBarManager = new MainFragmentActionBarManager(this, decorView, mViewPager, mAdapter);
+    mPageChangeListener.addListener(mActionBarManager);
+  }
 
-    mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-    mActionBar.setDisplayShowTitleEnabled(true);
+  @Override public void onResume() {
+    super.onResume();
+    getBus().register(mActionBarManager);
+  }
 
-    Tab tab = mActionBar.newTab()
-            .setText("Stories")
-            .setTabListener(new Tabs(0));
-    mActionBar.addTab(tab);
-    tab = mActionBar.newTab()
-            .setText("Comments")
-            .setTabListener(new Tabs(1));
-    mActionBar.addTab(tab);
-    tab = mActionBar.newTab()
-            .setText("Article")
-            .setTabListener(new Tabs(2));
-    mActionBar.addTab(tab);
+  @Override public void onPause() {
+    super.onPause();
+    getBus().unregister(mActionBarManager);
   }
 
   @Subscribe public void onShowStoryEvent(ShowStoryEvent ev) {
-    mAdapter.setActiveStory(ev.getStory());
-    mViewPager.setCurrentItem(1);
+    if(ev.getStory() != null && ev.getStory().storyId != 0) {
+      mAdapter.setActiveStory(ev.getStory());
+      mViewPager.setCurrentItem(1);
+    }
   }
 
-  @Override public void onPageScrolled(int i, float v, int i2) { /* no op */ }
-
-  @Override public void onPageScrollStateChanged(int i) { /* no op */ }
-
-  @Override public void onPageSelected(int i) {
-    mActionBar.selectTab(mActionBar.getTabAt(i));
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    return mActionBarManager.onOptionsItemSelected(item);
   }
 
+  @Override public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+    return false;
+  }
 
-  private static class Adapter extends FragmentPagerAdapter {
+  public static class Adapter extends FragmentPagerAdapter {
 
     private Story mActiveStory;
+
+    private StoryFragment mStoryFragment;
+    private CommentsFragment mCommentsFragment;
+    private WebFragment mWebFragment;
 
     public Adapter(FragmentManager fm) {
       super(fm);
     }
 
     @Override public Fragment getItem(int i) {
-      switch (i) {
-        case 0:
-          return new StoryFragment();
-        case 1:
-          CommentsFragment commentsFragment = new CommentsFragment();
-          boolean isJobsPost = Story.isYCombinatorJobPost(mActiveStory);
-          if (!isJobsPost) {
-            commentsFragment.setStory(mActiveStory);
+      switch (MainFragmentTab.fromPagerPosition(i)) {
+        case STORIES:
+          if(mStoryFragment == null) mStoryFragment = new StoryFragment();
+          return mStoryFragment;
+        case COMMENTS:
+          if(mCommentsFragment == null) {
+            mCommentsFragment = new CommentsFragment();
+            
+            /* mb TODO disabled because it should pick up the active story from the StoryAdapter @Produce method */
+//            boolean isJobsPost = Story.isYCombinatorJobPost(mActiveStory);
+//            if (!isJobsPost) {
+//              mCommentsFragment.setStory(mActiveStory);
+//            }
           }
-          return commentsFragment;
-        case 2:
-          WebFragment webFragment = new WebFragment();
-          webFragment.setUrl(mActiveStory.url);
-          return webFragment;
-        default:
-          throw new IllegalStateException(
-                  "MainActivity.Adapter attempted to access an illegal position = " + i);
+          return mCommentsFragment;
+        case ARTICLE:
+          if(mWebFragment == null) {
+            mWebFragment = new WebFragment();
+            mWebFragment.setUrl(mActiveStory.url);
+          }
+          return mWebFragment;
+        default: return null;
       }
     }
 
@@ -141,25 +174,5 @@ public class MainFragment extends BaseFragment implements ViewPager.OnPageChange
       mActiveStory = activeStory;
       notifyDataSetChanged();
     }
-  }
-
-  private class Tabs implements ActionBar.TabListener {
-
-    private int mPosition;
-
-    public Tabs(int position) {
-      mPosition = position;
-    }
-
-    @Override
-    public void onTabSelected(Tab tab, FragmentTransaction _) {
-      mViewPager.setCurrentItem(mPosition);
-    }
-
-    @Override
-    public void onTabUnselected(Tab tab, FragmentTransaction _) { /* no op */ }
-
-    @Override
-    public void onTabReselected(Tab tab, FragmentTransaction _) { /* no op */ }
   }
 }

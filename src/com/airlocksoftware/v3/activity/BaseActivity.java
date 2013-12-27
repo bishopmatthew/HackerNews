@@ -18,7 +18,8 @@ package com.airlocksoftware.v3.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.airlocksoftware.v3.dagger.ActivityModule;
+import com.airlocksoftware.v3.activity.components.BackPressedManager;
+import com.airlocksoftware.v3.dagger.BaseActivityModule;
 import com.airlocksoftware.v3.dagger.HNApp;
 import com.squareup.otto.Bus;
 
@@ -37,6 +38,7 @@ public abstract class BaseActivity extends FragmentActivity {
   private ObjectGraph mActivityGraph;
 
   @Inject Bus mBus;
+  @Inject BackPressedManager mBackPressedManager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,8 @@ public abstract class BaseActivity extends FragmentActivity {
 
     // Create the activity graph by .plus-ing our modules onto the application graph.
     HNApp application = (HNApp) getApplication();
-    mActivityGraph = application.getApplicationGraph().plus(getModules().toArray());
+    Object[] objects = getModules().toArray();
+    mActivityGraph = application.getApplicationGraph().plus(objects);
 
     // Inject ourselves so subclasses will have dependencies fulfilled when this method returns.
     mActivityGraph.inject(this);
@@ -71,6 +74,18 @@ public abstract class BaseActivity extends FragmentActivity {
     mBus.unregister(this);
   }
 
+  @Override public void onBackPressed() {
+    boolean handled = mBackPressedManager.onBackPressed();
+    if(!handled) super.onBackPressed();
+  }
+
+
+  public BackPressedManager getBackPressedManager() {
+    if(mBackPressedManager == null) mBackPressedManager = new BackPressedManager();
+    return mBackPressedManager;
+  }
+
+  /** Otto bus that can be used by subclasses **/
   public Bus getBus() {
     return mBus;
   }
@@ -80,7 +95,7 @@ public abstract class BaseActivity extends FragmentActivity {
    * additional modules provided they call and include the modules returned by calling {@code super.getModules()}.
    */
   protected List<Object> getModules() {
-    return Arrays.<Object>asList(new ActivityModule(this));
+    return Arrays.<Object>asList(new BaseActivityModule(this));
   }
 
   /**

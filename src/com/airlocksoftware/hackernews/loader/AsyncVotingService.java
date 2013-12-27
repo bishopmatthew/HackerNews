@@ -15,6 +15,7 @@ import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.data.ConnectionManager;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.model.Vote;
+import com.airlocksoftware.v3.api.Api;
 
 /**
  * When the user performs a vote, it gets added to the Votes table and this service attempts to run. If successful, it
@@ -80,7 +81,7 @@ public class AsyncVotingService extends AsyncTask<Void, Void, Void> {
 
   private Connection.Response getResponse(Connection connection) throws IOException {
     return connection.method(Method.GET)
-            .timeout(ConnectionManager.TIMEOUT_MILLIS)
+            .timeout(Api.TIMEOUT_MILLIS)
             .execute();
   }
 

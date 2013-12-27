@@ -13,6 +13,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import com.airlocksoftware.hackernews.data.ConnectionManager;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.model.Result;
+import com.airlocksoftware.v3.api.Api;
 
 /**
  * Handles sending replies to Comments and Stories. *
@@ -78,7 +79,7 @@ public class ReplyLoader extends AsyncTaskLoader<Result> {
   }
 
   private Element getReplyInput(UserPrefs data) throws IOException {
-    return ConnectionManager.authConnect(ConnectionManager.itemIdToUrlExtension(mId), data.getUserCookie())
+    return ConnectionManager.authConnect(Api.itemIdToUrlExtension(mId), data.getUserCookie())
             .get()
             .select("input[name=fnid]")
             .first();

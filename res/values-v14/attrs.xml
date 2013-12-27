@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="V3Theme">
+        
+        <!-- Theme identifiers (so we can tell which theme is currently set) -->
+        <attr name="themeColor" format="enum">
+            <enum name="light" value="0" />
+            <enum name="dark" value="1" />
+        </attr>
+        <attr name="themeTypeface" format="enum">
+            <enum name="serif" value="0" />
+            <enum name="sans_serif" value="1" />
+        </attr>
+        <attr name="themeTextSize" format="enum">
+            <enum name="extra_small" value="0" />
+            <enum name="small" value="1" />
+            <enum name="medium" value="2" />
+            <enum name="large" value="3" />
+            <enum name="extra_large" value="4" />
+        </attr>
+
+        <!-- Color attributes -->
+        <!--<attr name="textColorPrimary" format="reference|color" />-->
+        <!--<attr name="textColorSecondary" format="reference|color" />-->
+        <!--<attr name="textColorTertiary" format="reference|color" />-->
+
+        <!-- Font style attributes (enum values need to match RobotoTextView attrs.xml) -->
+        <attr name="boldTypeface" format="enum">
+            <enum name="roboto_bold" value="8"/>
+            <enum name="roboto_slab_bold" value="21"/>
+        </attr>
+        <attr name="regularTypeface" format="enum">
+            <enum name="roboto_slab_regular" value="20"/>
+            <enum name="roboto_regular" value="4"/>
+        </attr>
+        <attr name="lightTypeface" format="enum">
+            <enum name="roboto_slab_light" value="19"/>
+            <enum name="roboto_light" value="2"/>
+        </attr>
+        <attr name="thinTypeface" format="enum">
+            <enum name="roboto_slab_thin" value="18"/>
+            <enum name="roboto_thin" value="0"/>
+        </attr>
+
+        <!-- Font size attributes -->
+        <attr name="textSizeSmall" format="dimension"/>
+        <attr name="textSizeMedium" format="dimension"/>
+        <attr name="textSizeLarge" format="dimension"/>
+        <!-- Named font sizes go here (i.e. textActionBarTitleSize) -->
+
+    </declare-styleable>
+
+</resources>

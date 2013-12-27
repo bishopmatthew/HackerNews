@@ -3,6 +3,7 @@
         android:id="@+id/cnt_comments"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:background="?attr/bgDefault"
         >
 
     <ListView
@@ -12,7 +13,8 @@
             android:cacheColorHint="?attr/listCacheColorHint"
             android:divider="@null"
             android:fadingEdge="none"
-            android:fastScrollEnabled="true"/>
+            android:fastScrollEnabled="true"
+            />
 
     <include
             android:id="@+id/cnt_empty"

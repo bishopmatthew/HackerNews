@@ -13,6 +13,7 @@ import com.airlocksoftware.hackernews.activity.SubmitActivity.SendMode;
 import com.airlocksoftware.hackernews.data.ConnectionManager;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.model.Result;
+import com.airlocksoftware.v3.api.Api;
 
 public class SubmitLoader extends AsyncTaskLoader<Result> {
 
@@ -94,7 +95,7 @@ public class SubmitLoader extends AsyncTaskLoader<Result> {
   }
 
   private String getReplyFnid(UserPrefs data) throws IOException {
-    return ConnectionManager.authConnect(ConnectionManager.SUBMIT_URL, data.getUserCookie())
+    return ConnectionManager.authConnect(Api.SUBMIT_URL, data.getUserCookie())
             .get()
             .select("input[name=fnid]")
             .first()

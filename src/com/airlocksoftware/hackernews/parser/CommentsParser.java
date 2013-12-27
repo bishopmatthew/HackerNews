@@ -22,6 +22,7 @@ import com.airlocksoftware.hackernews.model.CommentThread;
 import com.airlocksoftware.hackernews.model.Result;
 import com.airlocksoftware.hackernews.model.Story;
 import com.airlocksoftware.hackernews.model.Timestamp;
+import com.airlocksoftware.v3.api.Api;
 
 public class CommentsParser {
 
@@ -347,9 +348,9 @@ public class CommentsParser {
   private static Document getCommentsDocument(UserPrefs data, long storyId) throws IOException {
     Connection con;
     if (data.isLoggedIn()) {
-      con = ConnectionManager.authConnect(ConnectionManager.ITEMS_URL + Long.toString(storyId), data.getUserCookie());
+      con = ConnectionManager.authConnect(Api.ITEMS_URL + Long.toString(storyId), data.getUserCookie());
     } else {
-      con = ConnectionManager.anonConnect(ConnectionManager.ITEMS_URL + Long.toString(storyId));
+      con = ConnectionManager.anonConnect(Api.ITEMS_URL + Long.toString(storyId));
     }
     return con.get();
   }
@@ -378,14 +379,14 @@ public class CommentsParser {
       if (moreFnid != null) {
         con = ConnectionManager.authConnect(moreFnid, data.getUserCookie());
       } else {
-        con = ConnectionManager.authConnect(ConnectionManager.THREADS_URL + username, data.getUserCookie());
+        con = ConnectionManager.authConnect(Api.THREADS_URL + username, data.getUserCookie());
       }
 
     } else {
       if (moreFnid != null) {
         con = ConnectionManager.anonConnect(moreFnid);
       } else {
-        con = ConnectionManager.anonConnect(ConnectionManager.THREADS_URL + username);
+        con = ConnectionManager.anonConnect(Api.THREADS_URL + username);
       }
     }
     return con.get();

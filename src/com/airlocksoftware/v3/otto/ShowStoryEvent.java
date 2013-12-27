@@ -11,9 +11,6 @@ public class ShowStoryEvent {
 
   public ShowStoryEvent(Story story) {
     mStory = story;
-    if (mStory == null) {
-      throw new NullPointerException("mStory in ShowStoryEvent cannot be null");
-    }
   }
 
   public Story getStory() {

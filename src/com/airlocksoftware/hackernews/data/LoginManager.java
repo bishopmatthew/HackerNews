@@ -1,6 +1,7 @@
 package com.airlocksoftware.hackernews.data;
 
 import com.airlocksoftware.hackernews.utils.StringUtils;
+import com.airlocksoftware.v3.api.Api;
 
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
@@ -27,9 +28,9 @@ public class LoginManager {
               .data("fnid", fnid)
               .data("u", username)
               .data("p", password)
-              .header("Origin", ConnectionManager.BASE_URL)
+              .header("Origin", Api.BASE_URL)
               .followRedirects(true)
-              .referrer(ConnectionManager.BASE_URL + LOGIN_URL_EXTENSION)
+              .referrer(Api.BASE_URL + LOGIN_URL_EXTENSION)
               .method(Method.POST)
               .execute();
 

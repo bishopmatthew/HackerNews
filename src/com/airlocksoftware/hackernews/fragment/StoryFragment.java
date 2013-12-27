@@ -1,18 +1,22 @@
 package com.airlocksoftware.hackernews.fragment;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,40 +42,45 @@ import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
 import com.airlocksoftware.holo.image.IconView;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
+import com.airlocksoftware.v3.api.StoryFragmentPage;
+import com.airlocksoftware.v3.fragment.BaseFragment;
 
+import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import hugo.weaving.DebugLog;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public class StoryFragment extends Fragment implements ActionBarClient, LoaderManager.LoaderCallbacks<StoryResponse> {
+public class StoryFragment extends BaseFragment implements ActionBarClient, LoaderManager.LoaderCallbacks<StoryResponse>, OnRefreshListener, ActionBar.OnNavigationListener {
 
   // State
   private StoryAdapter mAdapter;
-
   private Page mPage = Page.FRONT;
-
   private Request mRequest = Request.NEW;
-
   private Result mLastResult = Result.EMPTY;
-
   private boolean mIsLoading = false;
-
   private boolean mShouldRestoreListState;
 
   // Activity interfaces
   TabletLayout mTabletLayout = null;
-
   StoryFragment.Callbacks mCallbacks = null;
+
+  /* New Views */
+  @InjectView(R.id.pull_to_refresh) PullToRefreshLayout mPullToRefresh;
+
+  /* ActionBar */
+  @Inject ActionBar mActionBar;
+  private ArrayAdapter<CharSequence> mActionBarSpinnerAdapter;
 
   // Views
   View mError, mLoading;
-
   private ListView mList;
-
   private ActionBarButton mRefreshButton;
-
   private View mMoreButton;
-
   private TextView mMoreButtonText;
-
   private IconView mMoreIcon;
 
   // Listeners
@@ -140,7 +149,10 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.frg_stories, container, false);
+    View view = inflater.inflate(R.layout.frg_stories, container, false);
+    ButterKnife.inject(this, view);
+    
+    return view;
   }
 
   @Override
@@ -155,6 +167,10 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
     findViews();
     setupMoreButton();
     setupAdapter();
+
+    /* v3 */
+    initPullToRefresh();
+    initActionBar();
 
     // if in tablet layout, change background & cache color hint of the list to a different color
     if (mTabletLayout.isTabletLayout()) {
@@ -172,15 +188,59 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
     refreshContentVisibility();
   }
 
-  @Override
-  public void onPause() {
-        /* Save list state to shared prefs (since we kill the activity when we switch to the comments list) */
+  private void initActionBar() {
+    /* Setup spinner */
+    mActionBar.setDisplayShowTitleEnabled(false);
+    int layoutResId = R.layout.vw_story_actionbar;
+    mActionBarSpinnerAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.story_pages, layoutResId);
+    mActionBarSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+    mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+    mActionBar.setListNavigationCallbacks(mActionBarSpinnerAdapter, this);
+  }
+
+  private void initPullToRefresh() {
+        /* setup pull to refresh */
+    ActionBarPullToRefresh.from(getActivity())
+            .allChildrenArePullable()
+            .listener(this)
+            .setup(mPullToRefresh);
+  }
+
+  @DebugLog
+  @Override public void onResume() {
+    super.onResume();
+    getBus().register(mAdapter);
+  }
+
+  @DebugLog
+  @Override public void onPause() {
+    getBus().unregister(mAdapter);
+
+    /* Save list state to shared prefs (since we kill the activity when we switch to the comments list) */
     FragmentActivity activity = getActivity();
     if (activity == null || mList == null) {
       return;
     }
     new AppData(activity).saveStoryListPosition(mList.getFirstVisiblePosition());
     super.onPause();
+  }
+
+
+  @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    inflater.inflate(R.menu.stories, menu);
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch(item.getItemId()) {
+      case R.id.action_text_settings:
+        Toast.makeText(getActivity(), "Display text settings controls", Toast.LENGTH_LONG).show();
+        return true;
+      case R.id.action_search:
+        Toast.makeText(getActivity(), "Display search", Toast.LENGTH_LONG).show();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 
   @SuppressWarnings("deprecation")
@@ -266,6 +326,7 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
     }
 
     mIsLoading = false;
+    mPullToRefresh.setRefreshComplete();
     mLastResult = response.result;
 
     switch (mLastResult) {
@@ -325,7 +386,12 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 
   @Override
   public void onLoaderReset(Loader<StoryResponse> loader) {
-    // no implementation necessary
+    /* no op */
+  }
+
+  @Override public void onRefreshStarted(View view) {
+    mRequest = Request.REFRESH;
+    getLoaderManager().restartLoader(0, null, StoryFragment.this);
   }
 
   // ActionBar interface
@@ -354,6 +420,7 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
   public StoryAdapter getStoryAdapter() {
     return mAdapter;
   }
+
 
   /**
    * Determines which view (List, Error, or Loading) show be visible. *
@@ -384,6 +451,15 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
     fragment.setPage(page);
     return fragment;
   }
+
+  @Override public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+    StoryFragmentPage page = StoryFragmentPage.fromListPosition(itemPosition);
+    switch(page) {
+
+    }
+    return false;
+  }
+
 
   // Callbacks
 

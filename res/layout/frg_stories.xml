@@ -4,17 +4,25 @@
         android:id="@+id/cnt_stories"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:paddingTop="@dimen/actionbar_height"
         >
 
-    <ListView
-            android:id="@android:id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:cacheColorHint="?attr/listCacheColorHint"
-            android:divider="@null"
-            android:fadingEdge="none"
-            android:fastScrollEnabled="true"
-            />
+    <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
+            android:id="@+id/pull_to_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ListView
+                android:id="@android:id/list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:cacheColorHint="?attr/listCacheColorHint"
+                android:divider="@null"
+                android:fadingEdge="none"
+                android:fastScrollEnabled="true"
+                />
+
+    </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 
     <include
             android:id="@+id/cnt_error"

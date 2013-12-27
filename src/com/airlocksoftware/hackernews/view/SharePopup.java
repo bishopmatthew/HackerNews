@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.airlocksoftware.hackernews.R;
-import com.airlocksoftware.hackernews.data.ConnectionManager;
 import com.airlocksoftware.hackernews.model.Comment;
 import com.airlocksoftware.hackernews.model.ShareItem;
 import com.airlocksoftware.hackernews.model.Story;
@@ -32,6 +31,7 @@ import com.airlocksoftware.holo.checkable.CheckableViewManager.OnCheckedViewChan
 import com.airlocksoftware.holo.picker.share.ShareList;
 import com.airlocksoftware.holo.type.FontText;
 import com.airlocksoftware.holo.utils.Utils;
+import com.airlocksoftware.v3.api.Api;
 
 /**
  * Uses HoloTheme class ShareList to display a popup with a list of sharing options. Also allows multiple options for
@@ -139,7 +139,7 @@ public class SharePopup extends RelativeLayout {
     title("Share comment");
 
     String subject = "A comment by " + comment.username;
-    String extraText = ConnectionManager.itemIdToUrl(comment.commentId);
+    String extraText = Api.itemIdToUrl(comment.commentId);
     clearButtons();
     addItem("link", subject, extraText);
     addItem("text", subject, comment.generateSpannedHtml()
@@ -155,7 +155,7 @@ public class SharePopup extends RelativeLayout {
   public void shareStory(Story story) {
     title("Share story");
 
-    String extraText = ConnectionManager.itemIdToUrl(story.storyId);
+    String extraText = Api.itemIdToUrl(story.storyId);
     clearButtons();
     if (StringUtils.isNotBlank(story.url)) {
       addItem("article", story.title, story.url);

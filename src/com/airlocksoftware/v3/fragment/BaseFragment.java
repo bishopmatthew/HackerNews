@@ -30,11 +30,18 @@ public class BaseFragment extends Fragment {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    ((BaseActivity) getActivity()).inject(this);
+    inject(this);
   }
 
   public Bus getBus() {
     return mBus;
+  }
+
+  /**
+   * Inject the supplied {@code object} using the activity-specific graph.
+   */
+  public void inject(Object object) {
+    ((BaseActivity) getActivity()).inject(object);
   }
 
 }

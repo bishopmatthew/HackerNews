@@ -1,11 +1,12 @@
 package com.airlocksoftware.v3.dagger;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.airlocksoftware.hackernews.BuildConfig;
 import com.crashlytics.android.Crashlytics;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import dagger.ObjectGraph;
@@ -19,6 +20,14 @@ import static timber.log.Timber.plant;
  */
 public class HNApp extends Application {
 
+
+  /** Singleton impl **/
+  private static HNApp instance;
+  public HNApp() { instance = this; }
+  public static Context getAppContext() { return instance.getApplicationContext(); }
+  public static HNApp getInstance() { return instance; }
+
+  /* The Dagger application dependency graph */
   private ObjectGraph mApplicationGraph;
 
   @Override
@@ -34,20 +43,15 @@ public class HNApp extends Application {
     }
   }
 
-  public ObjectGraph getApplicationGraph() {
-    return mApplicationGraph;
-  }
+  public ObjectGraph getApplicationGraph() { return mApplicationGraph; }
 
   protected List<Object> getModules() {
-    return Arrays.asList(
-            new AndroidModule(this),
-            new DemoModule()
-    );
+    List<Object> modules = new ArrayList<Object>();
+    modules.add(new AppModule(this));
+    return modules;
   }
 
-  public void inject(Object object) {
-    mApplicationGraph.inject(object);
-  }
+  public void inject(Object object) { mApplicationGraph.inject(object); }
 
   /**
    * A tree which logs important information for crash reporting.

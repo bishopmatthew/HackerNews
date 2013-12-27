@@ -28,13 +28,17 @@ dependencies {
     compile 'com.squareup.dagger:dagger:1.1.+'
     compile 'com.jakewharton:butterknife:4.0.+'
     compile 'com.jakewharton.timber:timber:2.0.+'
+    compile 'com.github.johnkil.android-robototextview:robototextview:2.0.0'
+    compile 'com.github.chrisbanes.actionbarpulltorefresh:library:+'
 
-    /* Local dependencies (available at http://www.github.com/bishopmatthew) */
+    /* Local library project (not included in repo)  */
+    compile project(':libs:HoloTheme') /* available at http://www.github.com/bishopmatthew */
+
+    /* Jars (included in git repo)*/
     compile files('libs/databaseutils.jar')
-    compile project(':libs:HoloTheme')
 
     /* Test deps */
-    instrumentTestCompile fileTree(dir: 'libs/test-libs', include: '*.jar')
+    instrumentTestCompile fileTree(dir: 'libs/test-libs', include: '*.jar') /* included in repo */
     instrumentTestCompile 'com.google.guava:guava:14.0.1'
 }
 
@@ -72,18 +76,3 @@ android {
         release.setRoot('build-types/release')
     }
 }
-
-//android.applicationVariants.all { variant ->
-//    //Where to place the generated code
-//    variant.ext.set("dagger_gen_${variant.dirName}", file("${project.buildDir}/source/dagger_gen/${variant.dirName}"))
-//
-//    //Do the actual preprocessor things
-//    variant.javaCompile.doFirst {
-//        File out = variant.ext.get("dagger_gen_${variant.dirName}")
-//        out.mkdirs()
-//        variant.javaCompile.options.compilerArgs += [
-//                '-processorpath', configurations.preprocess.getAsPath(),
-//                '-s', out
-//        ]
-//    }
-//}

@@ -2,6 +2,7 @@
     android:id="@+id/root_frg_webview"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:paddingTop="@dimen/actionbar_height"
     android:orientation="vertical" >
 
     <ProgressBar

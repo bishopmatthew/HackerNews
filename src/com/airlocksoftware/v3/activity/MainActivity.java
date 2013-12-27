@@ -1,11 +1,11 @@
 package com.airlocksoftware.v3.activity;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
 
@@ -17,8 +17,12 @@ import com.airlocksoftware.hackernews.interfaces.SharePopupInterface;
 import com.airlocksoftware.hackernews.interfaces.TabletLayout;
 import com.airlocksoftware.hackernews.model.Story;
 import com.airlocksoftware.hackernews.view.SharePopup;
+import com.airlocksoftware.v3.dagger.MainActivityModule;
 import com.airlocksoftware.v3.fragment.MainFragment;
 import com.airlocksoftware.v3.otto.ShowStoryEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -42,6 +46,7 @@ public class MainActivity extends BaseActivity implements StoryFragment.Callback
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     /* Inflate views */
     setContentView(R.layout.act_main);
     /* Inject views */
@@ -53,32 +58,49 @@ public class MainActivity extends BaseActivity implements StoryFragment.Callback
   }
 
   private void initNavigationDrawer() {
-    int icon = R.drawable.ic_btn_play_store;
+    int icon = R.drawable.ic_navigation_drawer;
     int open = R.string.drawer_open;
     int close = R.string.drawer_close;
-    mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, icon, open, close) {
-      public void onDrawerClosed(View view) { /* no op */ }
-      public void onDrawerOpened(View drawerView) { /* no op */ }
-    };
+    mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, icon, open, close);
+//    {
+//      public void onDrawerClosed(View view) { /* no op */ }
+//      public void onDrawerOpened(View drawerView) { /* no op */ }
+//    };
 
-    // Set the drawer toggle as the DrawerListener
-    mDrawerLayout.setDrawerListener(mDrawerToggle);
+    /* Set the drawer toggle as the DrawerListener */
+//    getActionBar().setDisplayHomeAsUpEnabled(true);
+//    getActionBar().setHomeButtonEnabled(true);
+//    getActionBar().setDisplayShowHomeEnabled(true);
+//    mDrawerLayout.setDrawerListener(mDrawerToggle);
+//    mDrawerToggle.setDrawerIndicatorEnabled(true);
 
     getActionBar().setDisplayHomeAsUpEnabled(true);
     getActionBar().setHomeButtonEnabled(true);
-    getActionBar().setDisplayShowHomeEnabled(true);
+    mDrawerLayout.setDrawerListener(mDrawerToggle);
+//    mDrawerToggle.setDrawerIndicatorEnabled(true);
   }
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // Pass the event to ActionBarDrawerToggle, if it returns
-    // true, then it has handled the app icon touch event
-    if (mDrawerToggle.onOptionsItemSelected(item)) {
-      return true;
-    }
-    // Handle your other action bar items...
+  @Override protected void onPostCreate(Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
+    // Sync the toggle state after onRestoreInstanceState has occurred.
+    mDrawerToggle.syncState();
+  }
 
-    return super.onOptionsItemSelected(item);
+  @Override public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    mDrawerToggle.onConfigurationChanged(newConfig);
+  }
+
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    /* If the drawer indicator is enabled, give the drawer toggle the chance to consume the up action. Otherwise
+    * call super which passes it down the chain to registered Fragments. */
+    if (mDrawerToggle.isDrawerIndicatorEnabled() && mDrawerToggle.onOptionsItemSelected(item)) {
+      return true;
+    } else {
+      return super.onOptionsItemSelected(item);
+    }
+
   }
 
   private void initViews() {
@@ -86,6 +108,7 @@ public class MainActivity extends BaseActivity implements StoryFragment.Callback
     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
     ft.add(R.id.cnt_fragment, new MainFragment(), "MainFragment");
     ft.commit();
+
     /* If we're in debug mode, display the debug menu. */
     if (BuildConfig.DEBUG) {
       setupDebugMenu();
@@ -98,7 +121,6 @@ public class MainActivity extends BaseActivity implements StoryFragment.Callback
 
   @Override
   public void showCommentsForStory(Story story, CommentsTab initalTab) {
-//        Toast.makeText(this, "Show comments", Toast.LENGTH_SHORT).show();
     getBus().post(new ShowStoryEvent(story));
   }
 
@@ -129,5 +151,17 @@ public class MainActivity extends BaseActivity implements StoryFragment.Callback
 
   @Override public boolean commentsFragmentIsInLayout() {
     return true;
+  }
+
+  /** Add our MainActivity-specific module to the Application & BaseActivity modules in the ObjectGraph **/
+  @Override protected List<Object> getModules() {
+    List<Object> modules = new ArrayList<Object>();
+    modules.add(new MainActivityModule(this));
+    modules.addAll(super.getModules());
+    return modules;
+  }
+
+  public ActionBarDrawerToggle getDrawerToggle() {
+    return mDrawerToggle;
   }
 }

@@ -6,5 +6,16 @@
 
     <!-- Overrides value in HoloTheme -->
     <dimen name="overflow_menu_width">260dp</dimen>
+    
+    <!-- Basic grid unit is 8dp. Try to avoid half sizes. Min touch target is 'six' (48dp) -->
+    <dimen name="half">4dp</dimen>
+    <dimen name="one">8dp</dimen>
+    <dimen name="two">16dp</dimen>
+    <dimen name="three">24dp</dimen>
+    <dimen name="four">32dp</dimen>
+    <dimen name="five">40dp</dimen>
+    <dimen name="six">48dp</dimen>
+    <dimen name="seven">56dp</dimen>
+    <dimen name="eight">64dp</dimen>
 
 </resources>
