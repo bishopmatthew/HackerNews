@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -114,6 +113,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
 	WebViewClient mWebViewClient = new WebViewClient() {
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			view.loadUrl(url);
+			mUrl = url;
 			return true;
 		}
 	};
