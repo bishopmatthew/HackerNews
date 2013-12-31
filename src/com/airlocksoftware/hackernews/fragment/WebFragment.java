@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -68,9 +69,11 @@ public class WebFragment extends Fragment implements ActionBarClient {
 	public void onCreate(Bundle savedState) {
 		super.onCreate(savedState);
 		Bundle args = getArguments();
+		
 		if (args != null) {
 			mUrl = args.getString(URL);
 		}
+
 	}
 
 	@Override
@@ -84,7 +87,9 @@ public class WebFragment extends Fragment implements ActionBarClient {
 		mWebView.setWebChromeClient(mWebChromeClient);
 		mWebView.setWebViewClient(mWebViewClient);
 
-		if (mUrl != null) {
+		if (savedInstanceState != null) {
+			mWebView.restoreState(savedInstanceState);
+		} else if (mUrl != null) {
 			mWebView.loadUrl(mUrl);
 		}
 
@@ -149,6 +154,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
+		mWebView.saveState(outState);
 		outState.putString(URL, mUrl);
 		super.onSaveInstanceState(outState);
 	}
