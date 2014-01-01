@@ -36,6 +36,7 @@ dependencies {
 
     /* Jars (included in git repo)*/
     compile files('libs/databaseutils.jar')
+    compile files('libs/android-support-v4.jar')
 
     /* Test deps */
     instrumentTestCompile fileTree(dir: 'libs/test-libs', include: '*.jar') /* included in repo */
