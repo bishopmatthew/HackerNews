@@ -4,6 +4,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 
 import com.airlocksoftware.hackernews.fragment.CommentsFragment;
 import com.airlocksoftware.hackernews.fragment.StoryFragment;
+import com.airlocksoftware.hackernews.fragment.WebFragment;
 import com.airlocksoftware.v3.actionbar.MainFragmentActionBarManager;
 import com.airlocksoftware.v3.activity.MainActivity;
 import com.airlocksoftware.v3.fragment.MainFragment;
@@ -21,6 +22,7 @@ import dagger.Provides;
                 MainFragment.class,
                 StoryFragment.class,
                 CommentsFragment.class,
+                WebFragment.class,
                 MainFragmentActionBarManager.class
         },
         library = true,

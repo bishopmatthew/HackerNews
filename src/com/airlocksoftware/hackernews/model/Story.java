@@ -36,7 +36,7 @@ public class Story extends SqlObject {
 
   // data used for caching purposes
   public String auth;
-  public Page page;
+//  public Page page;
 
   // is the Story archived (i.e. can't reply or comment)
   public boolean isArchived = false; // by default
@@ -57,6 +57,10 @@ public class Story extends SqlObject {
   public static final String AUTH = "auth";
   public static final String PAGE = "page";
   public static final String IS_ARCHIVED = "isArchived";
+
+  public boolean hasArticle(){
+    return url != null;
+  }
 
   public boolean upvote(Context context) {
     UserPrefs data = new UserPrefs(context);

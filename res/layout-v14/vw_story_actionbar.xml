@@ -10,6 +10,6 @@
         android:layout_gravity="center"
         android:paddingRight="@dimen/one"
         android:textSize="22sp"
-        android:text="Front Page"
         app:typeface="?attr/regularTypeface"
+        tools:text="Front Page"
         />

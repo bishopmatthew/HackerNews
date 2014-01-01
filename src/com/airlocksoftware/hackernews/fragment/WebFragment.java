@@ -3,7 +3,6 @@ package com.airlocksoftware.hackernews.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +15,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.airlocksoftware.hackernews.R;
+import com.airlocksoftware.hackernews.model.Story;
 import com.airlocksoftware.hackernews.utils.LinkUtils;
 import com.airlocksoftware.hackernews.utils.StringUtils;
 import com.airlocksoftware.holo.actionbar.ActionBarButton;
@@ -23,19 +23,19 @@ import com.airlocksoftware.holo.actionbar.ActionBarButton.Priority;
 import com.airlocksoftware.holo.actionbar.interfaces.ActionBarClient;
 import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
 import com.airlocksoftware.holo.webview.WebViewPagerCompat;
+import com.airlocksoftware.v3.fragment.BaseFragment;
+import com.airlocksoftware.v3.otto.ShowStoryEvent;
+import com.squareup.otto.Subscribe;
 
-public class WebFragment extends Fragment implements ActionBarClient {
+public class WebFragment extends BaseFragment implements ActionBarClient {
 
   private String mUrl;
 
   ViewGroup mRootView;
-
   private WebView mWebView;
-
   private ProgressBar mProgress;
 
   private ActionBarButton mRefreshButton;
-
   private ActionBarButton mBrowserButton;
 
   // Listeners
@@ -69,10 +69,6 @@ public class WebFragment extends Fragment implements ActionBarClient {
   @Override
   public void onCreate(Bundle savedState) {
     super.onCreate(savedState);
-    Bundle args = getArguments();
-    if (args != null) {
-      mUrl = args.getString(URL);
-    }
   }
 
   @Override
@@ -85,6 +81,15 @@ public class WebFragment extends Fragment implements ActionBarClient {
 
     mWebView.setWebChromeClient(mWebChromeClient);
     mWebView.setWebViewClient(mWebViewClient);
+
+    /* Get arguments */
+    Bundle args = getArguments();
+    if (args != null) {
+      mUrl = args.getString(URL);
+    }
+
+    /* Restore state */
+    mWebView.restoreState(savedInstanceState);
 
     if (mUrl != null) {
       mWebView.loadUrl(mUrl);
@@ -156,6 +161,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
   @Override
   public void onSaveInstanceState(Bundle outState) {
     outState.putString(URL, mUrl);
+    mWebView.saveState(outState);
     super.onSaveInstanceState(outState);
   }
 
@@ -202,7 +208,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
    */
   public void loadNewUrl(String url) {
     mUrl = url;
-    mWebView.clearView();
+    mWebView.loadUrl("about:blank");
     mWebView.loadUrl(mUrl);
   }
 
@@ -211,6 +217,11 @@ public class WebFragment extends Fragment implements ActionBarClient {
    */
   public void setUrl(String url) {
     mUrl = url;
+  }
+
+  @Subscribe public void onShowStoryEvent(ShowStoryEvent ev) {
+    Story story = ev.getStory();
+    if(story != null && story.hasArticle()) loadNewUrl(story.url);
   }
 
 }

@@ -90,8 +90,10 @@ public class MainFragmentActionBarManager implements ViewPager.OnPageChangeListe
       mDrawerToggle.setDrawerIndicatorEnabled(true);
     } else {
       mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-      mActionBar.setDisplayShowCustomEnabled(true);
       mDrawerToggle.setDrawerIndicatorEnabled(false);
+
+      /* We don't show the tabs if the story doesn't have a url */
+      mActionBar.setDisplayShowCustomEnabled(mAdapter.getCount() >= 3);
     }
 
     /* Ensure that the ActionBar is shown */

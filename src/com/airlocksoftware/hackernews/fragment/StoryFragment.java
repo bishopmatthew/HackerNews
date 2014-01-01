@@ -42,8 +42,8 @@ import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
 import com.airlocksoftware.holo.image.IconView;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
-import com.airlocksoftware.v3.api.StoryFragmentPage;
 import com.airlocksoftware.v3.fragment.BaseFragment;
+import com.airlocksoftware.v3.menu.TextSettingsMenu;
 
 import javax.inject.Inject;
 
@@ -54,7 +54,8 @@ import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public class StoryFragment extends BaseFragment implements ActionBarClient, LoaderManager.LoaderCallbacks<StoryResponse>, OnRefreshListener, ActionBar.OnNavigationListener {
+public class StoryFragment extends BaseFragment implements ActionBarClient,
+        LoaderManager.LoaderCallbacks<StoryResponse>, OnRefreshListener, ActionBar.OnNavigationListener {
 
   // State
   private StoryAdapter mAdapter;
@@ -233,7 +234,28 @@ public class StoryFragment extends BaseFragment implements ActionBarClient, Load
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch(item.getItemId()) {
       case R.id.action_text_settings:
-        Toast.makeText(getActivity(), "Display text settings controls", Toast.LENGTH_LONG).show();
+        View textSettingsButton = getActivity().findViewById(R.id.action_text_settings);
+//        TextSettingsMenu textSettingsMenu = new TextSettingsMenu(getActivity(), textSettingsButton);
+//        textSettingsMenu.show();
+
+        TextSettingsMenu textSettingsMenu = new TextSettingsMenu(getActivity());
+        textSettingsMenu.show(textSettingsButton);
+//        textSettingsMenu.showAsDropDown(textSettingsButton);
+//        textSettingsMenu.showAtLocation(textSettingsButton, CENTER_HORIZONTAL | BOTTOM, 0, 0);
+
+//        LayoutInflater inflater = getActivity().getLayoutInflater();
+//        View layout = inflater.inflate(R.layout.popup_text_settings, null);
+//        final PopupWindow popup = new PopupWindow(layout, WRAP_CONTENT, WRAP_CONTENT, true);
+//        popup.setAnimationStyle(R.style.TextSettingsMenu_Animation);
+//        popup.showAtLocation(textSettingsButton, CENTER_HORIZONTAL | BOTTOM, 0, 0);
+//
+//        Button btnClosePopup = (Button) layout.findViewById(R.id.btn_close_popup);
+//        btnClosePopup.setOnClickListener(new OnClickListener() {
+//          @Override public void onClick(View v) {
+//            popup.dismiss();
+//          }
+//        });
+
         return true;
       case R.id.action_search:
         Toast.makeText(getActivity(), "Display search", Toast.LENGTH_LONG).show();
@@ -453,11 +475,11 @@ public class StoryFragment extends BaseFragment implements ActionBarClient, Load
   }
 
   @Override public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-    StoryFragmentPage page = StoryFragmentPage.fromListPosition(itemPosition);
-    switch(page) {
-
-    }
-    return false;
+    Page page = Page.fromListPosition(itemPosition);
+    setPage(page);
+    getLoaderManager().restartLoader(0, null, this);
+    mPullToRefresh.setRefreshing(true);
+    return true;
   }
 
 

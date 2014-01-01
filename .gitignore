@@ -20,7 +20,8 @@ local.properties
 .project
 
 # Ignore the lib files
-libs/
+# Nevermind, only ignore HoloTheme in the libs folder
+libs/HoloTheme/
 
 # Ignore Mac hidden dir file
 *.DS_Store

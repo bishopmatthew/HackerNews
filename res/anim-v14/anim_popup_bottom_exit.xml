@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<set xmlns:android="http://schemas.android.com/apk/res/android"-->
+     <!--android:interpolator="@android:anim/accelerate_interpolator">-->
+
+    <!--<scale-->
+            <!--android:duration="@android:integer/config_shortAnimTime"-->
+            <!--android:fromYScale="1.0"-->
+            <!--android:toYScale="0.9"-->
+            <!--android:fromXScale="1.0"-->
+            <!--android:toXScale="0.9"-->
+            <!--android:pivotY="100%"-->
+            <!--/>-->
+
+    <!--<alpha-->
+            <!--android:duration="@android:integer/config_shortAnimTime"-->
+            <!--android:fromAlpha="1.0"-->
+            <!--android:toAlpha="0.0"-->
+            <!--/>-->
+
+<!--</set>-->
+        
+<!-- copied from android/res/anim/shrink_fade_out_from_bottom -->
+<set xmlns:android="http://schemas.android.com/apk/res/android" android:shareInterpolator="false">
+<scale 	android:interpolator="@android:interpolator/decelerate_quint"
+          android:fromXScale="1.0" android:toXScale="0.9"
+          android:fromYScale="1.0" android:toYScale="0.9"
+          android:pivotX="50%" android:pivotY="100%"
+          android:duration="220" />
+<alpha 	android:interpolator="@android:interpolator/decelerate_cubic"
+          android:fromAlpha="1.0" android:toAlpha="0.0"
+          android:duration="150" />
+</set>

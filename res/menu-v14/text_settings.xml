@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_save"
+          android:icon="@drawable/ic_action_search"
+          android:title="Search" />
+    <!-- menu group -->
+    <group android:id="@+id/group_delete">
+        <item android:id="@+id/menu_archive"
+              android:title="Archive" />
+        <item android:id="@+id/menu_delete"
+              android:title="Delete"
+              android:actionLayout="@null"
+                />
+    </group>
+</menu>

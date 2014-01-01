@@ -43,6 +43,7 @@
     <color name="black_5_opac">#0C000000</color>
     <color name="black_10_opac">#1a000000</color>
     <color name="black_20_opac">#33000000</color>
+    <color name="black_30_opac">#4c000000</color>
     <color name="black_35_opac">#5a000000</color>
     <color name="black_40_opac">#66000000</color>
     <color name="black_50_opac">#8000</color>

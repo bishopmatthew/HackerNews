@@ -1,0 +1,147 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/popup_element"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+    <LinearLayout
+            android:id="@+id/cnt_text_size"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="@dimen/two"
+            android:paddingRight="@dimen/two"
+            android:paddingTop="@dimen/one"
+            android:paddingBottom="@dimen/one"
+            >
+
+        <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Text Size"
+                style="@style/Text.TextSettingsMenuHeading"
+                />
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+            <com.airlocksoftware.holo.image.IconView
+                    android:id="@+id/btn_smaller"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:icon_src="@drawable/ic_textsettings_minus"
+                    />
+
+            <com.airlocksoftware.holo.image.IconView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    app:icon_src="@drawable/ic_textsettings_sizelabel"
+                    />
+
+            <com.airlocksoftware.holo.image.IconView
+                    android:id="@+id/btn_smaller"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:icon_src="@drawable/ic_textsettings_plus"
+                    />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/cnt_theme"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/two"
+            >
+
+        <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Theme"
+                style="@style/Text.TextSettingsMenuHeading"
+                />
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+            <com.airlocksoftware.holo.image.IconView
+                    android:id="@+id/btn_night"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:icon_src="@drawable/ic_textsettings_night"
+                    app:icon_colors="@color/btn_icon_view"
+                    />
+
+            <com.airlocksoftware.holo.image.IconView
+                    android:id="@+id/btn_smaller"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:icon_src="@drawable/ic_textsettings_day_normal"
+                    />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/cnt_typeface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/two"
+            >
+
+        <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Typeface"
+                style="@style/Text.TextSettingsMenuHeading"/>
+
+
+        <Spinner
+                android:id="@+id/spin_typeface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                />
+
+
+    </LinearLayout>
+</LinearLayout>

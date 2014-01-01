@@ -1,18 +1,5 @@
 package com.airlocksoftware.hackernews.parser;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-
-import com.airlocksoftware.hackernews.utils.StringUtils;
-
-import org.jsoup.Connection;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.TextNode;
-import org.jsoup.select.Elements;
-
 import android.content.Context;
 import android.util.Log;
 
@@ -23,7 +10,19 @@ import com.airlocksoftware.hackernews.model.Request;
 import com.airlocksoftware.hackernews.model.Result;
 import com.airlocksoftware.hackernews.model.Story;
 import com.airlocksoftware.hackernews.model.Timestamp;
+import com.airlocksoftware.hackernews.utils.StringUtils;
 import com.airlocksoftware.v3.api.Api;
+
+import org.jsoup.Connection;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 public class StoryParser {
 
@@ -79,7 +78,11 @@ public class StoryParser {
       throw new RuntimeException("StoryParser.parseUserSubmissions received a blank username");
     }
     String urlExtension = StringUtils.isNotBlank(moreFnid) ? "/" + moreFnid : "/submitted?id=" + username;
-    StoryResponse response = parseStories(context, Page.USER, urlExtension);
+    
+    /* mb TODO why do I pass the Page here -- it is only set as an instance variable on the Story. */
+//    StoryResponse response = parseStories(context, Page.USER, urlExtension);
+    StoryResponse response = parseStories(context, null, urlExtension);
+
     if (StringUtils.isNotBlank(moreFnid) && response.result == Result.SUCCESS) {
       // switch result to MORE
       response.result = Result.MORE;
@@ -87,6 +90,7 @@ public class StoryParser {
     return response;
   }
 
+  /** Downloads the html at urlExtension and parses it into a list of Stories. **/
   private static StoryResponse parseStories(Context context, Page page, String urlExtension) {
     StoryResponse response = new StoryResponse();
     response.stories = new ArrayList<Story>();
@@ -120,7 +124,7 @@ public class StoryParser {
         Element titleElement = child.parent();
         Element subtextElement = subtextIterator.next();
         Story story = parseStory(titleElement, subtextElement, userCookie != null);
-        story.page = page;
+//        story.page = page;
         response.stories.add(story);
       }
       Log.d(TAG, "Parsing took: " + (System.currentTimeMillis() - downloadTime) + " milliseconds"); // TODO DEBUGGING
