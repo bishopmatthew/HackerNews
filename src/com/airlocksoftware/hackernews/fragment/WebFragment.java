@@ -68,9 +68,11 @@ public class WebFragment extends Fragment implements ActionBarClient {
 	public void onCreate(Bundle savedState) {
 		super.onCreate(savedState);
 		Bundle args = getArguments();
+		
 		if (args != null) {
 			mUrl = args.getString(URL);
 		}
+
 	}
 
 	@Override
@@ -84,7 +86,9 @@ public class WebFragment extends Fragment implements ActionBarClient {
 		mWebView.setWebChromeClient(mWebChromeClient);
 		mWebView.setWebViewClient(mWebViewClient);
 
-		if (mUrl != null) {
+		if (savedInstanceState != null) {
+			mWebView.restoreState(savedInstanceState);
+		} else if (mUrl != null) {
 			mWebView.loadUrl(mUrl);
 		}
 
@@ -109,6 +113,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
 	WebViewClient mWebViewClient = new WebViewClient() {
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			view.loadUrl(url);
+			mUrl = url;
 			return true;
 		}
 	};
@@ -149,6 +154,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
+		mWebView.saveState(outState);
 		outState.putString(URL, mUrl);
 		super.onSaveInstanceState(outState);
 	}
