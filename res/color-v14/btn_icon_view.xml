@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_checked="true" android:color="@color/bright_accent"/> <!-- checked -->
-    <item android:state_pressed="true" android:color="@color/bright_accent"/> <!-- pressed -->
+    <item android:state_pressed="true" android:color="@color/white"/> <!-- pressed -->
     <item android:color="@color/black"/> <!-- default -->
 
 </selector>

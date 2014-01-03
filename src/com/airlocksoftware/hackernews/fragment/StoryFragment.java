@@ -228,6 +228,7 @@ public class StoryFragment extends BaseFragment implements ActionBarClient,
 
 
   @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    /* mb TODO it would be nice to add the icons dynamically because then  */
     inflater.inflate(R.menu.stories, menu);
   }
 

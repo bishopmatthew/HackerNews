@@ -37,38 +37,28 @@ import java.util.Arrays;
  */
 public class SearchActivity extends BackActivity implements LoaderManager.LoaderCallbacks<SearchResult> {
 
+  // Constants
+  public static final String QUERY = SearchActivity.class.getSimpleName() + ".query";
+  public static final String SORT = SearchActivity.class.getSimpleName() + ".sort";
+  public static final String SEARCH_TYPE = SearchActivity.class.getSimpleName() + ".searchType";
+  public static final int NUM_ITEMS_PER_PAGE = 10;
   // State
   private Request mRequest = Request.NEW;
-
   private SortType mSort = SortType.RELEVANCE;
-
   private SearchType mSearchType = SearchType.ALL;
-
   private String mQuery;
-
   private int mStartPos = 0;
-
   private Result mLastResult;
-
   private boolean mIsLoading;
-
   // Views & Adapters
   private SearchAdapter mAdapter;
-
   private ListView mListView;
-
   private View mSearchHeader;
-
   private View mMoreFooter;
-
   private View mError, mLoading, mNoResults;
-
   private ActionBarButton mSearchButton;
-
   private FontSpinner mSortSpinner, mSearchTypeSpinner;
-
   private FontEdit mSearchBox;
-
   // Listeners
   private OnClickListener mMoreListener = new OnClickListener() {
     @Override
@@ -78,14 +68,12 @@ public class SearchActivity extends BackActivity implements LoaderManager.Loader
       getSupportLoaderManager().restartLoader(0, null, SearchActivity.this);
     }
   };
-
   private OnClickListener mSearchBtnListener = new OnClickListener() {
     @Override
     public void onClick(View v) {
       performSearch();
     }
   };
-
   private OnEditorActionListener mSearchKeyboardListener = new OnEditorActionListener() {
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -97,7 +85,6 @@ public class SearchActivity extends BackActivity implements LoaderManager.Loader
       }
     }
   };
-
   private SpinnerArrayAdapter<SortType> mSortAdapter = new SpinnerArrayAdapter<SortType>(this) {
     @Override
     public String getItemText(int position) {
@@ -112,7 +99,6 @@ public class SearchActivity extends BackActivity implements LoaderManager.Loader
               .dismiss();
     }
   };
-
   private SpinnerArrayAdapter<SearchType> mSearchTypeAdapter = new SpinnerArrayAdapter<SearchType>(this) {
     @Override
     public String getItemText(int position) {
@@ -128,15 +114,6 @@ public class SearchActivity extends BackActivity implements LoaderManager.Loader
               .dismiss();
     }
   };
-
-  // Constants
-  public static final String QUERY = SearchActivity.class.getSimpleName() + ".query";
-
-  public static final String SORT = SearchActivity.class.getSimpleName() + ".sort";
-
-  public static final String SEARCH_TYPE = SearchActivity.class.getSimpleName() + ".searchType";
-
-  public static final int NUM_ITEMS_PER_PAGE = 10;
 
   @Override
   public void onCreate(Bundle savedState) {

@@ -1,11 +1,10 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
-          android:exitFadeDuration="200"
-          android:enterFadeDuration="50">
+          android:exitFadeDuration="150">
 
     <!-- Pressed -->
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/bright_accent"/>
+            <solid android:color="@color/selectable_item_pressed"/>
         </shape>
     </item>
 

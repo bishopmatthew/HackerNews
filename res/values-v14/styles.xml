@@ -32,7 +32,7 @@
         <!--<item name="ptrProgressBarCornerRadius">4dp</item>-->
 
         <!-- Style of the Progress Bar. Values are either: inside or outside -->
-        <item name="ptrProgressBarStyle">inside</item>
+        <item name="ptrProgressBarStyle">outside</item>
 
         <!-- The strings to be displayed at the various states -->
         <!--<item name="ptrPullText">...</item>-->

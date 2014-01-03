@@ -11,27 +11,19 @@ An open source Hacker News client for Android phones & tablets.
 
 # How to build
 
-**You'll need 4 jar files (or a more recent version):**
+```
+git clone https://github.com/bishopmatthew/HackerNews.git
+cd HackerNews/
+git checkout v3-redesign
+cd libs/
+git clone https://github.com/bishopmatthew/HoloTheme.git
+cd ..
+android update project -p .
+```
 
-- [bugsense-3.5.jar](https://www.bugsense.com/docs)
-- [commons-lang3-3.1.jar](http://commons.apache.org/lang/download_lang.cgi)
-- [gson-2.2.2.jar](http://code.google.com/p/google-gson/)
-- [jsoup-1.7.2.jar](http://jsoup.org/)
+Then from Android Studio go:
 
-Create a "libs" folder at the project root and add these jars to it.
-
-**Additionally, you'll need two of my library projects:**
-
-- [HoloTheme](https://github.com/bishopmatthew/HoloTheme)
-- [DatabaseUtils](https://github.com/bishopmatthew/DatabaseUtils)
-
-HoloTheme is a collection of useful code I share between projects. Some of it is oriented towards using Holo-themed widgets on Android 2.1+. It requires the Android support library be put in the "libs" directory.
-
-DatabaseUtils is a really simple ORM that uses reflection to do CRUD operations on objects that extends SqlObject. 
-
-Clone both repositories, and then import them into eclipse. Then add them as library projects to HackerNews.
-
-**Finally, you will need to either put the API key for your own [Bugsense](http://www.bugsense.com/) account** into `res/strings.xml` as `bugsense_api_key`, or **remove the `BugSenseHandler.initAndStartSession()` call** in [SlideoutMenuActivity](https://github.com/bishopmatthew/HackerNews/blob/master/src/com/airlocksoftware/hackernews/activity/SlideoutMenuActivity.java#L65)
+File -> Import Project -> Select the HackerNews directory. It'll bring up the gradle import screen and you should be able to keep the default options.
 
 # Design Overview
 

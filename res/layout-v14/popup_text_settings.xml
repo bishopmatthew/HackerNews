@@ -42,6 +42,8 @@
                     android:clickable="true"
                     android:background="?android:attr/selectableItemBackground"
                     app:icon_src="@drawable/ic_textsettings_minus"
+                    app:icon_colors="@color/btn_icon_view"
+
                     />
 
             <com.airlocksoftware.holo.image.IconView
@@ -49,7 +51,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:scaleType="center"
-                    app:icon_src="@drawable/ic_textsettings_sizelabel"
+                    app:icon_src="@drawable/ic_textsettings_size"
+                    app:icon_colors="@color/black"
                     />
 
             <com.airlocksoftware.holo.image.IconView
@@ -61,6 +64,8 @@
                     android:clickable="true"
                     android:background="?android:attr/selectableItemBackground"
                     app:icon_src="@drawable/ic_textsettings_plus"
+                    app:icon_colors="@color/btn_icon_view"
+
                     />
 
         </LinearLayout>
@@ -104,14 +109,15 @@
                     />
 
             <com.airlocksoftware.holo.image.IconView
-                    android:id="@+id/btn_smaller"
+                    android:id="@+id/btn_day"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:scaleType="center"
                     android:clickable="true"
                     android:background="?android:attr/selectableItemBackground"
-                    app:icon_src="@drawable/ic_textsettings_day_normal"
+                    app:icon_src="@drawable/ic_textsettings_day"
+                    app:icon_colors="@color/btn_icon_view"
                     />
 
         </LinearLayout>
@@ -135,12 +141,37 @@
                 style="@style/Text.TextSettingsMenuHeading"/>
 
 
-        <Spinner
-                android:id="@+id/spin_typeface"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="0dp"
-                />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+            <com.airlocksoftware.holo.image.IconView
+                    android:id="@+id/btn_sansserif"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:icon_src="@drawable/ic_textsettings_sansserif"
+                    app:icon_colors="@color/btn_icon_view"
+                    />
+
+            <com.airlocksoftware.holo.image.IconView
+                    android:id="@+id/btn_serif"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:icon_src="@drawable/ic_textsettings_serif"
+                    app:icon_colors="@color/btn_icon_view"
+                    />
+
+        </LinearLayout>
 
 
     </LinearLayout>

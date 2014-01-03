@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bright_accent_80_opac">#cde54c11</color>
+    <color name="selectable_item_pressed">@color/bright_accent_80_opac</color>
+</resources>
