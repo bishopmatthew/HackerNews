@@ -185,6 +185,14 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 		setActiveMenuItem(UNCHECKED_ID);
 	}
 
+	public void showMenuItem(int id) {
+		CheckableView child = mSlideCheckManager.findViewById(id);
+		if (child != null) {
+			child.setVisibility(View.VISIBLE);
+			mSlideCheckManager.register(child);
+		}
+	}
+
 	public void hideMenuItem(int id) {
 		CheckableView child = mSlideCheckManager.findViewById(id);
 		if (child != null) {
@@ -200,6 +208,7 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 		if (mUserPrefs.isLoggedIn()) {
 			txt.setText("Logout");
 			username.setText(mUserPrefs.getUsername());
+			showMenuItem(R.id.user_button);
 		} else {
 			hideMenuItem(R.id.user_button);
 			txt.setText("Login");
