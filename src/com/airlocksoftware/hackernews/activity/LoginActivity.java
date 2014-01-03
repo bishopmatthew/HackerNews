@@ -176,7 +176,7 @@ public class LoginActivity extends SlideoutMenuActivity implements LoaderCallbac
 
 		switch (mPostAction) {
 		case UPVOTE:
-			if (mComment != null) mStory.upvote(this);
+			if (mComment != null) mComment.upvote(this);
 			else if (mStory != null) mStory.upvote(this);
 			break;
 		case REPLY:
