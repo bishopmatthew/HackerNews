@@ -36,6 +36,9 @@
     <string name="upvote">Upvote</string>
     <string name="upvoted">Upvoted!</string>
 
+    <!-- SLIDEOUT MENU ACTIVITY -->
+    <string name="slideoutMenuNotInitializedError">Must call initialize() on a SlideoutMenuActivity from within the onCreate of it\'s children</string>
+
     <!-- SUBMIT ACTIVITY -->
     <string name="submit_to_hacker_news">Submit to Hacker News</string>
 
