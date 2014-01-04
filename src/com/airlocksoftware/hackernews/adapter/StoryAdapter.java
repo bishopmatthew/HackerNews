@@ -1,10 +1,5 @@
 package com.airlocksoftware.hackernews.adapter;
 
-import java.io.Serializable;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -19,7 +14,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-
 import com.airlocksoftware.hackernews.R;
 import com.airlocksoftware.hackernews.activity.MainActivity;
 import com.airlocksoftware.hackernews.activity.MainActivity.CommentsTab;
@@ -35,6 +29,10 @@ import com.airlocksoftware.holo.type.FontText;
 import com.airlocksoftware.holo.utils.AnimUtils;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
+import java.util.List;
 
 /** Adapter for StoryFragment and SubmissionsFragment. **/
 public class StoryAdapter extends GroupAdapter<Story> {
@@ -53,7 +51,7 @@ public class StoryAdapter extends GroupAdapter<Story> {
 	private final int TEXT_COLOR_PRIMARY;
 	private final int TEXT_COLOR_SECONDARY;
 	private final int DARK_ORANGE_COLOR;
-	private final int GREY_50_COLOR;
+	private final int GRAY_50_COLOR;
 	private final String UPVOTE;
 	private final String UPVOTED;
 	private final Drawable UPVOTE_INDICATOR;
@@ -91,7 +89,7 @@ public class StoryAdapter extends GroupAdapter<Story> {
 		TEXT_COLOR_SECONDARY = res.getColor(Utils.getThemedResourceId(mContext, R.attr.textColorSecondary));
 		BRIGHT_ACCENT_COLOR = res.getColor(R.color.bright_accent);
 		DARK_ORANGE_COLOR = res.getColor(R.color.orange_5);
-		GREY_50_COLOR = res.getColor(R.color.grey_50);
+		GRAY_50_COLOR = res.getColor(R.color.gray_50);
 		UPVOTE_INDICATOR = res.getDrawable(R.drawable.bg_story_upvote_indicator);
 		UPVOTED = mContext.getString(R.string.upvoted);
 		UPVOTE = mContext.getString(R.string.upvote);
@@ -204,7 +202,7 @@ public class StoryAdapter extends GroupAdapter<Story> {
 
 		holder.container.setBackgroundColor(isActiveStory ? DARK_ORANGE_COLOR : Color.TRANSPARENT);
 		holder.title.setTextColor(isActiveStory ? Color.WHITE : TEXT_COLOR_PRIMARY);
-		holder.commentIcon.iconColor(isActiveStory ? Color.WHITE : GREY_50_COLOR);
+		holder.commentIcon.iconColor(isActiveStory ? Color.WHITE : GRAY_50_COLOR);
 		holder.divider.setVisibility(ViewUtils.boolToVis(!isActiveStory));
 
 		holder.commentsButton.setOnClickListener(isActiveStory ? null : mClickListener);

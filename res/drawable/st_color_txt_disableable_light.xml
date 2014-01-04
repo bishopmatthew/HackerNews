@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_enabled="false" android:color="@color/grey_40"/> <!-- disabled -->
-    <item android:color="@color/grey_15"/> <!-- default -->
+    <item android:state_enabled="false" android:color="@color/gray_40"/> <!-- disabled -->
+    <item android:color="@color/gray_15"/> <!-- default -->
 
 </selector>

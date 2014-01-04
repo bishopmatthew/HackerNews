@@ -34,7 +34,7 @@
         android:layout_width="fill_parent"
         android:layout_height="1.5dp"
         android:layout_below="@+id/txt_comment"
-        android:background="@color/grey_30" />
+        android:background="@color/gray_30" />
 
     <com.airlocksoftware.holo.type.FontText
         android:id="@+id/txt_title"

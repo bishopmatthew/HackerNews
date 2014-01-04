@@ -2,7 +2,7 @@
 <resources>
 
     <color name="slideout_header_bg">@color/black</color>
-    <color name="slideout_bg">@color/grey_15</color>
+    <color name="slideout_bg">@color/gray_15</color>
 
     <!-- DEPTH INDICATORS -->
     <color name="depth_orange_light">#FCA306</color>
@@ -19,23 +19,23 @@
     <color name="orange_5">#CB430F</color>
     <color name="bright_accent">@color/orange_3</color>
     
-    <color name="grey_17">#2B2B2B</color>
-    <color name="grey_88">#E0E0E0</color>
-    <color name="grey_95">#F2F2F2</color>
-    <color name="grey_92">#EBEBEB</color>
-    <color name="grey_85">#D9D9D9</color>
+    <color name="gray_17">#2B2B2B</color>
+    <color name="gray_88">#E0E0E0</color>
+    <color name="gray_95">#F2F2F2</color>
+    <color name="gray_92">#EBEBEB</color>
+    <color name="gray_85">#D9D9D9</color>
     <color name="white_10_opac">#19FFFFFF</color>
     <color name="black_10_opac">#19000000</color>
     <color name="white_5_opac">#0CFFFFFF</color>
     <color name="black_5_opac">#0C000000</color>
     
-    <color name="grey_93">#eeeeee</color>
-    <color name="grey_19">#313131</color>
-    <color name="grey_5">#0d0d0d</color>
-    <color name="grey_7">#121212</color>
-    <color name="grey_98">#FAFAFA</color>
+    <color name="gray_93">#eeeeee</color>
+    <color name="gray_19">#313131</color>
+    <color name="gray_5">#0d0d0d</color>
+    <color name="gray_7">#121212</color>
+    <color name="gray_98">#FAFAFA</color>
     
-    <color name="cacheColorHintDark">@color/grey_19</color>
-    <color name="cacheColorHintLight">@color/grey_93</color>
+    <color name="cacheColorHintDark">@color/gray_19</color>
+    <color name="cacheColorHintLight">@color/gray_93</color>
     
 </resources>

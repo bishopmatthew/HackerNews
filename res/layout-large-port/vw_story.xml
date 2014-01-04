@@ -167,7 +167,7 @@
             android:layout_toRightOf="@+id/txt_num_comments"
             android:paddingTop="3dp"
             android:scaleType="center"
-            app:icon_colors="@color/grey_50"
+            app:icon_colors="@color/gray_50"
             app:icon_shadowColors="?attr/shdwStoryText"
             app:icon_shadowDx="0dp"
             app:icon_shadowDy="1dp"

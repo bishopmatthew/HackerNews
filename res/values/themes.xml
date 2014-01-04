@@ -36,9 +36,9 @@
         <item name="slideoutTextColor">@drawable/st_color_txt_slideout_light</item>
 
         <!-- TEXT -->
-        <item name="textColorPrimary">@color/grey_15</item>
-        <item name="textColorSecondary">@color/grey_30</item>
-        <item name="textColorTertiary">@color/grey_40</item>
+        <item name="textColorPrimary">@color/gray_15</item>
+        <item name="textColorSecondary">@color/gray_30</item>
+        <item name="textColorTertiary">@color/gray_40</item>
         <item name="textColorPrimaryDisableable">@drawable/st_color_txt_disableable_light</item>
 
         <!-- EDIT TEXT -->
@@ -47,9 +47,9 @@
         <!-- STORY -->
         <item name="btnStory">@drawable/btn_story_light</item>
         <item name="shdwStoryText">@color/white</item>
-        <item name="bgStoryAndCommentControls">@color/grey_80</item>
+        <item name="bgStoryAndCommentControls">@color/gray_80</item>
         <item name="bgStorylistTablet">@drawable/bg_storylist_tablet_light</item>
-        <item name="cacheColorHintStorylistTablet">@color/grey_98</item>
+        <item name="cacheColorHintStorylistTablet">@color/gray_98</item>
 
         <!-- COMMENT -->
         <item name="commentDepthColors">@array/comment_depth_colors_light</item>
@@ -58,7 +58,7 @@
 
         <!-- COMMENT HEADER -->
         <item name="commentsHeaderBg">@color/black_5_opac</item>
-        <item name="commentsHeaderControlsBg">@color/grey_80</item>
+        <item name="commentsHeaderControlsBg">@color/gray_80</item>
         <item name="commentsHeaderDivider">@color/white</item>
 
         <!-- USER ACTIVITY -->
@@ -75,7 +75,7 @@
         <!-- MISC -->
         <item name="bgDefault">@drawable/bg_light_opt</item>
         <item name="bgDefaultColor">@color/cacheColorHintLight</item>
-        <item name="dividerColor">@color/grey_80</item>
+        <item name="dividerColor">@color/gray_80</item>
         <item name="btnOpac10">@drawable/btn_opac_10_light</item>
         <item name="colorOpac10">@color/black_10_opac</item>
         <item name="bgSpinner">@drawable/spinner_background_light</item>
@@ -116,9 +116,9 @@
         <item name="slideoutTextColor">@drawable/st_color_txt_slideout_dark</item>
 
         <!-- TEXT -->
-        <item name="textColorPrimary">@color/grey_90</item>
-        <item name="textColorSecondary">@color/grey_75</item>
-        <item name="textColorTertiary">@color/grey_60</item>
+        <item name="textColorPrimary">@color/gray_90</item>
+        <item name="textColorSecondary">@color/gray_75</item>
+        <item name="textColorTertiary">@color/gray_60</item>
         <item name="textColorPrimaryDisableable">@drawable/st_color_txt_disableable_dark</item>
 
         <!-- EDIT TEXT -->
@@ -129,7 +129,7 @@
         <item name="shdwStoryText">@color/black</item>
         <item name="bgStoryAndCommentControls">@color/black</item>
         <item name="bgStorylistTablet">@drawable/bg_storylist_tablet_dark</item>
-        <item name="cacheColorHintStorylistTablet">@color/grey_7</item>
+        <item name="cacheColorHintStorylistTablet">@color/gray_7</item>
 
         <!-- COMMENT -->
         <item name="commentDepthColors">@array/comment_depth_colors_dark</item>
@@ -138,7 +138,7 @@
 
         <!-- COMMENT HEADER -->
         <item name="commentsHeaderBg">@color/white_5_opac</item>
-        <item name="commentsHeaderControlsBg">@color/grey_25</item>
+        <item name="commentsHeaderControlsBg">@color/gray_25</item>
         <item name="commentsHeaderDivider">@color/black</item>
 
         <!-- USER ACTIVITY -->
@@ -155,7 +155,7 @@
         <!-- MISC -->
         <item name="bgDefault">@drawable/bg_dark_opt</item>
         <item name="bgDefaultColor">@color/cacheColorHintDark</item>
-        <item name="dividerColor">@color/grey_50</item>
+        <item name="dividerColor">@color/gray_50</item>
         <item name="btnOpac10">@drawable/btn_opac_10_dark</item>
         <item name="bgSpinner">@drawable/spinner_background_dark</item>
         <item name="colorOpac10">@color/white_10_opac</item>
