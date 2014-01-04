@@ -11,12 +11,11 @@ An open source Hacker News client for Android phones & tablets.
 
 # How to build
 
-**You'll need 4 jar files (or a more recent version):**
+**You'll need 3 jar files (or a more recent version):**
 
-- [bugsense-3.5.jar](https://www.bugsense.com/docs)
-- [commons-lang3-3.1.jar](http://commons.apache.org/lang/download_lang.cgi)
-- [gson-2.2.2.jar](http://code.google.com/p/google-gson/)
-- [jsoup-1.7.2.jar](http://jsoup.org/)
+- [commons-lang3-3.1.jar](http://archive.apache.org/dist/commons/lang/binaries/commons-lang3-3.1-bin.zip)
+- [gson-2.2.2.jar](https://google-gson.googlecode.com/files/google-gson-2.2.2-release.zip)
+- [jsoup-1.7.2.jar](http://jsoup.org/packages/jsoup-1.7.2.jar)
 
 Create a "libs" folder at the project root and add these jars to it.
 
@@ -29,9 +28,17 @@ HoloTheme is a collection of useful code I share between projects. Some of it is
 
 DatabaseUtils is a really simple ORM that uses reflection to do CRUD operations on objects that extends SqlObject. 
 
-Clone both repositories, and then import them into eclipse. Then add them as library projects to HackerNews.
+Clone both repositories, and then import them into Eclipse. Then add them as library projects to HackerNews. 
 
-**Finally, you will need to either put the API key for your own [Bugsense](http://www.bugsense.com/) account** into `res/strings.xml` as `bugsense_api_key`, or **remove the `BugSenseHandler.initAndStartSession()` call** in [SlideoutMenuActivity](https://github.com/bishopmatthew/HackerNews/blob/master/src/com/airlocksoftware/hackernews/activity/SlideoutMenuActivity.java#L65)
+If you're using Android Studio:
+- Put all the .jars into `./libs/`
+- Clone both [HoloTheme](https://github.com/bishopmatthew/HoloTheme) and [DatabaseUtils](https://github.com/bishopmatthew/DatabaseUtils) into `./libs/` or into your choice of directory outside the project.
+- Go into `File > Project Structure...` and add the two repositories you cloned earlier as Android Library modules (`Modules > New Module > Library Module` under the Android section in the `New Module` dialog).
+- Add [Android Support V4](http://developer.android.com/tools/support-library/setup.html) as a Global Library, and select `HackerNews` and `HoloTheme` as projects it should be added to.
+- Under the `HackerNews` module, add all of the jars in the `./libs/` folder as dependencies.
+- Under the `HackerNews` module, add the `HoloTheme` and `DatabaseUtils` modules as dependencies (Using the `Module Dependency` option when adding them).
+
+**If you recieve errors on finding symbols like `@color/grey_30`, try going into HoloTheme and running `git checkout 5c7fca98`**
 
 # Design Overview
 

@@ -50,6 +50,7 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 	};
 
 	// Constants
+	private static final String TAG = SlideoutMenuActivity.class.getSimpleName();
 	// private static final String NEED_REFRESH = SlideoutMenuActivity.class.getSimpleName() + ".needRefresh";
 	private static final int UNCHECKED_ID = -1;
 	private static final boolean HONEYCOMB_OR_GREATER = android.os.Build.VERSION.SDK_INT >= 11;
@@ -61,8 +62,9 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 		retrieveTheme();
 		setWindowBackground();
 		
-		/* TODO I'm over the quota anyways -- going to move to Crashlytics in the next version. */
-//		BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_api_key));
+		/* TODO I'm over the quota anyways -- going to move to Crashlytics in the next version.
+		 * BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_api_key)); 
+		 */
 
 		// initialize ActionBarActivity layout after setting theme and window background
 		super.initialize();
@@ -110,7 +112,7 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 
 	private void setWindowBackground() {
 		TypedValue windowBg = new TypedValue();
-		getTheme().resolveAttribute(android.R.attr.windowBackground, windowBg, true);
+		if (getTheme() != null) getTheme().resolveAttribute(android.R.attr.windowBackground, windowBg, true);
 		getWindow().setBackgroundDrawableResource(windowBg.resourceId);
 	}
 
@@ -139,15 +141,19 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 	public void onResume() {
 		super.onResume();
 
+		// Update Login/Logout text and menu buttons
+		refreshLoginState();
+
 		// if theme has changed, restart activity TODO text size?
 		Theme theme = mUserPrefs.getTheme();
 		TypedValue outValue = new TypedValue();
-		getTheme().resolveAttribute(R.attr.themeName, outValue, true);
+		if (getTheme() != null) getTheme().resolveAttribute(R.attr.themeName, outValue, true);
 		String themeName = theme.toString();
 		if (!themeName.equals(outValue.string)) restartActivity();
 
-		if (!mInitialized) throw new RuntimeException(
-				"Must call initialize() on a SlideoutMenuActivity from within the onCreate of it's children");
+		if (!mInitialized) {
+			throw new RuntimeException(getString(R.string.slideoutMenuNotInitializedError));
+		}
 	}
 
 	@Override
@@ -179,6 +185,14 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 		setActiveMenuItem(UNCHECKED_ID);
 	}
 
+	public void showMenuItem(int id) {
+		CheckableView child = mSlideCheckManager.findViewById(id);
+		if (child != null) {
+			child.setVisibility(View.VISIBLE);
+			mSlideCheckManager.register(child);
+		}
+	}
+
 	public void hideMenuItem(int id) {
 		CheckableView child = mSlideCheckManager.findViewById(id);
 		if (child != null) {
@@ -194,6 +208,7 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 		if (mUserPrefs.isLoggedIn()) {
 			txt.setText("Logout");
 			username.setText(mUserPrefs.getUsername());
+			showMenuItem(R.id.user_button);
 		} else {
 			hideMenuItem(R.id.user_button);
 			txt.setText("Login");
@@ -218,6 +233,7 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 			SlideoutMenuActivity activity = SlideoutMenuActivity.this;
 			Intent intent = null;
 			View child = group.getChildAt(newIndex);
+
 			switch (child.getId()) {
 			case R.id.front_page_button:
 				intent = new Intent(activity, MainActivity.class);
@@ -256,13 +272,13 @@ public abstract class SlideoutMenuActivity extends ActionBarActivity implements 
 				UserPrefs data = new UserPrefs(activity);
 				if (data.isLoggedIn()) {
 					data.logout();
-					Toast.makeText(context, "Logging out", Toast.LENGTH_SHORT)
-								.show();
+					Toast.makeText(context, "Logging out", Toast.LENGTH_SHORT).show();
 					refreshLoginState();
 				} else {
 					startActivity(new Intent(activity, LoginActivity.class));
 					activity.overridePendingTransition(0, 0);
 				}
+
 				setActiveMenuItem(-1);
 				break;
 			}

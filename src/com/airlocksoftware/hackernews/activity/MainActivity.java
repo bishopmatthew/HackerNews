@@ -165,17 +165,29 @@ public class MainActivity extends SlideoutMenuActivity implements SharePopupInte
 				// Start a new MainActivity in StoryMode. We're faking the animations to look like the app is going back
 
 				// Retrieve the animations set in the theme applied to this activity in the manifest.
-				TypedArray activityStyle = getTheme().obtainStyledAttributes(new int[] { android.R.attr.windowAnimationStyle });
-				int windowAnimationStyleResId = activityStyle.getResourceId(0, 0);
-				activityStyle.recycle();
+				TypedArray activityStyle = null;
+				if (getTheme() != null) {
+					activityStyle = getTheme().obtainStyledAttributes(new int[] { android.R.attr.windowAnimationStyle });
+				}
+
+				int windowAnimationStyleResId = 0;
+				if (activityStyle != null) {
+					windowAnimationStyleResId = activityStyle.getResourceId(0, 0);
+					activityStyle.recycle();
+				}
 
 				// Now retrieve the resource ids of the actual animations used in the animation style pointed to by
 				// the window animation resource id.
 				activityStyle = getTheme().obtainStyledAttributes(windowAnimationStyleResId,
 						new int[] { android.R.attr.activityCloseEnterAnimation, android.R.attr.activityCloseExitAnimation });
-				int enterAnim = activityStyle.getResourceId(0, 0);
-				int exitAnim = activityStyle.getResourceId(1, 0);
-				activityStyle.recycle();
+
+				int enterAnim = 0;
+				int exitAnim = 0;
+				if (activityStyle != null) {
+					enterAnim = activityStyle.getResourceId(0, 0);
+					exitAnim = activityStyle.getResourceId(1, 0);
+					activityStyle.recycle();
+				}
 
 				if (enterAnim != 0 && exitAnim != 0) overridePendingTransition(enterAnim, exitAnim);
 

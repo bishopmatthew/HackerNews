@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -155,12 +156,22 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 
 	@Override
 	public void onPause() {
-		/* Save list state to shared prefs (since we kill the activity when we switch to the comments list) */
-		FragmentActivity activity = getActivity();
-		if(activity == null) return;
-		new AppData(activity).saveStoryListPosition(mList.getFirstVisiblePosition());
-		super.onPause();
-	}
+        /* Save list state to shared prefs (since we kill the activity when we switch to the comments list) */
+        FragmentActivity fragActivity = getActivity();
+
+        // Make sure we're not going to nullPointerException
+        if (fragActivity != null) {
+            AppData actData = new AppData(fragActivity);
+
+            if (mList != null)  {
+                actData.saveStoryListPosition(mList.getFirstVisiblePosition());
+            } else {
+                Log.d(TAG, "mList is null! Story position NOT saved!");
+            }
+        }
+
+        super.onPause();
+    }
 
 	@SuppressWarnings("deprecation")
 	private void setupTabletBackgroundColors() {

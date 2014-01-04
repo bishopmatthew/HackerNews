@@ -69,7 +69,10 @@ public class LoginActivity extends SlideoutMenuActivity implements LoaderCallbac
 
 				// hide keyboard
 				InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-				inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+				if (getCurrentFocus() != null) {
+					inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+														 InputMethodManager.HIDE_NOT_ALWAYS);
+			    }
 
 				return true;
 			} else return false;
@@ -85,13 +88,14 @@ public class LoginActivity extends SlideoutMenuActivity implements LoaderCallbac
 	}
 
 	// CONSTANTS
-	public static final String POST_ACTION = LoginActivity.class.getSimpleName() + ".postAction";
-	public static final String POST_STORY = LoginActivity.class.getSimpleName() + ".postStory";
-	public static final String POST_COMMENT = LoginActivity.class.getSimpleName() + ".postComment";
-	public static final String POST_SUB_TITLE = LoginActivity.class.getSimpleName() + ".postSubTitle";
-	public static final String POST_SUB_TEXT = LoginActivity.class.getSimpleName() + ".postSubText";
-	public static final String USERNAME = LoginActivity.class.getSimpleName() + ".username";
-	public static final String PASSWORD = LoginActivity.class.getSimpleName() + ".password";
+	private static final String TAG = LoginActivity.class.getSimpleName();
+	public static final String POST_ACTION = TAG + ".postAction";
+	public static final String POST_STORY = TAG + ".postStory";
+	public static final String POST_COMMENT = TAG + ".postComment";
+	public static final String POST_SUB_TITLE = TAG + ".postSubTitle";
+	public static final String POST_SUB_TEXT = TAG + ".postSubText";
+	public static final String USERNAME = TAG + ".username";
+	public static final String PASSWORD = TAG + ".password";
 
 	// ACTIVITY LIFECYCLE
 	@Override
@@ -124,10 +128,8 @@ public class LoginActivity extends SlideoutMenuActivity implements LoaderCallbac
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		mUsername = mEditUsername.getText()
-															.toString();
-		mPassword = mEditPassword.getText()
-															.toString();
+		if (mEditUsername.getText() != null) mUsername = mEditUsername.getText().toString();
+		if (mEditPassword.getText() != null) mPassword = mEditPassword.getText().toString();
 		if (mPostAction != null) outState.putSerializable(POST_ACTION, mPostAction);
 		if (mStory != null) outState.putSerializable(POST_STORY, mStory);
 		if (mComment != null) outState.putSerializable(POST_COMMENT, mComment);
@@ -174,7 +176,7 @@ public class LoginActivity extends SlideoutMenuActivity implements LoaderCallbac
 
 		switch (mPostAction) {
 		case UPVOTE:
-			if (mComment != null) mStory.upvote(this);
+			if (mComment != null) mComment.upvote(this);
 			else if (mStory != null) mStory.upvote(this);
 			break;
 		case REPLY:
@@ -194,10 +196,8 @@ public class LoginActivity extends SlideoutMenuActivity implements LoaderCallbac
 
 	// private methods
 	protected void performSubmit() {
-		mUsername = mEditUsername.getText()
-															.toString();
-		mPassword = mEditPassword.getText()
-															.toString();
+		if (mEditUsername.getText() != null) mUsername = mEditUsername.getText().toString();
+		if (mEditPassword.getText() != null) mPassword = mEditPassword.getText().toString();
 
 		showLoading();
 
@@ -235,22 +235,22 @@ public class LoginActivity extends SlideoutMenuActivity implements LoaderCallbac
 	}
 
 	private void showLoading() {
-		mEditUsername.setEnabled(false);
-		mEditPassword.setEnabled(false);
+		if (mEditUsername != null) mEditUsername.setEnabled(false);
+		if (mEditPassword != null) mEditPassword.setEnabled(false);
 		mLoginButton.setVisibility(View.GONE);
 		mLoginIndicator.setVisibility(View.VISIBLE);
 	}
 
 	private void showContent() {
-		mEditUsername.setEnabled(true);
-		mEditPassword.setEnabled(true);
+		if (mEditUsername != null) mEditUsername.setEnabled(true);
+		if (mEditPassword != null) mEditPassword.setEnabled(true);
 		mLoginButton.setVisibility(View.VISIBLE);
 		mLoginIndicator.setVisibility(View.GONE);
 	}
 
 	private void showError() {
-		mEditUsername.setEnabled(true);
-		mEditPassword.setEnabled(true);
+		if (mEditUsername != null) mEditUsername.setEnabled(true);
+		if (mEditPassword != null) mEditPassword.setEnabled(true);
 		mLoginButton.setVisibility(View.VISIBLE);
 		mLoginIndicator.setVisibility(View.GONE);
 	}
