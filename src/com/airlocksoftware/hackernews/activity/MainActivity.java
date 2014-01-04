@@ -1,5 +1,6 @@
 package com.airlocksoftware.hackernews.activity;
 
+import com.crashlytics.android.Crashlytics;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
@@ -229,6 +230,7 @@ public class MainActivity extends SlideoutMenuActivity implements SharePopupInte
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Crashlytics.start(this);
 		super.addOnBackPressedListener(mBackListener);
 		retrieveUserData();
 		retrieveBundles(savedInstanceState, getIntent().getExtras());

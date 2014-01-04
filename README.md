@@ -11,34 +11,26 @@ An open source Hacker News client for Android phones & tablets.
 
 # How to build
 
-**You'll need 3 jar files (or a more recent version):**
+The basic outline is this: there are 6 jars in the libs folder that the project depends on. Additionally you need one of my library projects, HoloTheme. It's basically a collection of utility classes & method's I've built up over time. HoloTheme also has a dependency on android-support-v4.jar (as does HackerNews).
 
-- [commons-lang3-3.1.jar](http://archive.apache.org/dist/commons/lang/binaries/commons-lang3-3.1-bin.zip)
-- [gson-2.2.2.jar](https://google-gson.googlecode.com/files/google-gson-2.2.2-release.zip)
-- [jsoup-1.7.2.jar](http://jsoup.org/packages/jsoup-1.7.2.jar)
+To get what you need, run these commands from a shell:
+```
+git clone https://github.com/bishopmatthew/HackerNews.git
+cd HackerNews/libs
+git clone https://github.com/bishopmatthew/HoloTheme.git
+```
+##### IntelliJ
+In IntelliJ, add HoloTheme as a module and create a module dependency from HackerNews on HoloTheme. Then create a library out of the 6 jars, and add it as a compile dependency to HackerNews and a provided dependency to HoloTheme.
 
-Create a "libs" folder at the project root and add these jars to it.
+##### Eclipse
+I haven't used Eclipse in a while, but you should be able to add HoloTheme as a library project. Then add the 6 jars to the build path of HackerNews if it doesn't happen automatically. You may also have to copy android-support-v4 from HackerNews/libs into HackerNews/libs/HoloTheme/libs.
 
-**Additionally, you'll need two of my library projects:**
-
-- [HoloTheme](https://github.com/bishopmatthew/HoloTheme)
-- [DatabaseUtils](https://github.com/bishopmatthew/DatabaseUtils)
-
-HoloTheme is a collection of useful code I share between projects. Some of it is oriented towards using Holo-themed widgets on Android 2.1+. It requires the Android support library be put in the "libs" directory.
-
-DatabaseUtils is a really simple ORM that uses reflection to do CRUD operations on objects that extends SqlObject. 
-
-Clone both repositories, and then import them into Eclipse. Then add them as library projects to HackerNews. 
-
+##### Android Studio
 If you're using Android Studio:
-- Put all the .jars into `./libs/`
-- Clone both [HoloTheme](https://github.com/bishopmatthew/HoloTheme) and [DatabaseUtils](https://github.com/bishopmatthew/DatabaseUtils) into `./libs/` or into your choice of directory outside the project.
-- Go into `File > Project Structure...` and add the two repositories you cloned earlier as Android Library modules (`Modules > New Module > Library Module` under the Android section in the `New Module` dialog).
-- Add [Android Support V4](http://developer.android.com/tools/support-library/setup.html) as a Global Library, and select `HackerNews` and `HoloTheme` as projects it should be added to.
-- Under the `HackerNews` module, add all of the jars in the `./libs/` folder as dependencies.
-- Under the `HackerNews` module, add the `HoloTheme` and `DatabaseUtils` modules as dependencies (Using the `Module Dependency` option when adding them).
-
-**If you recieve errors on finding symbols like `@color/grey_30`, try going into HoloTheme and running `git checkout 5c7fca98`**
+- Go into `File > Project Structure...` and add the HoloTheme repository you cloned earlier as Android Library modules (`Modules > New Module > Library Module` under the Android section in the `New Module` dialog).
+- Under the `HoloTheme` module, add all the jars in the `./libs/` folder as "provided" dependencies.
+- Under the `HackerNews` module, add all of the jars in the `./libs/` folder as "compile" dependencies.
+- Under the `HackerNews` module, add the `HoloTheme`module as dependencies (Using the `Module Dependency` option when adding them).
 
 # Design Overview
 
