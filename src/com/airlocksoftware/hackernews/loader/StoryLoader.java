@@ -6,7 +6,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.airlocksoftware.hackernews.R;
 import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.model.Page;
 import com.airlocksoftware.hackernews.model.Request;
@@ -15,6 +17,7 @@ import com.airlocksoftware.hackernews.model.Story;
 import com.airlocksoftware.hackernews.model.Timestamp;
 import com.airlocksoftware.hackernews.parser.StoryParser;
 import com.airlocksoftware.hackernews.parser.StoryParser.StoryResponse;
+
 import com.crashlytics.android.Crashlytics;
 import org.apache.commons.lang3.StringUtils;
 
@@ -59,14 +62,10 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 
 	@Override
 	public StoryResponse loadInBackground() {
-		StoryResponse response = StoryParser.NO_RESPONSE;
+		StoryResponse response = StoryResponse.NULL_RESPONSE;
 
 		if (mUsername != null) response = loadSubmissions(mUsername, mRequest);
 		else if (mPage != null) response = loadStories(mPage, mRequest);
-
-		// Do we really want to error here? What's the better option?
-		// Causing errors in Crashlytics (http://crashes.to/s/bc8d7d21a0e)
-		else throw new RuntimeException("Both the username & page passed to StoryLoader were null");
 
 		return response;
 	}
@@ -74,8 +73,7 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 	/** Loads the requested page of stories, either from news.ycombinator.com or from the cache. **/
 	private StoryResponse loadStories(Page page, Request request) {
 
-		SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
-																					.getWritableDatabase();
+		SQLiteDatabase db = DbHelperSingleton.getInstance(getContext()).getWritableDatabase();
 		StoryResponse response = null;
 
 		// handle cache

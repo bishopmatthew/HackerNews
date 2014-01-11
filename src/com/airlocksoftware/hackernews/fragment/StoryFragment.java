@@ -36,6 +36,8 @@ import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
 import com.crashlytics.android.Crashlytics;
 
+import com.airlocksoftware.hackernews.R;
+
 public class StoryFragment extends Fragment implements ActionBarClient, LoaderManager.LoaderCallbacks<StoryResponse> {
 
 	// State
@@ -100,7 +102,7 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 			mCallbacks = (Callbacks) activity;
 		} else {
 			throw new RuntimeException(
-					"The activity StoryFragment was attached to is required to implement the StoryFragment.Callbacks interface.");
+					"The activity StoryFragment attached to is required to implement the StoryFragment.Callbacks interface.");
 		}
 
 		// get TabletLayoutInterface
@@ -108,7 +110,7 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 			mTabletLayout = (TabletLayout) activity;
 		} else {
 			throw new RuntimeException(
-					"The activity StoryFragment was attached to is required to implement the TabletLayoutInterface interface.");
+					"The activity StoryFragment attached to is required to implement the TabletLayoutInterface interface.");
 		}
 	}
 
@@ -257,6 +259,16 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 			return;
 		}
 
+		// Variable for showing Toasts
+		Toast msg;
+
+		// if NULL_RESPONSE, make a toast! Cheers! Drink responsibly; return early.
+		if (response == null || response.isNull()) {
+			msg = Toast.makeText(getActivity(), getActivity().getString(R.string.error_no_page), Toast.LENGTH_SHORT);
+			msg.show();
+			return;
+		}
+
 		mIsLoading = false;
 		mLastResult = response.result;
 
@@ -272,16 +284,17 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 			break;
 
 		case FNID_EXPIRED: // the link was expired - refresh the page
-			Toast.makeText(getActivity(), getActivity().getString(R.string.link_expired), Toast.LENGTH_SHORT)
-						.show();
+			msg = Toast.makeText(getActivity(), getActivity().getString(R.string.link_expired), Toast.LENGTH_SHORT);
+			msg.show();
+
 			// start loader with refresh request
 			mRequest = Request.REFRESH;
 			getLoaderManager().restartLoader(0, null, this);
 			break;
 
 		case FAILURE: // Show error message
-			Toast.makeText(getActivity(), getActivity().getString(R.string.problem_downloading_content), Toast.LENGTH_SHORT)
-						.show();
+			msg = Toast.makeText(getActivity(), getActivity().getString(R.string.problem_downloading_content), Toast.LENGTH_SHORT);
+			msg.show();
 			break;
 
 		default:

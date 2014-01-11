@@ -137,6 +137,17 @@ public class SubmissionsFragment extends ListFragment implements ActionBarClient
 	@Override
 	public void onLoadFinished(Loader<StoryResponse> loader, StoryResponse response) {
 		mIsLoading = false;
+
+		// Variable for showing Toasts
+		Toast msg;
+
+		// if NULL_RESPONSE, make a toast! Cheers! Drink responsibly; return early.
+		if (response == null || response.isNull()) {
+			msg = Toast.makeText(getActivity(), getActivity().getString(R.string.error_no_user), Toast.LENGTH_SHORT);
+			msg.show();
+			return;
+		}
+
 		mLastResult = response.result;
 
 		switch (mLastResult) {
@@ -151,16 +162,17 @@ public class SubmissionsFragment extends ListFragment implements ActionBarClient
 			break;
 
 		case FNID_EXPIRED: // the link was expired - refresh the page
-			Toast.makeText(getActivity(), getActivity().getString(R.string.link_expired), Toast.LENGTH_SHORT)
-						.show();
+			msg = Toast.makeText(getActivity(), getActivity().getString(R.string.link_expired), Toast.LENGTH_SHORT);
+			msg.show();
+
 			// start loader with refresh request
 			mRequest = Request.REFRESH;
 			getLoaderManager().restartLoader(0, null, this);
 			break;
 
 		case FAILURE: // Show error message
-			Toast.makeText(getActivity(), getActivity().getString(R.string.problem_downloading_content), Toast.LENGTH_SHORT)
-						.show();
+			msg = Toast.makeText(getActivity(), getActivity().getString(R.string.problem_downloading_content), Toast.LENGTH_SHORT);
+			msg.show();
 			break;
 
 		default:

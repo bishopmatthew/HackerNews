@@ -112,6 +112,8 @@
     <string name="submitted">Submitted successfully!</string>
     <string name="reply_is_blank">Comments cannot be blank!</string>
     <string name="error_submitting">There was a problem with your submission. Please include either self-text or a url (including http://), but not both.</string>
+    <string name="error_no_user">No Username passed to StoryLoader :: Please log in and retry\n\nPlease submit a Github issue if this persists</string>
+    <string name="error_no_page">No Page passed to StoryLoader :: This is an unexpected error\n\nPlease submit a Github issue if this persists</string>
     <string name="active">Active</string>
 
 </resources>

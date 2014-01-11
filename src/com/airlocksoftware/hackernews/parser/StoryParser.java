@@ -28,8 +28,6 @@ public class StoryParser {
 	private static final String TAG = StoryParser.class.getSimpleName();
 	private static final int NO_POSITION = -1;
 
-	public static final StoryResponse NO_RESPONSE = null;
-
 	/** Parse stories from Front Page, Ask, Best, or New **/
 	public static StoryResponse parseStoryList(Context context, Page page, Request request, String moreFnid) {
 		String urlExtension = generateUrlExtension(request, page, moreFnid);
@@ -158,9 +156,28 @@ public class StoryParser {
 	}
 
 	public static class StoryResponse {
-		public Result result;
-		public List<Story> stories;
-		public Timestamp timestamp;
+
+		// NULL_RESPONSE :: A response with all fields set to `null`
+		public static final StoryResponse NULL_RESPONSE = new StoryResponse();
+
+		public Result result       = null;
+		public List<Story> stories = null;
+		public Timestamp timestamp = null;
+
+		public boolean isNull() {
+			return (this.equals(NULL_RESPONSE));
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			if (other == null) return false;
+			if (other == this) return true;
+			if (!(other instanceof StoryResponse)) return false;
+
+			StoryResponse o = (StoryResponse) other;
+
+			return (result == o.result && stories == o.stories && timestamp == o.timestamp);
+		}
 	}
 
 	/**
