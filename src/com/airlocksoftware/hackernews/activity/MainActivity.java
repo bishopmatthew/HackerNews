@@ -230,7 +230,11 @@ public class MainActivity extends SlideoutMenuActivity implements SharePopupInte
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// Default values for custom keys
 		Crashlytics.start(this);
+		Crashlytics.setString("MainActivity :: mPage", mPage.toString());
+
 		super.addOnBackPressedListener(mBackListener);
 		retrieveUserData();
 		retrieveBundles(savedInstanceState, getIntent().getExtras());
@@ -473,6 +477,8 @@ public class MainActivity extends SlideoutMenuActivity implements SharePopupInte
 		// default values
 		if (mInitialTabPosition == null) mInitialTabPosition = CommentsTab.COMMENTS;
 		if (mPage == null) mPage = Page.FRONT;
+
+		Crashlytics.setString("MainActivity :: mPage", mPage.toString());
 	}
 
 	/** Get data from UserData shared preferences. **/

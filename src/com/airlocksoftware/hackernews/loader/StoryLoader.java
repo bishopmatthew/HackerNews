@@ -15,6 +15,8 @@ import com.airlocksoftware.hackernews.model.Story;
 import com.airlocksoftware.hackernews.model.Timestamp;
 import com.airlocksoftware.hackernews.parser.StoryParser;
 import com.airlocksoftware.hackernews.parser.StoryParser.StoryResponse;
+import com.crashlytics.android.Crashlytics;
+import org.apache.commons.lang3.StringUtils;
 
 public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 
@@ -33,9 +35,14 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 	/** Parse stories from Front Page, Ask, Best, or New **/
 	public StoryLoader(Context context, Page page, Request request) {
 		super(context);
+
 		mPage = page;
 		mRequest = request;
 		mUsername = null;
+
+		Crashlytics.setString("StoryLoader :: mPage", mPage.toString());
+		Crashlytics.setBool("StoryLoader :: mUsernameBlank?", StringUtils.isBlank(mUsername));
+		Crashlytics.setBool("StoryLoader :: mRequestEmpty?", mRequest.isEmpty());
 	}
 
 	/** Parse stories from the user's submissions page **/
@@ -44,14 +51,23 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 		mPage = null;
 		mRequest = request;
 		mUsername = username;
+
+		Crashlytics.setString("StoryLoader :: mPage", mPage.toString());
+		Crashlytics.setBool("StoryLoader :: mUsernameBlank?", StringUtils.isBlank(mUsername));
+		Crashlytics.setBool("StoryLoader :: mRequestEmpty?", mRequest.isEmpty());
 	}
 
 	@Override
 	public StoryResponse loadInBackground() {
-		StoryResponse response;
+		StoryResponse response = StoryParser.NO_RESPONSE;
+
 		if (mUsername != null) response = loadSubmissions(mUsername, mRequest);
 		else if (mPage != null) response = loadStories(mPage, mRequest);
+
+		// Do we really want to error here? What's the better option?
+		// Causing errors in Crashlytics (http://crashes.to/s/bc8d7d21a0e)
 		else throw new RuntimeException("Both the username & page passed to StoryLoader were null");
+
 		return response;
 	}
 

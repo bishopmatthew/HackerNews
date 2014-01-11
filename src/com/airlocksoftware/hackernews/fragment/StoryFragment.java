@@ -34,6 +34,7 @@ import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
 import com.airlocksoftware.holo.image.IconView;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
+import com.crashlytics.android.Crashlytics;
 
 public class StoryFragment extends Fragment implements ActionBarClient, LoaderManager.LoaderCallbacks<StoryResponse> {
 
@@ -118,6 +119,9 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 		if (mCallbacks.storyFragmentIsInLayout()) {
 			getLoaderManager().initLoader(0, null, this);
 		}
+
+		// Default Crashlytics custom keys
+		Crashlytics.setString("StoryFragment :: mPage", mPage.toString());
 	}
 
 	@Override
@@ -148,6 +152,8 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 			mPage = ((Page) savedInstanceState.getSerializable(PAGE));
 			mAdapter.onRestoreInstanceState(savedInstanceState);
 		}
+
+		Crashlytics.setString("StoryFragment :: mPage", mPage.toString());
 
 		mShouldRestoreListState = true;
 
@@ -334,6 +340,7 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 
 	public void setPage(Page page) {
 		mPage = page;
+		Crashlytics.setString("StoryFragment :: mPage", mPage.toString());
 	}
 
 	public StoryAdapter getStoryAdapter() {

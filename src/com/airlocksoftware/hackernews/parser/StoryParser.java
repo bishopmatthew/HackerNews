@@ -28,6 +28,8 @@ public class StoryParser {
 	private static final String TAG = StoryParser.class.getSimpleName();
 	private static final int NO_POSITION = -1;
 
+	public static final StoryResponse NO_RESPONSE = null;
+
 	/** Parse stories from Front Page, Ask, Best, or New **/
 	public static StoryResponse parseStoryList(Context context, Page page, Request request, String moreFnid) {
 		String urlExtension = generateUrlExtension(request, page, moreFnid);
