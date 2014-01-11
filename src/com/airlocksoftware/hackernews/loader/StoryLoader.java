@@ -43,9 +43,7 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 		mRequest = request;
 		mUsername = null;
 
-		Crashlytics.setString("StoryLoader :: mPage", mPage.toString());
-		Crashlytics.setBool("StoryLoader :: mUsernameBlank?", StringUtils.isBlank(mUsername));
-		Crashlytics.setBool("StoryLoader :: mRequestEmpty?", mRequest.isEmpty());
+		setCrashlyticsKeys();
 	}
 
 	/** Parse stories from the user's submissions page **/
@@ -55,9 +53,17 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 		mRequest = request;
 		mUsername = username;
 
-		Crashlytics.setString("StoryLoader :: mPage", mPage.toString());
-		Crashlytics.setBool("StoryLoader :: mUsernameBlank?", StringUtils.isBlank(mUsername));
-		Crashlytics.setBool("StoryLoader :: mRequestEmpty?", mRequest.isEmpty());
+		setCrashlyticsKeys();
+	}
+
+	private void setCrashlyticsKeys() {
+		String pageString = (mPage != null) ? mPage.toString() : null;
+		boolean usernameBlank = (mRequest == null || StringUtils.isBlank(mUsername));
+		boolean reqEmpty = (mRequest == null || mRequest.isEmpty());
+
+		Crashlytics.setString("StoryLoader :: mPage", pageString);
+		Crashlytics.setBool("StoryLoader :: mUsernameBlank?", usernameBlank);
+		Crashlytics.setBool("StoryLoader :: mRequestEmpty?", reqEmpty);
 	}
 
 	@Override
