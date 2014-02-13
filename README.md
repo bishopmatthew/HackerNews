@@ -1,6 +1,8 @@
 Hacker News
 ==========
 
+[![Come chat with us!](https://badges.gitter.im/bishopmatthew/HackerNews.png)](https://gitter.im/bishopmatthew/HackerNews)
+
 ![Screenshot of the app](http://i.imgur.com/XxS04KP.png)
 
 An open source Hacker News client for Android phones & tablets.
