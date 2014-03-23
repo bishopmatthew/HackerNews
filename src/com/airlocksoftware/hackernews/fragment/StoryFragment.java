@@ -155,7 +155,7 @@ public class StoryFragment extends Fragment implements ActionBarClient, LoaderMa
 			mAdapter.onRestoreInstanceState(savedInstanceState);
 		}
 
-		Crashlytics.setString("StoryFragment :: mPage", mPage.toString());
+		Crashlytics.setString("StoryFragment :: mPage", mPage == null ? "" : mPage.toString());
 
 		mShouldRestoreListState = true;
 
