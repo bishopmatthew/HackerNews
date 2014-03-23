@@ -57,20 +57,24 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 			boolean oneOrTheOther = validSelfText != validUrl;
 
 			if (!validTitle) {
-				Toast.makeText(getApplicationContext(), getString(R.string.submitting_title_too_long), Toast.LENGTH_LONG)
-							.show();
+				Toast.makeText(getApplicationContext(),
+						getString(R.string.submitting_title_too_long),
+						Toast.LENGTH_LONG).show();
 			} else if (!oneOrTheOther) {
-				Toast.makeText(getApplicationContext(), getString(R.string.error_submitting), Toast.LENGTH_LONG)
-							.show();
+				Toast.makeText(getApplicationContext(),
+						getString(R.string.error_submitting),
+						Toast.LENGTH_LONG).show();
 			} else {
 				// input is valid, send via SubmitLoader
 				mSendButton.setVisibility(View.GONE);
-				mCancelButton.showProgress(true)
-											.onClick(null);
+				mCancelButton.showProgress(true).onClick(null);
 				mSendMode = validSelfText ? SendMode.SELF_TEXT : SendMode.URL;
+
 				getSupportLoaderManager().restartLoader(0, null, SubmitActivity.this);
-				Toast.makeText(getApplicationContext(), getString(R.string.submitting), Toast.LENGTH_LONG)
-							.show();
+
+				Toast.makeText(getApplicationContext(),
+						getString(R.string.submitting),
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	};
@@ -98,6 +102,7 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 	@Override
 	public void onCreate(Bundle savedState) {
 		super.onCreate(savedState);
+
 		setContentView(R.layout.act_submit);
 		ViewUtils.fixBackgroundRepeat(findViewById(R.id.root_scroll));
 		retrieveBundles(savedState, getIntent().getExtras());
@@ -132,31 +137,34 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 	}
 
 	private void setupActionBar() {
-		getActionBarView().getController()
-											.setTitleText(getString(R.string.submit));
+		getActionBarView().getController().setTitleText(getString(R.string.submit));
 
 		mSendButton = new ActionBarButton(this);
 		mSendButton.icon(R.drawable.ic_action_send)
 								.priority(Priority.HIGH)
 								.onClick(mSendListener)
 								.text(getString(R.string.submit));
-		getActionBarView().getController()
-											.addButton(mSendButton);
+		getActionBarView().getController().addButton(mSendButton);
 
 		mCancelButton = new ActionBarButton(this);
 		mCancelButton.icon(R.drawable.ic_action_cancel)
 									.priority(Priority.HIGH)
 									.onClick(mCancelListener)
 									.text(getString(R.string.cancel));
-		getActionBarView().getController()
-											.addButton(mCancelButton);
+		getActionBarView().getController().addButton(mCancelButton);
 	}
 
 	private void sendToLoginActivity() {
 		Intent loginIntent = new Intent(this, LoginActivity.class);
+
 		loginIntent.putExtra(LoginActivity.POST_ACTION, PostAction.SUBMIT);
-		if (StringUtils.isNotBlank(mSelfText)) loginIntent.putExtra(LoginActivity.POST_SUB_TEXT, mSelfText);
-		else if (StringUtils.isNotBlank(mUrlText)) loginIntent.putExtra(LoginActivity.POST_SUB_TEXT, mSelfText);
+
+		if (StringUtils.isNotBlank(mSelfText)) {
+			loginIntent.putExtra(LoginActivity.POST_SUB_TEXT, mSelfText);
+		} else if (StringUtils.isNotBlank(mUrlText)) {
+			loginIntent.putExtra(LoginActivity.POST_SUB_TEXT, mSelfText);
+		}
+
 		startActivity(loginIntent);
 		finish();
 	}
@@ -210,13 +218,11 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 	}
 
 	protected void refreshEditTextEnabledState() {
-		if (mSelfEditText.getText()
-											.length() > 0) {
+		if (mSelfEditText.getText() != null && mSelfEditText.getText().length() > 0) {
 			mSelfEditText.setEnabled(true);
 			mUrlEditText.setEnabled(false);
 
-		} else if (mUrlEditText.getText()
-														.length() > 0) {
+		} else if (mUrlEditText.getText() != null && mUrlEditText.getText().length() > 0) {
 			mSelfEditText.setEnabled(false);
 			mUrlEditText.setEnabled(true);
 
@@ -227,18 +233,16 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 	}
 
 	private void retrieveInputFromEditTexts() {
-		mTitleText = mTitleEditText.getText()
-																.toString();
-		mSelfText = mSelfEditText.getText()
-															.toString();
-		mUrlText = mUrlEditText.getText()
-														.toString();
+		mTitleText = mTitleEditText.getText() == null ? "" : mTitleEditText.getText().toString();
+		mSelfText = mSelfEditText.getText() == null ? "" : mSelfEditText.getText().toString();
+		mUrlText = mUrlEditText.getText() == null ? "" : mUrlEditText.getText().toString();
 	}
 
 	// Loader callbacks
 	@Override
 	public Loader<Result> onCreateLoader(int id, Bundle args) {
 		String content = null;
+
 		if (mSendMode == SendMode.SELF_TEXT) {
 			content = mSelfText;
 		} else if (mSendMode == SendMode.URL) {
@@ -252,8 +256,7 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 	public void onLoadFinished(Loader<Result> loader, Result result) {
 
 		if (result == Result.SUCCESS) {
-			Toast.makeText(getApplicationContext(), getString(R.string.submitted), Toast.LENGTH_LONG)
-						.show();
+			Toast.makeText(getApplicationContext(), getString(R.string.submitted), Toast.LENGTH_LONG).show();
 
 			if (!mFromShareIntent) {
 				Intent intent = new Intent(SubmitActivity.this, MainActivity.class);
@@ -263,12 +266,10 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 			finish();
 
 		} else if (result == Result.FAILURE) {
-			Toast.makeText(getApplicationContext(), getString(R.string.error_loading), Toast.LENGTH_LONG)
-						.show();
+			Toast.makeText(getApplicationContext(), getString(R.string.error_loading), Toast.LENGTH_LONG).show();
 
 			mSendButton.setVisibility(View.VISIBLE);
-			mCancelButton.showProgress(false)
-										.onClick(mCancelListener);
+			mCancelButton.showProgress(false).onClick(mCancelListener);
 		}
 
 	}
