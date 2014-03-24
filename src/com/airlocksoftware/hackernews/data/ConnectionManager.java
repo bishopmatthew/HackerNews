@@ -1,5 +1,9 @@
 package com.airlocksoftware.hackernews.data;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import com.airlocksoftware.hackernews.application.MainApplication;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
@@ -21,9 +25,19 @@ public class ConnectionManager {
 
 	/** Connects to news.ycombinator.com with no user cookie authentication **/
 	public static Connection anonConnect(String baseUrlExtension) {
-		return Jsoup.connect(ConnectionManager.BASE_URL + baseUrlExtension)
-								.timeout(TIMEOUT_MILLIS)
-								.userAgent(ConnectionManager.USER_AGENT);
+		Connection conn = Jsoup.connect(ConnectionManager.BASE_URL + baseUrlExtension)
+			.timeout(TIMEOUT_MILLIS)
+			.userAgent(ConnectionManager.USER_AGENT);
+
+		Context context = MainApplication.getInstance().getApplicationContext();
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		boolean compress = prefs.getBoolean("connection:gzip", false);
+
+		if (compress) {
+			conn.header("Accept-Encoding", "gzip");
+		}
+
+		return conn;
 	}
 
 	/** Converts an id into a string containing the extension (everything that goes after .com) of the URL **/
