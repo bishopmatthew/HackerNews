@@ -3,6 +3,7 @@ package com.airlocksoftware.hackernews.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import com.airlocksoftware.hackernews.application.MainApplication;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -10,6 +11,7 @@ import org.jsoup.Jsoup;
 /** Static methods for connecting to the http://news.ycombinator.com **/
 public class ConnectionManager {
 
+	public static final String TAG = ConnectionManager.class.getSimpleName();
 	public static final String BASE_URL = "https://news.ycombinator.com";
 	public static final String ITEMS_URL = "/item?id=";
 	public static final String THREADS_URL = "/threads?id=";
@@ -29,11 +31,10 @@ public class ConnectionManager {
 			.timeout(TIMEOUT_MILLIS)
 			.userAgent(ConnectionManager.USER_AGENT);
 
-		Context context = MainApplication.getInstance().getApplicationContext();
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		boolean compress = prefs.getBoolean("connection:gzip", false);
+		UserPrefs prefs = new UserPrefs(MainApplication.getInstance().getApplicationContext());
 
-		if (compress) {
+		if (prefs.getCompressData()) {
+			Log.d(TAG, "Fetching compressed data");
 			conn.header("Accept-Encoding", "gzip");
 		}
 

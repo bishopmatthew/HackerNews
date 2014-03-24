@@ -67,6 +67,15 @@
     <string name="login_success">Successfully logged in!</string>
     <string name="login_failure">Login failed. Please check your network connection, username, and password, then try again.</string>
 
+    <!-- SETTINGS -->
+    <string name="automatic_bug_reports">Automatic bug reports</string>
+    <string name="automatic_bug_reports_description">Any information submited is never shared with anyone else &amp; is used solely for the purpose of fixing errors.</string>
+    <string name="open_in_browser">Open in browser</string>
+    <string name="open_in_browser_description">Open links in your devices web browser instead of inside the app.</string>
+    <string name="compress_data">Compress Data</string>
+    <string name="compress_data_description">Save your data by GZipping HTTP responses from the Hacker News server.</string>
+
+
     <!-- MISC -->
     <string name="created">Created</string>
     <string name="username">Username</string>
@@ -89,10 +98,6 @@
     <string name="about_user">About user</string>
     <string name="text">Text</string>
     <string name="enter_text_here">Enter text here</string>
-    <string name="automatic_bug_reports">Automatic bug reports</string>
-    <string name="automatic_bug_reports_description">Any information submited is never shared with anyone else &amp; is used solely for the purpose of fixing errors.</string>
-    <string name="open_in_browser">Open in browser</string>
-    <string name="open_in_browser_description">Open links in your devices web browser instead of inside the app.</string>
     <string name="for_android">for Android</string>
     <string name="enter_username_here">enter username here</string>
     <string name="password">Password</string>
