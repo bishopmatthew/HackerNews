@@ -3,6 +3,7 @@ package com.airlocksoftware.hackernews.loader;
 import java.io.IOException;
 
 import android.util.Log;
+import com.crashlytics.android.Crashlytics;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
@@ -83,6 +84,16 @@ public class SubmitLoader extends AsyncTaskLoader<Result> {
 
 	private boolean validateResponse(Connection.Response res) {
 
+		if (res == null) return false;
+
+		if (res.headers() != null && res.headers().get("Location") != null) {
+			Crashlytics.setString("SubmitLoader :: responseLocationHeader", res.headers().get("Location"));
+		}
+
+		if (res.url() != null) {
+			Crashlytics.setString("SubmitLoader :: responseURL", res.url().toString());
+		}
+
 		// This used to work
 		if (res.statusCode() == 302 && res.headers().get("Location").equals("newest")) {
 			mErrorMessage = ErrorMessage.POST_SUCCESS;
@@ -95,6 +106,8 @@ public class SubmitLoader extends AsyncTaskLoader<Result> {
 		} else if (res.body().contains(MATCH_POST_TOO_FAST)) {
 			mErrorMessage = ErrorMessage.POST_TOO_FAST;
 		}
+
+		Crashlytics.setBool("SubmitLoader :: responsePostTooFast", mErrorMessage == ErrorMessage.POST_TOO_FAST);
 
 		// Only POST_SUCCESS is 100% clean and successful
 		return mErrorMessage == ErrorMessage.POST_SUCCESS;
