@@ -257,8 +257,6 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 	@Override
 	public void onLoadFinished(Loader<NewStoryResult> loader, NewStoryResult result) {
 
-		Log.d(TAG, "NewStoryResult :: " + result.toString());
-
 		switch (result) {
 		case SUCCESS:
 			Toast.makeText(getApplicationContext(),

@@ -102,7 +102,6 @@ public class SubmitLoader extends AsyncTaskLoader<NewStoryResult> {
 		}
 
 		if (res.url() != null) {
-			Log.d(TAG, "URL :: " + res.url());
 			Crashlytics.setString("SubmitLoader :: responseURL", res.url().toString());
 		}
 
@@ -121,7 +120,6 @@ public class SubmitLoader extends AsyncTaskLoader<NewStoryResult> {
 
 		// If the URL contains 'item?id=', it's a duplicate post
 		} else if (res.url() != null && res.url().toString().contains(MATCH_DUPLICATE_PAGE)) {
-			Log.d(TAG, " !! Duplicate Post");
 			Crashlytics.setBool("SubmitLoader :: responsePostDuplicate", true);
 			mErrorMessage = ErrorMessage.POST_DUPLICATE;
 		}
