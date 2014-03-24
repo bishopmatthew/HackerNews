@@ -2,6 +2,7 @@ package com.airlocksoftware.hackernews.loader;
 
 import java.io.IOException;
 
+import android.util.Log;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
@@ -16,12 +17,26 @@ import com.airlocksoftware.hackernews.model.Result;
 
 public class SubmitLoader extends AsyncTaskLoader<Result> {
 
+
+
 	final String mSelfText, mUrl, mTitle;
 	final SendMode mSendMode;
 
 	// Constants
+	private static final String TAG = SubmitLoader.class.getSimpleName();
 	private static final String REPLY_EXTENSION = "/r";
-	private static final String NEWEST_PAGE = "http://news.ycombinator.com/newest";
+
+	// Don't care about HTTP vs HTTPS
+	private static final String NEWEST_PAGE = "://news.ycombinator.com/newest";
+
+	// Match substrings for error messages
+	private static final String MATCH_POST_TOO_FAST = "submitting too fast";
+
+	private enum ErrorMessage {
+		POST_SUCCESS, POST_TOO_FAST, POST_DUPLICATE
+	}
+
+	public ErrorMessage mErrorMessage = ErrorMessage.POST_SUCCESS;
 
 	public SubmitLoader(Context context, SendMode sendMode, String title, String content) {
 		super(context);
@@ -54,6 +69,7 @@ public class SubmitLoader extends AsyncTaskLoader<Result> {
 
 			String replyFnid = getReplyFnid(data);
 			Connection.Response response = sendSubmission(data, replyFnid);
+
 			boolean success = validateResponse(response);
 			if (success) result = Result.SUCCESS;
 
@@ -65,16 +81,23 @@ public class SubmitLoader extends AsyncTaskLoader<Result> {
 		return result;
 	}
 
-	private boolean validateResponse(Connection.Response response) {
-		// this used to work
-		boolean success = response.statusCode() == 302 && response.headers()
-																															.get("Location")
-																															.equals("newest");
-		// this currently works
-		success = success || response.statusCode() == 200 && response.url()
-																																	.toString()
-																																	.equals(NEWEST_PAGE);
-		return success;
+	private boolean validateResponse(Connection.Response res) {
+
+		// This used to work
+		if (res.statusCode() == 302 && res.headers().get("Location").equals("newest")) {
+			mErrorMessage = ErrorMessage.POST_SUCCESS;
+
+		// This currently works
+		} else if (res.statusCode() == 200 && res.url().toString().contains(NEWEST_PAGE)) {
+			mErrorMessage = ErrorMessage.POST_SUCCESS;
+
+		// If you post too fast, HN complains
+		} else if (res.body().contains(MATCH_POST_TOO_FAST)) {
+			mErrorMessage = ErrorMessage.POST_TOO_FAST;
+		}
+
+		// Only POST_SUCCESS is 100% clean and successful
+		return mErrorMessage == ErrorMessage.POST_SUCCESS;
 	}
 
 	private Response sendSubmission(UserPrefs data, String replyFnid) throws IOException {
