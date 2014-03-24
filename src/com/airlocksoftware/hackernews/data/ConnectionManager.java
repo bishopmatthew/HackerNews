@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import com.airlocksoftware.hackernews.application.MainApplication;
+import com.crashlytics.android.Crashlytics;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
@@ -33,8 +34,10 @@ public class ConnectionManager {
 
 		UserPrefs prefs = new UserPrefs(MainApplication.getInstance().getApplicationContext());
 
-		if (prefs.getCompressData()) {
-			Log.d(TAG, "Fetching compressed data");
+		boolean compress = prefs.getCompressData();
+		Crashlytics.setBool("ConnectionManager :: GZip Responses", compress);
+
+		if (compress) {
 			conn.header("Accept-Encoding", "gzip");
 		}
 
