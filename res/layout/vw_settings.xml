@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews" >
+       xmlns:app="http://schemas.android.com/apk/res/com.airlocksoftware.hackernews" >
 
     <RelativeLayout
         android:id="@+id/btn_browser"
@@ -15,7 +15,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="6.66dp"
-            android:layout_toLeftOf="@+id/img_checkbox"
+            android:layout_toLeftOf="@+id/img_checkbox_browser"
             android:paddingLeft="13.33dp"
             android:text="@string/open_in_browser"
             android:textColor="?attr/textColorPrimary"
@@ -28,14 +28,14 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/txt_label_browser"
             android:layout_marginBottom="6.66dp"
-            android:layout_toLeftOf="@+id/img_checkbox"
+            android:layout_toLeftOf="@+id/img_checkbox_browser"
             android:paddingLeft="13.33dp"
             android:text="@string/open_in_browser_description"
             android:textColor="?attr/textColorSecondary"
             android:textSize="12sp" />
 
         <ImageView
-            android:id="@+id/img_checkbox"
+            android:id="@+id/img_checkbox_browser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -45,7 +45,7 @@
             android:src="@drawable/chkbox_default_dark" />
 
         <View
-            android:id="@+id/divider"
+            android:id="@+id/divider_browser"
             android:layout_width="fill_parent"
             android:layout_height="1.5dp"
             android:layout_below="@+id/txt_sublabel_browser"
@@ -79,14 +79,65 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/txt_label_bug_reports"
             android:layout_marginBottom="6.66dp"
-            android:layout_toLeftOf="@+id/img_checkbox"
+            android:layout_toLeftOf="@+id/img_checkbox_bug_reports"
             android:paddingLeft="13.33dp"
             android:text="@string/automatic_bug_reports_description"
             android:textColor="?attr/textColorSecondary"
             android:textSize="12sp" />
 
         <ImageView
-            android:id="@+id/img_checkbox"
+            android:id="@+id/img_checkbox_bug_reports"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="13.33dp"
+            android:src="@drawable/chkbox_default_dark" />
+
+        <View
+            android:id="@+id/divider_bug_reports"
+            android:layout_width="fill_parent"
+            android:layout_height="1.5dp"
+            android:layout_below="@+id/txt_sublabel_bug_reports"
+            android:layout_marginLeft="13.33dp"
+            android:layout_marginRight="13.33dp"
+            android:background="?attr/dividerColor" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn_compress_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bright_accent" >
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_label_compress_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="6.66dp"
+            android:paddingLeft="13.33dp"
+            android:text="@string/compress_data"
+            android:textColor="?attr/textColorPrimary"
+            android:textSize="20sp" />
+
+        <com.airlocksoftware.holo.type.FontText
+            android:id="@+id/txt_sublabel_compress_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/txt_label_compress_data"
+            android:layout_marginBottom="6.66dp"
+            android:layout_toLeftOf="@+id/img_checkbox_compress_data"
+            android:paddingLeft="13.33dp"
+            android:text="@string/compress_data_description"
+            android:textColor="?attr/textColorSecondary"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/img_checkbox_compress_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -99,7 +150,7 @@
             android:id="@+id/divider"
             android:layout_width="fill_parent"
             android:layout_height="1.5dp"
-            android:layout_below="@+id/txt_sublabel_bug_reports"
+            android:layout_below="@+id/txt_sublabel_compress_data"
             android:layout_marginLeft="13.33dp"
             android:layout_marginRight="13.33dp"
             android:background="?attr/dividerColor" />

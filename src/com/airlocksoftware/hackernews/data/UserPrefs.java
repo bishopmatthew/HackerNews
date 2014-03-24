@@ -25,6 +25,7 @@ public class UserPrefs {
 
 	public static final String BUGSENSE_ENABLED = UserPrefs.class.getSimpleName() + ".bugsense_enabled";
 	public static final String OPEN_IN_BROWSER = UserPrefs.class.getSimpleName() + ".open_in_browser";
+	public static final String COMPRESS_DATA = UserPrefs.class.getSimpleName() + ".compress_data";
 	public static final String THEME = UserPrefs.class.getSimpleName() + ".theme";
 	public static final String SEARCH_SORT_TYPE = UserPrefs.class.getSimpleName() + ".searchSortType";
 	public static final String SEARCH_TYPE = UserPrefs.class.getSimpleName() + ".searchType";
@@ -122,6 +123,15 @@ public class UserPrefs {
 
 	public void saveOpenInBrowser(boolean enabled) {
 		mEditor.putBoolean(OPEN_IN_BROWSER, enabled);
+		mEditor.commit();
+	}
+
+	public boolean getCompressData() {
+		return mPrefs.getBoolean(COMPRESS_DATA, false);
+	}
+
+	public void saveCompressData(boolean compress) {
+		mEditor.putBoolean(COMPRESS_DATA, compress);
 		mEditor.commit();
 	}
 

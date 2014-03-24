@@ -1,6 +1,10 @@
 package com.airlocksoftware.hackernews.fragment;
 
+import java.util.HashMap;
+
 import org.apache.commons.lang3.StringUtils;
+
+import com.crashlytics.android.Crashlytics;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,6 +24,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.airlocksoftware.hackernews.R;
+import com.airlocksoftware.hackernews.application.MainApplication;
+import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.holo.actionbar.ActionBarButton;
 import com.airlocksoftware.holo.actionbar.ActionBarButton.Priority;
 import com.airlocksoftware.holo.actionbar.interfaces.ActionBarClient;
@@ -35,6 +41,9 @@ public class WebFragment extends Fragment implements ActionBarClient {
 	private ProgressBar mProgress;
 	private ActionBarButton mRefreshButton;
 	private ActionBarButton mBrowserButton;
+
+	// Create an empty HashMap for holding HTTP Headers
+	private HashMap<String, String> mHttpHeaders = new HashMap<String, String>();
 
 	// Listeners
 	private OnClickListener mRefreshListener = new OnClickListener() {
@@ -73,6 +82,15 @@ public class WebFragment extends Fragment implements ActionBarClient {
 			mUrl = args.getString(URL);
 		}
 
+		UserPrefs prefs = new UserPrefs(MainApplication.getInstance().getApplicationContext());
+		boolean compress = prefs.getCompressData();
+
+		Crashlytics.setBool("WebFragment :: WebView GZip", compress);
+
+		if (compress) {
+			mHttpHeaders.put("Accept-Encoding", "gzip");
+		}
+
 	}
 
 	@Override
@@ -89,7 +107,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
 		if (savedInstanceState != null) {
 			mWebView.restoreState(savedInstanceState);
 		} else if (mUrl != null) {
-			mWebView.loadUrl(mUrl);
+			mWebView.loadUrl(mUrl, mHttpHeaders);
 		}
 
 		return mRootView;
@@ -112,7 +130,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
 
 	WebViewClient mWebViewClient = new WebViewClient() {
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			view.loadUrl(url);
+			view.loadUrl(url, mHttpHeaders);
 			mUrl = url;
 			return true;
 		}
@@ -201,7 +219,7 @@ public class WebFragment extends Fragment implements ActionBarClient {
 	public void loadNewUrl(String url) {
 		mUrl = url;
 		mWebView.clearView();
-		mWebView.loadUrl(mUrl);
+		mWebView.loadUrl(mUrl, mHttpHeaders);
 	}
 
 	/** Set the initial url to be loaded. **/
