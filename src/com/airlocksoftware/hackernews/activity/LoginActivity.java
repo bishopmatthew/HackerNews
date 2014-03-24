@@ -117,8 +117,7 @@ public class LoginActivity extends SlideoutMenuActivity implements LoaderCallbac
 		}
 
 		// setup UI
-		getActionBarView().getController()
-											.setTitleText(getString(R.string.login));
+		getActionBarView().getController().setTitleText(getString(R.string.login));
 		setActiveMenuItem(-1); // clear check
 		showContent();
 

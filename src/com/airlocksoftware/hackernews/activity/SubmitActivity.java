@@ -2,6 +2,7 @@ package com.airlocksoftware.hackernews.activity;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.util.Log;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import com.airlocksoftware.hackernews.activity.LoginActivity.PostAction;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.loader.SubmitLoader;
 import com.airlocksoftware.hackernews.model.Page;
-import com.airlocksoftware.hackernews.model.Result;
+import com.airlocksoftware.hackernews.model.NewStoryResult;
 import com.airlocksoftware.holo.actionbar.ActionBarButton;
 import com.airlocksoftware.holo.actionbar.ActionBarButton.Priority;
 import com.airlocksoftware.holo.utils.ViewUtils;
@@ -29,7 +30,7 @@ import com.airlocksoftware.holo.utils.ViewUtils;
  * Activity for submitting stories to HN. It is exported in the manifest so that it can receive ACTION_SEND share
  * Intents. Submission is performed in background by SubmitLoader.
  **/
-public class SubmitActivity extends SlideoutMenuActivity implements LoaderManager.LoaderCallbacks<Result> {
+public class SubmitActivity extends SlideoutMenuActivity implements LoaderManager.LoaderCallbacks<NewStoryResult> {
 
 	private boolean mFromShareIntent = false;
 	private SendMode mSendMode = SendMode.EMPTY;
@@ -41,6 +42,7 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 		EMPTY, SELF_TEXT, URL;
 	}
 
+	public static final String TAG = SubmitActivity.class.getSimpleName();
 	public static final String TITLE_STRING = SearchActivity.class.getSimpleName() + ".title";
 	public static final String SELF_STRING = SearchActivity.class.getSimpleName() + ".text";
 	public static final String URL_STRING = SearchActivity.class.getSimpleName() + ".url";
@@ -57,20 +59,24 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 			boolean oneOrTheOther = validSelfText != validUrl;
 
 			if (!validTitle) {
-				Toast.makeText(getApplicationContext(), getString(R.string.submitting_title_too_long), Toast.LENGTH_LONG)
-							.show();
+				Toast.makeText(getApplicationContext(),
+						getString(R.string.submitting_title_too_long),
+						Toast.LENGTH_LONG).show();
 			} else if (!oneOrTheOther) {
-				Toast.makeText(getApplicationContext(), getString(R.string.error_submitting), Toast.LENGTH_LONG)
-							.show();
+				Toast.makeText(getApplicationContext(),
+						getString(R.string.error_submitting),
+						Toast.LENGTH_LONG).show();
 			} else {
 				// input is valid, send via SubmitLoader
 				mSendButton.setVisibility(View.GONE);
-				mCancelButton.showProgress(true)
-											.onClick(null);
+				mCancelButton.showProgress(true).onClick(null);
 				mSendMode = validSelfText ? SendMode.SELF_TEXT : SendMode.URL;
+
 				getSupportLoaderManager().restartLoader(0, null, SubmitActivity.this);
-				Toast.makeText(getApplicationContext(), getString(R.string.submitting), Toast.LENGTH_LONG)
-							.show();
+
+				Toast.makeText(getApplicationContext(),
+						getString(R.string.submitting),
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	};
@@ -98,6 +104,7 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 	@Override
 	public void onCreate(Bundle savedState) {
 		super.onCreate(savedState);
+
 		setContentView(R.layout.act_submit);
 		ViewUtils.fixBackgroundRepeat(findViewById(R.id.root_scroll));
 		retrieveBundles(savedState, getIntent().getExtras());
@@ -132,31 +139,34 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 	}
 
 	private void setupActionBar() {
-		getActionBarView().getController()
-											.setTitleText(getString(R.string.submit));
+		getActionBarView().getController().setTitleText(getString(R.string.submit));
 
 		mSendButton = new ActionBarButton(this);
 		mSendButton.icon(R.drawable.ic_action_send)
 								.priority(Priority.HIGH)
 								.onClick(mSendListener)
 								.text(getString(R.string.submit));
-		getActionBarView().getController()
-											.addButton(mSendButton);
+		getActionBarView().getController().addButton(mSendButton);
 
 		mCancelButton = new ActionBarButton(this);
 		mCancelButton.icon(R.drawable.ic_action_cancel)
 									.priority(Priority.HIGH)
 									.onClick(mCancelListener)
 									.text(getString(R.string.cancel));
-		getActionBarView().getController()
-											.addButton(mCancelButton);
+		getActionBarView().getController().addButton(mCancelButton);
 	}
 
 	private void sendToLoginActivity() {
 		Intent loginIntent = new Intent(this, LoginActivity.class);
+
 		loginIntent.putExtra(LoginActivity.POST_ACTION, PostAction.SUBMIT);
-		if (StringUtils.isNotBlank(mSelfText)) loginIntent.putExtra(LoginActivity.POST_SUB_TEXT, mSelfText);
-		else if (StringUtils.isNotBlank(mUrlText)) loginIntent.putExtra(LoginActivity.POST_SUB_TEXT, mSelfText);
+
+		if (StringUtils.isNotBlank(mSelfText)) {
+			loginIntent.putExtra(LoginActivity.POST_SUB_TEXT, mSelfText);
+		} else if (StringUtils.isNotBlank(mUrlText)) {
+			loginIntent.putExtra(LoginActivity.POST_SUB_TEXT, mSelfText);
+		}
+
 		startActivity(loginIntent);
 		finish();
 	}
@@ -210,13 +220,11 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 	}
 
 	protected void refreshEditTextEnabledState() {
-		if (mSelfEditText.getText()
-											.length() > 0) {
+		if (mSelfEditText.getText() != null && mSelfEditText.getText().length() > 0) {
 			mSelfEditText.setEnabled(true);
 			mUrlEditText.setEnabled(false);
 
-		} else if (mUrlEditText.getText()
-														.length() > 0) {
+		} else if (mUrlEditText.getText() != null && mUrlEditText.getText().length() > 0) {
 			mSelfEditText.setEnabled(false);
 			mUrlEditText.setEnabled(true);
 
@@ -227,18 +235,16 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 	}
 
 	private void retrieveInputFromEditTexts() {
-		mTitleText = mTitleEditText.getText()
-																.toString();
-		mSelfText = mSelfEditText.getText()
-															.toString();
-		mUrlText = mUrlEditText.getText()
-														.toString();
+		mTitleText = mTitleEditText.getText() == null ? "" : mTitleEditText.getText().toString();
+		mSelfText = mSelfEditText.getText() == null ? "" : mSelfEditText.getText().toString();
+		mUrlText = mUrlEditText.getText() == null ? "" : mUrlEditText.getText().toString();
 	}
 
 	// Loader callbacks
 	@Override
-	public Loader<Result> onCreateLoader(int id, Bundle args) {
+	public Loader<NewStoryResult> onCreateLoader(int id, Bundle args) {
 		String content = null;
+
 		if (mSendMode == SendMode.SELF_TEXT) {
 			content = mSelfText;
 		} else if (mSendMode == SendMode.URL) {
@@ -249,32 +255,62 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 	}
 
 	@Override
-	public void onLoadFinished(Loader<Result> loader, Result result) {
+	public void onLoadFinished(Loader<NewStoryResult> loader, NewStoryResult result) {
 
-		if (result == Result.SUCCESS) {
-			Toast.makeText(getApplicationContext(), getString(R.string.submitted), Toast.LENGTH_LONG)
-						.show();
+		switch (result) {
+		case SUCCESS:
+			Toast.makeText(getApplicationContext(),
+					getString(R.string.submitted),
+					Toast.LENGTH_LONG).show();
 
 			if (!mFromShareIntent) {
 				Intent intent = new Intent(SubmitActivity.this, MainActivity.class);
 				intent.putExtra(MainActivity.PAGE, Page.NEW);
 				startActivity(intent);
 			}
+
 			finish();
+			return;
 
-		} else if (result == Result.FAILURE) {
-			Toast.makeText(getApplicationContext(), getString(R.string.error_loading), Toast.LENGTH_LONG)
-						.show();
+		case POST_DUPLICATE:
+			Toast.makeText(getApplicationContext(),
+					getString(R.string.error_post_duplicate),
+					Toast.LENGTH_LONG).show();
 
-			mSendButton.setVisibility(View.VISIBLE);
-			mCancelButton.showProgress(false)
-										.onClick(mCancelListener);
+			if (!mFromShareIntent) {
+				Intent intent = new Intent(SubmitActivity.this, MainActivity.class);
+				intent.putExtra(MainActivity.PAGE, Page.FRONT);
+				startActivity(intent);
+			}
+
+			finish();
+			return;
+
+		case POST_TOO_FAST:
+			Toast.makeText(getApplicationContext(),
+					getString(R.string.error_post_too_fast),
+					Toast.LENGTH_LONG).show();
+
+			break;
+
+		case FAILURE:
+			Toast.makeText(getApplicationContext(),
+					getString(R.string.error_loading),
+					Toast.LENGTH_LONG).show();
+
+			break;
+
+		default:
+			break;
 		}
+
+		mSendButton.setVisibility(View.VISIBLE);
+		mCancelButton.showProgress(false).onClick(mCancelListener);
 
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Result> loader) {
+	public void onLoaderReset(Loader<NewStoryResult> loader) {
 		// no implementation necessary
 	}
 

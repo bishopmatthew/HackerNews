@@ -115,5 +115,7 @@
     <string name="error_no_user">No Username passed to StoryLoader :: Please log in and retry\n\nPlease submit a Github issue if this persists</string>
     <string name="error_no_page">No Page passed to StoryLoader :: This is an unexpected error\n\nPlease submit a Github issue if this persists</string>
     <string name="active">Active</string>
+    <string name="error_post_duplicate">You\'ve posted a duplicate story; try searching instead</string>
+    <string name="error_post_too_fast">You\'re submitting too fast; please slow down\nHacker News limits the rate of submissions</string>
 
 </resources>
