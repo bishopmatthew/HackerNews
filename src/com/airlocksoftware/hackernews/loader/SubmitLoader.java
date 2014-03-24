@@ -14,11 +14,9 @@ import android.support.v4.content.AsyncTaskLoader;
 import com.airlocksoftware.hackernews.activity.SubmitActivity.SendMode;
 import com.airlocksoftware.hackernews.data.ConnectionManager;
 import com.airlocksoftware.hackernews.data.UserPrefs;
-import com.airlocksoftware.hackernews.model.Result;
+import com.airlocksoftware.hackernews.model.NewStoryResult;
 
-public class SubmitLoader extends AsyncTaskLoader<Result> {
-
-
+public class SubmitLoader extends AsyncTaskLoader<NewStoryResult> {
 
 	final String mSelfText, mUrl, mTitle;
 	final SendMode mSendMode;
@@ -28,10 +26,13 @@ public class SubmitLoader extends AsyncTaskLoader<Result> {
 	private static final String REPLY_EXTENSION = "/r";
 
 	// Don't care about HTTP vs HTTPS
-	private static final String NEWEST_PAGE = "://news.ycombinator.com/newest";
+	private static final String MATCH_NEWEST_PAGE = "://news.ycombinator.com/newest";
 
 	// Match substrings for error messages
 	private static final String MATCH_POST_TOO_FAST = "submitting too fast";
+
+	// Match duplicate posts
+	private static final String MATCH_DUPLICATE_PAGE = "item?id=";
 
 	private enum ErrorMessage {
 		POST_SUCCESS, POST_TOO_FAST, POST_DUPLICATE
@@ -60,26 +61,36 @@ public class SubmitLoader extends AsyncTaskLoader<Result> {
 	}
 
 	@Override
-	public Result loadInBackground() {
-		if (mSendMode == SendMode.EMPTY) return Result.EMPTY;
-
-		Result result = Result.FAILURE;
+	public NewStoryResult loadInBackground() {
+		if (mSendMode == SendMode.EMPTY) return NewStoryResult.EMPTY;
 
 		UserPrefs data = new UserPrefs(getContext());
+
 		try {
 
 			String replyFnid = getReplyFnid(data);
 			Connection.Response response = sendSubmission(data, replyFnid);
 
-			boolean success = validateResponse(response);
-			if (success) result = Result.SUCCESS;
+			validateResponse(response);
+
+			switch (mErrorMessage) {
+			case POST_SUCCESS:
+				return NewStoryResult.SUCCESS;
+			case POST_DUPLICATE:
+				return NewStoryResult.POST_DUPLICATE;
+			case POST_TOO_FAST:
+				return NewStoryResult.POST_TOO_FAST;
+			default:
+				return NewStoryResult.FAILURE;
+			}
 
 		} catch (Exception e) {
 			// any exception here probably means we have NO_CONNECTION or there's an error with the website.
 			e.printStackTrace();
 		}
 
-		return result;
+		return NewStoryResult.FAILURE;
+
 	}
 
 	private boolean validateResponse(Connection.Response res) {
@@ -91,6 +102,7 @@ public class SubmitLoader extends AsyncTaskLoader<Result> {
 		}
 
 		if (res.url() != null) {
+			Log.d(TAG, "URL :: " + res.url());
 			Crashlytics.setString("SubmitLoader :: responseURL", res.url().toString());
 		}
 
@@ -99,15 +111,20 @@ public class SubmitLoader extends AsyncTaskLoader<Result> {
 			mErrorMessage = ErrorMessage.POST_SUCCESS;
 
 		// This currently works
-		} else if (res.statusCode() == 200 && res.url().toString().contains(NEWEST_PAGE)) {
+		} else if (res.statusCode() == 200 && res.url().toString().contains(MATCH_NEWEST_PAGE)) {
 			mErrorMessage = ErrorMessage.POST_SUCCESS;
 
 		// If you post too fast, HN complains
 		} else if (res.body().contains(MATCH_POST_TOO_FAST)) {
+			Crashlytics.setBool("SubmitLoader :: responsePostTooFast", true);
 			mErrorMessage = ErrorMessage.POST_TOO_FAST;
-		}
 
-		Crashlytics.setBool("SubmitLoader :: responsePostTooFast", mErrorMessage == ErrorMessage.POST_TOO_FAST);
+		// If the URL contains 'item?id=', it's a duplicate post
+		} else if (res.url() != null && res.url().toString().contains(MATCH_DUPLICATE_PAGE)) {
+			Log.d(TAG, " !! Duplicate Post");
+			Crashlytics.setBool("SubmitLoader :: responsePostDuplicate", true);
+			mErrorMessage = ErrorMessage.POST_DUPLICATE;
+		}
 
 		// Only POST_SUCCESS is 100% clean and successful
 		return mErrorMessage == ErrorMessage.POST_SUCCESS;

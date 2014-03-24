@@ -2,6 +2,7 @@ package com.airlocksoftware.hackernews.activity;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.util.Log;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import com.airlocksoftware.hackernews.activity.LoginActivity.PostAction;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.loader.SubmitLoader;
 import com.airlocksoftware.hackernews.model.Page;
-import com.airlocksoftware.hackernews.model.Result;
+import com.airlocksoftware.hackernews.model.NewStoryResult;
 import com.airlocksoftware.holo.actionbar.ActionBarButton;
 import com.airlocksoftware.holo.actionbar.ActionBarButton.Priority;
 import com.airlocksoftware.holo.utils.ViewUtils;
@@ -29,7 +30,7 @@ import com.airlocksoftware.holo.utils.ViewUtils;
  * Activity for submitting stories to HN. It is exported in the manifest so that it can receive ACTION_SEND share
  * Intents. Submission is performed in background by SubmitLoader.
  **/
-public class SubmitActivity extends SlideoutMenuActivity implements LoaderManager.LoaderCallbacks<Result> {
+public class SubmitActivity extends SlideoutMenuActivity implements LoaderManager.LoaderCallbacks<NewStoryResult> {
 
 	private boolean mFromShareIntent = false;
 	private SendMode mSendMode = SendMode.EMPTY;
@@ -41,6 +42,7 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 		EMPTY, SELF_TEXT, URL;
 	}
 
+	public static final String TAG = SubmitActivity.class.getSimpleName();
 	public static final String TITLE_STRING = SearchActivity.class.getSimpleName() + ".title";
 	public static final String SELF_STRING = SearchActivity.class.getSimpleName() + ".text";
 	public static final String URL_STRING = SearchActivity.class.getSimpleName() + ".url";
@@ -240,7 +242,7 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 
 	// Loader callbacks
 	@Override
-	public Loader<Result> onCreateLoader(int id, Bundle args) {
+	public Loader<NewStoryResult> onCreateLoader(int id, Bundle args) {
 		String content = null;
 
 		if (mSendMode == SendMode.SELF_TEXT) {
@@ -253,29 +255,64 @@ public class SubmitActivity extends SlideoutMenuActivity implements LoaderManage
 	}
 
 	@Override
-	public void onLoadFinished(Loader<Result> loader, Result result) {
+	public void onLoadFinished(Loader<NewStoryResult> loader, NewStoryResult result) {
 
-		if (result == Result.SUCCESS) {
-			Toast.makeText(getApplicationContext(), getString(R.string.submitted), Toast.LENGTH_LONG).show();
+		Log.d(TAG, "NewStoryResult :: " + result.toString());
+
+		switch (result) {
+		case SUCCESS:
+			Toast.makeText(getApplicationContext(),
+					getString(R.string.submitted),
+					Toast.LENGTH_LONG).show();
 
 			if (!mFromShareIntent) {
 				Intent intent = new Intent(SubmitActivity.this, MainActivity.class);
 				intent.putExtra(MainActivity.PAGE, Page.NEW);
 				startActivity(intent);
 			}
+
 			finish();
+			return;
 
-		} else if (result == Result.FAILURE) {
-			Toast.makeText(getApplicationContext(), getString(R.string.error_loading), Toast.LENGTH_LONG).show();
+		case POST_DUPLICATE:
+			Toast.makeText(getApplicationContext(),
+					getString(R.string.error_post_duplicate),
+					Toast.LENGTH_LONG).show();
 
-			mSendButton.setVisibility(View.VISIBLE);
-			mCancelButton.showProgress(false).onClick(mCancelListener);
+			if (!mFromShareIntent) {
+				Intent intent = new Intent(SubmitActivity.this, MainActivity.class);
+				intent.putExtra(MainActivity.PAGE, Page.FRONT);
+				startActivity(intent);
+			}
+
+			finish();
+			return;
+
+		case POST_TOO_FAST:
+			Toast.makeText(getApplicationContext(),
+					getString(R.string.error_post_too_fast),
+					Toast.LENGTH_LONG).show();
+
+			break;
+
+		case FAILURE:
+			Toast.makeText(getApplicationContext(),
+					getString(R.string.error_loading),
+					Toast.LENGTH_LONG).show();
+
+			break;
+
+		default:
+			break;
 		}
+
+		mSendButton.setVisibility(View.VISIBLE);
+		mCancelButton.showProgress(false).onClick(mCancelListener);
 
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Result> loader) {
+	public void onLoaderReset(Loader<NewStoryResult> loader) {
 		// no implementation necessary
 	}
 
