@@ -73,7 +73,7 @@
     <string name="open_in_browser">Open in browser</string>
     <string name="open_in_browser_description">Open links in your devices web browser instead of inside the app.</string>
     <string name="compress_data">Compress Data</string>
-    <string name="compress_data_description">Save your data by GZipping HTTP responses from the Hacker News server.</string>
+    <string name="compress_data_description">Decrease your mobile data use by GZipping HTTP responses from the Hacker News server.</string>
 
 
     <!-- MISC -->
