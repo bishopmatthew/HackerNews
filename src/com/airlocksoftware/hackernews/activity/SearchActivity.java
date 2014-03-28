@@ -43,7 +43,7 @@ public class SearchActivity extends BackActivity implements LoaderManager.Loader
 	private SortType mSort = SortType.RELEVANCE;
 	private SearchType mSearchType = SearchType.ALL;
 	private String mQuery;
-	private int mStartPos = 0;
+	private int mPage = 0;
 
 	private Result mLastResult;
 	private boolean mIsLoading;
@@ -65,7 +65,7 @@ public class SearchActivity extends BackActivity implements LoaderManager.Loader
 		@Override
 		public void onClick(View v) {
 			mRequest = Request.MORE;
-			mStartPos += NUM_ITEMS_PER_PAGE;
+			mPage += 1;
 			getSupportLoaderManager().restartLoader(0, null, SearchActivity.this);
 		}
 	};
@@ -151,15 +151,17 @@ public class SearchActivity extends BackActivity implements LoaderManager.Loader
 																																															.getTitleGroup(), false);
 		mSearchBox.setOnEditorActionListener(mSearchKeyboardListener);
 		if (mQuery != null) mSearchBox.setText(mQuery);
+
 		getActionBarView().getController()
-											.getTitleGroup()
-											.addView(mSearchBox);
+				.getTitleGroup()
+				.addView(mSearchBox);
 
 		mSearchButton = new ActionBarButton(this).priority(Priority.HIGH);
 		mSearchButton.setOnClickListener(mSearchBtnListener);
+
 		getActionBarView().getController()
-											.addButton(mSearchButton.text("Search")
-																							.icon(R.drawable.ic_action_search));
+				.addButton(mSearchButton.text("Search")
+				.icon(R.drawable.ic_action_search));
 	}
 
 	/** Create and add "more" footer **/
@@ -232,7 +234,7 @@ public class SearchActivity extends BackActivity implements LoaderManager.Loader
 	public Loader<SearchResult> onCreateLoader(int id, Bundle args) {
 		mIsLoading = true;
 		refreshContentVisibility();
-		return new SearchLoader(this, mRequest, mQuery, mSort, mSearchType, mStartPos);
+		return new SearchLoader(this, mRequest, mQuery, mSort, mSearchType, mPage);
 	}
 
 	@Override
@@ -253,7 +255,7 @@ public class SearchActivity extends BackActivity implements LoaderManager.Loader
 			mAdapter.addAll(data.items);
 
 			// if there are more results for this query, show more button. Otherwise leave it hidden.
-			if (data.hits - (data.start + NUM_ITEMS_PER_PAGE) > 0) mMoreFooter.setVisibility(View.VISIBLE);
+			if (data.hits - (data.page * NUM_ITEMS_PER_PAGE) > 0) mMoreFooter.setVisibility(View.VISIBLE);
 		}
 
 		refreshContentVisibility();
@@ -271,9 +273,11 @@ public class SearchActivity extends BackActivity implements LoaderManager.Loader
 		inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
 		// get search term, reset start position,
-		mQuery = mSearchBox.getText()
-												.toString();
-		mStartPos = 0;
+		if (mSearchBox.getText() != null) {
+			mQuery = mSearchBox.getText().toString();
+		}
+
+		mPage = 0;
 		mRequest = Request.NEW;
 		getSupportLoaderManager().restartLoader(0, null, SearchActivity.this);
 	}
@@ -299,7 +303,8 @@ public class SearchActivity extends BackActivity implements LoaderManager.Loader
 	// Enums
 	@SuppressLint("DefaultLocale")
 	public enum SortType {
-		RELEVANCE, DATE, POINTS;
+		RELEVANCE, DATE;
+		// RELEVANCE, DATE, POINTS;
 
 		public String getDisplayName() {
 			return StringUtils.capitalize(name().toLowerCase());

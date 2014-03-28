@@ -23,6 +23,8 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
+import com.airlocksoftware.hackernews.application.MainApplication;
+import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.activity.SearchActivity.SearchType;
 import com.airlocksoftware.hackernews.activity.SearchActivity.SortType;
 import com.airlocksoftware.hackernews.loader.SearchLoader.SearchResult;
@@ -39,15 +41,15 @@ public class SearchLoader extends AsyncTaskLoader<SearchResult> {
 	SearchType mType;
 
 	/**
-	 * Which position to request search results for. Use 0 for a new search, and other positive integers as offsets from
+	 * Which page to request search results for. Use 0 for a new search, and other positive integers as offsets from
 	 * 0.
 	 **/
-	int mStart = 0;
+	int mPage = 0;
 
 	// Constants
 	@SuppressWarnings("unused")
 	private static final String TAG = SearchLoader.class.getSimpleName();
-	private static final String START_QUERY = "http://api.thriftdb.com/api.hnsearch.com/items/_search";
+	private static final String START_QUERY = "https://hn.algolia.io/api/v1/";
 	private static final String WEIGHTS = "&weights[title]=1.1&weights[text]=0.7&weights[domain]=2.0&weights[username]=0.1&weights[type]=0.0&boosts[fields][points]=0.15&boosts[fields][num_comments]=0.15&boosts[functions][pow(2,div(div(ms(create_ts,NOW),3600000),72))]=200.0";
 
 	public static class SearchResult {
@@ -62,7 +64,7 @@ public class SearchLoader extends AsyncTaskLoader<SearchResult> {
 		public Result result;
 		public List<SearchItem> items;
 		public int hits = -1;
-		public int start = -1;
+		public int page = 0;
 	}
 
 	public SearchLoader(Context context, Request request, String query, SortType sort, SearchType type, int start) {
@@ -72,7 +74,7 @@ public class SearchLoader extends AsyncTaskLoader<SearchResult> {
 		mQuery = query;
 		mSort = sort;
 		mType = type;
-		mStart = start;
+		mPage = start;
 	}
 
 	@Override
@@ -89,13 +91,18 @@ public class SearchLoader extends AsyncTaskLoader<SearchResult> {
 
 		try {
 			Gson gson = new Gson();
-			JSONObject obj = new JSONArray(response).getJSONObject(0);
-			hits = obj.getInt("hits");
-			JSONArray results = obj.getJSONArray("results");
+
+			JSONObject obj = new JSONObject(response);
+
+			hits = obj.getInt("nbHits");
+			JSONArray results = obj.getJSONArray("hits");
 
 			for (int i = 0; i < results.length(); i++) {
-				SearchItem searchItem = gson.fromJson(results.getJSONObject(i)
-																											.getString("item"), SearchItem.class);
+				SearchItem searchItem = gson.fromJson(
+					results.getJSONObject(i).toString(),
+					SearchItem.class
+				);
+
 				items.add(searchItem);
 			}
 
@@ -106,7 +113,7 @@ public class SearchLoader extends AsyncTaskLoader<SearchResult> {
 
 		search.items = items;
 		search.hits = hits;
-		search.start = mStart;
+		search.page = mPage;
 		if (search.result == null) search.result = Result.SUCCESS;
 		// search.result = (items != null && hits != -1) ? Result.SUCCESS : Result.EMPTY;
 
@@ -120,10 +127,18 @@ public class SearchLoader extends AsyncTaskLoader<SearchResult> {
 		StringBuilder builder = new StringBuilder();
 		HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(searchUrl);
+//
+//		UserPrefs prefs = new UserPrefs(MainApplication.getInstance().getApplicationContext());
+//
+//		if (prefs.getCompressData()) {
+//			httpGet.addHeader("Accept-Encoding", "gzip");
+//		}
+
 		try {
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();
+
 			if (statusCode == 200) {
 				HttpEntity entity = response.getEntity();
 				InputStream content = entity.getContent();
@@ -136,6 +151,7 @@ public class SearchLoader extends AsyncTaskLoader<SearchResult> {
 				Log.e(searchUrl, "Failed to download file");
 				// notify user of search failure
 			}
+
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -143,58 +159,67 @@ public class SearchLoader extends AsyncTaskLoader<SearchResult> {
 		}
 
 		String response = builder.toString();
-		response = "[" + response + "]";
 		return response;
 	}
 
 	private String buildSearchUrl() {
 
-		StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder(START_QUERY);
+
+		String endpoint;
+		String query = "";
 
 		try {
-			builder.append(START_QUERY)
-							.append("?q=" + URLEncoder.encode(mQuery, "UTF-8"))
-							.append(WEIGHTS);
+			query = URLEncoder.encode(mQuery, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// tell user the query was invalid?
 			e.printStackTrace();
 		}
 
-		String sortBy;
-
 		switch (mSort) {
 		case RELEVANCE:
-			sortBy = "score";
+			endpoint = "search";
 			break;
+
 		case DATE:
-			sortBy = "create_ts";
+			endpoint = "search_by_date";
 			break;
-		case POINTS:
-			sortBy = "points";
-			break;
+
+		// POINTS no longer a valid sort!
+		// will have to sort ourselves if we want to support this
+//		case POINTS:
+//			endpoint = "search";
+//			break;
+
 		default:
-			throw new RuntimeException("Error: didn't recieve a valid SortType" + mSort.toString());
+			throw new RuntimeException("Error: didn't receive a valid SortType" + mSort.toString());
 		}
 
-		builder.append("&sortby=" + sortBy + "+desc");
+		builder.append(endpoint);
 
 		switch (mType) {
 		case ALL:
 			// don't append filter
+			builder.append("?query=" + query);
+			builder.append("&page=" + mPage);
 			break;
 		case STORIES:
-			builder.append("&filter[fields][type]=" + "submission");
+			builder.append("?query=" + query);
+			builder.append("&page=" + mPage);
+			builder.append("&tags=story");
 			break;
 		case COMMENTS:
-			builder.append("&filter[fields][type]=" + "comment");
+			builder.append("?query=" + query);
+			builder.append("&page=" + mPage);
+			builder.append("&tags=comment");
 			break;
 		case USERS:
-			throw new RuntimeException("The parent activity should have started UserActivity & not started this loader");
+			builder.append("?page=" + mPage);
+			builder.append("&tags=author_" + query);
+			break;
 		default:
-			throw new RuntimeException("Error: didn't recieve a valid SearchType" + mType.toString());
+			throw new RuntimeException("Error: didn't receive a valid SearchType" + mType.toString());
 		}
-
-		builder.append("&start=" + Integer.toString(mStart));
 
 		return builder.toString();
 	}
