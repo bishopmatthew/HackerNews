@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.airlocksoftware.hackernews.activity.MainActivity.CommentsTab;
 import com.airlocksoftware.hackernews.model.SearchItem;
 import com.airlocksoftware.holo.type.FontText;
 import com.airlocksoftware.holo.utils.ViewUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /** Adapter for SearchFragment. Displays **/
 public class SearchAdapter extends BaseAdapter {
@@ -26,6 +28,8 @@ public class SearchAdapter extends BaseAdapter {
 
 	private boolean moreLink;
 
+	private static final String TAG = SearchAdapter.class.getSimpleName();
+	private static final int ITEM_TYPE_INVALID = -1;
 	private static final int ITEM_TYPE_STORY = 0;
 	private static final int ITEM_TYPE_COMMENT = 1;
 	private static final int ITEM_TYPE_MORE = 2;
@@ -68,10 +72,15 @@ public class SearchAdapter extends BaseAdapter {
 				convertView = inflater.inflate(R.layout.vw_story, container, false);
 				ViewUtils.fixBackgroundRepeat(convertView);
 				sHolder = getNewStoryHolder(convertView);
-				convertView.setTag(sHolder);
+
+				if (convertView != null) {
+					convertView.setTag(sHolder);
+				}
+
 			} else {
 				sHolder = (StoryHolder) convertView.getTag();
 			}
+
 			bindStoryView(item, sHolder);
 
 			break;
@@ -80,12 +89,18 @@ public class SearchAdapter extends BaseAdapter {
 			CommentHolder cHolder;
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.vw_comment_search, container, false);
+
 				ViewUtils.fixBackgroundRepeat(convertView);
 				cHolder = getNewCommentsHolder(convertView);
-				convertView.setTag(cHolder);
+
+				if (convertView != null) {
+					convertView.setTag(cHolder);
+				}
+
 			} else {
 				cHolder = (CommentHolder) convertView.getTag();
 			}
+
 			bindCommentsView(item, cHolder);
 
 			break;
@@ -96,6 +111,9 @@ public class SearchAdapter extends BaseAdapter {
 			}
 			
 			break;
+		case ITEM_TYPE_INVALID:
+			convertView = inflater.inflate(R.layout.vw_invalid_story, container, false);
+			break;
 		}
 		
 		return convertView;
@@ -103,22 +121,23 @@ public class SearchAdapter extends BaseAdapter {
 
 	private void bindCommentsView(SearchItem item, CommentHolder cHolder) {
 		// if thread is [dead], there will be no item.discussion.title
-		if (item.discussion != null && item.discussion.title != null) {
+		if (item.story_id != null && item.story_url != null) {
 			cHolder.title.setVisibility(View.VISIBLE);
-			cHolder.title.setText("on: " + item.discussion.title);
+			cHolder.title.setText("on: " + item.story_title);
 		} else {
 			cHolder.title.setVisibility(View.GONE);
 		}
-		cHolder.username.setText(item.username);
-		cHolder.comment.setText(Html.fromHtml(item.text));
+
+		cHolder.username.setText(item.author);
+		cHolder.comment.setText(Html.fromHtml(item.comment_text));
 		cHolder.item = item;
 	}
 
 	private void bindStoryView(SearchItem item, StoryHolder sHolder) {
 		sHolder.title.setText(item.title);
-		sHolder.numPoints.setText(Integer.toString(item.points));
-		sHolder.numComments.setText(Integer.toString(item.num_comments));
-		sHolder.domain.setText(item.domain);
+		sHolder.numPoints.setText(Long.toString(item.points));
+		sHolder.numComments.setText(Long.toString(item.num_comments));
+		sHolder.domain.setText(item.domain());
 		sHolder.item = item;
 	}
 
@@ -132,6 +151,7 @@ public class SearchAdapter extends BaseAdapter {
 		cHolder.title.setTag(cHolder);
 
 		cHolder.title.setOnClickListener(mCommentListener);
+
 		return cHolder;
 	}
 
@@ -160,12 +180,15 @@ public class SearchAdapter extends BaseAdapter {
 	}
 
 	private int getItemViewTypeBySearchItem(SearchItem item) {
-		if (item.type.equals("comment")) {
+		if (item.isComment()) {
 			return ITEM_TYPE_COMMENT;
-		} else if (item.type.equals("submission")) {
+		} else if (item.isTextPost() || item.isArticlePost()) {
 			return ITEM_TYPE_STORY;
-		} else throw new RuntimeException("Received a search result that isn't a comment or a submission. Type = "
-				+ item.type);
+		} else {
+			Log.d(TAG, "Received a search result that isn't a comment or a submission.");
+			return ITEM_TYPE_INVALID;
+		}
+
 	}
 
 	@Override
@@ -204,7 +227,14 @@ public class SearchAdapter extends BaseAdapter {
 		public void onClick(View v) {
 			StoryHolder holder = (StoryHolder) v.getTag();
 			CommentsTab tab = v.getId() == R.id.btn_comments ? CommentsTab.COMMENTS : CommentsTab.ARTICLE;
-			MainActivity.startCommentsActivity(mContext, null, holder.item.id, holder.item.url, tab);
+
+			MainActivity.startCommentsActivity(
+				mContext,
+				null,
+				Long.valueOf(holder.item.objectID),
+				holder.item.url,
+				tab
+			);
 		}
 	};
 
@@ -212,8 +242,14 @@ public class SearchAdapter extends BaseAdapter {
 		@Override
 		public void onClick(View v) {
 			CommentHolder holder = (CommentHolder) v.getTag();
-			MainActivity.startCommentsActivity(mContext, null, holder.item.discussion.id, holder.item.url,
-					CommentsTab.COMMENTS);
+
+			MainActivity.startCommentsActivity(
+				mContext,
+				null,
+				Long.valueOf(holder.item.story_id),
+				holder.item.story_url,
+				CommentsTab.COMMENTS
+			);
 		}
 	};
 

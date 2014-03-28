@@ -583,7 +583,7 @@ public class MainActivity extends SlideoutMenuActivity implements SharePopupInte
 	// Static startup methods for MainActivity with Comments layout.
 
 	/** Starts a new MainActivity with data for showing a CommentsFragment. **/
-	public static void startCommentsActivity(Context context, Page page, int storyId, String url, CommentsTab initialTab) {
+	public static void startCommentsActivity(Context context, Page page, long storyId, String url, CommentsTab initialTab) {
 		Story story = new Story();
 		story.storyId = storyId;
 		story.url = url;
