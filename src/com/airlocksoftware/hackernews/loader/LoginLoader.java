@@ -7,11 +7,8 @@ import android.support.v4.content.AsyncTaskLoader;
 import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.data.LoginManager;
 import com.airlocksoftware.hackernews.data.UserPrefs;
-import com.airlocksoftware.hackernews.model.Comment;
-import com.airlocksoftware.hackernews.model.Result;
-import com.airlocksoftware.hackernews.model.Story;
-import com.airlocksoftware.hackernews.model.Timestamp;
-import com.airlocksoftware.hackernews.model.Vote;
+import com.airlocksoftware.hackernews.model.*;
+import com.airlocksoftware.hackernews.model.StoryTimestamp;
 
 /**
  * Uses static method LoginManager.login() to perform the login. Notifies LoginActivity whether or not it was
@@ -47,7 +44,7 @@ public class LoginLoader extends AsyncTaskLoader<Result> {
 
 			db.delete(new Story().getTableName(), null, null);
 			db.delete(new Comment().getTableName(), null, null);
-			db.delete(new Timestamp().getTableName(), null, null);
+			db.delete(new StoryTimestamp().getTableName(), null, null);
 			db.delete(new Vote().getTableName(), null, null);
 
 			db.close();

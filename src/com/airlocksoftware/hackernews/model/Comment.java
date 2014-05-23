@@ -1,8 +1,5 @@
 package com.airlocksoftware.hackernews.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
-
 import com.airlocksoftware.database.DbUtils;
 import com.airlocksoftware.database.SqlObject;
 import com.airlocksoftware.hackernews.activity.LoginActivity;
@@ -18,6 +14,9 @@ import com.airlocksoftware.hackernews.activity.LoginActivity.PostAction;
 import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.loader.AsyncVotingService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 /** Encapsulates data about a comment. Since it's extending SqlObject, any public, non-static, 
@@ -153,21 +152,21 @@ public class Comment extends SqlObject {
 	 * 
 	 * @param timestamp
 	 **/
-	public static void cacheValues(SQLiteDatabase db, List<Comment> comments, Timestamp timestamp) {
+	public static void cacheValues(SQLiteDatabase db, List<Comment> comments, CommentsTimestamp timestamp) {
 		// make sure we have a comment to run queries against
 		if (comments == null || comments.size() < 1) return;
 		Comment first = comments.get(0);
 		if (first == null) first = new Comment();
 
 		// delete any old comments (Timestamp.TIME < System.currentTimeMillis() - CACHE_EXPIRATION)
-		Cursor c = db.query(timestamp.getTableName(), timestamp.getColNames(), Timestamp.TIME + "<? AND " + Timestamp.TIME
+		Cursor c = db.query(timestamp.getTableName(), timestamp.getColNames(), StoryTimestamp.TIME + "<? AND " + StoryTimestamp.TIME
 				+ ">? ",
 				new String[] { Long.toString(System.currentTimeMillis() - CACHE_EXPIRATION), Long.toString(JAN_1_2012) }, null,
 				null, null);
 
 		if (c.moveToFirst()) {
 			for (int i = 1; i < c.getCount(); i++) {
-				Timestamp ts = new Timestamp();
+				StoryTimestamp ts = new StoryTimestamp();
 				ts.readFromCursor(c);
 				c.moveToNext();
 
@@ -178,8 +177,8 @@ public class Comment extends SqlObject {
 		}
 
 		// delete old
-		Timestamp toDelete = new Timestamp();
-		toDelete.id = DbUtils.getId(db, timestamp.getTableName(), Timestamp.SECONDARY_ID, timestamp.secondaryId);
+		StoryTimestamp toDelete = new StoryTimestamp();
+		toDelete.id = DbUtils.getId(db, timestamp.getTableName(), StoryTimestamp.SECONDARY_ID, timestamp.secondaryId);
 		toDelete.delete(db);
 
 		// create new

@@ -18,7 +18,7 @@ import com.airlocksoftware.hackernews.interfaces.SharePopupInterface;
 import com.airlocksoftware.hackernews.loader.ThreadsLoader;
 import com.airlocksoftware.hackernews.model.Request;
 import com.airlocksoftware.hackernews.model.Result;
-import com.airlocksoftware.hackernews.model.Timestamp;
+import com.airlocksoftware.hackernews.model.StoryTimestamp;
 import com.airlocksoftware.hackernews.parser.CommentsParser.ThreadsResponse;
 import com.airlocksoftware.holo.actionbar.interfaces.ActionBarClient;
 import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
@@ -165,7 +165,7 @@ public class ThreadsFragment extends ListFragment implements ActionBarClient,
 		refreshContentVisibility();
 	}
 
-	private void refreshMoreButtonVisibility(Timestamp timestamp) {
+	private void refreshMoreButtonVisibility(StoryTimestamp timestamp) {
 		mMoreButtonText.setText(getActivity().getString(R.string.load_more));
 		mMoreIcon.setVisibility(View.VISIBLE);
 		// show more link (timestamp is only not null if we have a valid moreFnid)

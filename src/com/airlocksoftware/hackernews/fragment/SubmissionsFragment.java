@@ -18,7 +18,7 @@ import com.airlocksoftware.hackernews.interfaces.SharePopupInterface;
 import com.airlocksoftware.hackernews.loader.StoryLoader;
 import com.airlocksoftware.hackernews.model.Request;
 import com.airlocksoftware.hackernews.model.Result;
-import com.airlocksoftware.hackernews.model.Timestamp;
+import com.airlocksoftware.hackernews.model.StoryTimestamp;
 import com.airlocksoftware.hackernews.parser.StoryParser.StoryResponse;
 import com.airlocksoftware.holo.actionbar.interfaces.ActionBarClient;
 import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
@@ -183,7 +183,7 @@ public class SubmissionsFragment extends ListFragment implements ActionBarClient
 		refreshContentVisibility();
 	}
 
-	private void refreshMoreButtonVisibility(Timestamp timestamp) {
+	private void refreshMoreButtonVisibility(StoryTimestamp timestamp) {
 		mMoreButtonText.setText(getActivity().getString(R.string.load_more));
 		mMoreIcon.setVisibility(View.VISIBLE);
 		

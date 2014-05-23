@@ -1,8 +1,5 @@
 package com.airlocksoftware.hackernews.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.method.LinkMovementMethod;
@@ -15,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
-
 import com.airlocksoftware.hackernews.R;
 import com.airlocksoftware.hackernews.activity.MainActivity;
 import com.airlocksoftware.hackernews.activity.MainActivity.CommentsTab;
@@ -30,6 +26,9 @@ import com.airlocksoftware.holo.type.FontText;
 import com.airlocksoftware.holo.utils.AnimUtils;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Adapter for CommentsFragment. Uses ViewHolder class to cache Views that need to have data re-bound when it changes.
@@ -138,7 +137,9 @@ public class CommentsAdapter extends GroupAdapter<Comment> {
 		holder.commentTxt.setMovementMethod(LinkMovementMethod.getInstance());
 
 		holder.userBtn.setOnClickListener(userListener);
-		holder.replyBtn.setOnClickListener(replyListener);
+		// Disabled reply button because it's broken
+		holder.replyBtn.setVisibility(View.GONE);
+//		holder.replyBtn.setOnClickListener(replyListener);
 		holder.shareBtn.setOnClickListener(shareListener);
 		holder.storyTitleTxt.setOnClickListener(threadListener);
 
@@ -158,8 +159,9 @@ public class CommentsAdapter extends GroupAdapter<Comment> {
 		holder.comment = comment;
 		holder.story = story;
 
-		// visibility of reply button
-		if (mParentStory != null) holder.replyBtn.setVisibility(mParentStory.isArchived ? View.GONE : View.VISIBLE);
+		// visibility of reply button TODO always disabled temporarily because reply is broken
+//		if (mParentStory != null) holder.replyBtn.setVisibility(mParentStory.isArchived ? View.GONE : View.VISIBLE);
+		holder.replyBtn.setVisibility(View.GONE);
 
 		// upvote icon color & click listener
 		if (comment.isUpvoted) {

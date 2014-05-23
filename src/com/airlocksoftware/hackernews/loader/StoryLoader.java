@@ -1,25 +1,17 @@
 package com.airlocksoftware.hackernews.loader;
 
-import java.util.List;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.airlocksoftware.hackernews.R;
 import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
-import com.airlocksoftware.hackernews.model.Page;
-import com.airlocksoftware.hackernews.model.Request;
-import com.airlocksoftware.hackernews.model.Result;
-import com.airlocksoftware.hackernews.model.Story;
-import com.airlocksoftware.hackernews.model.Timestamp;
+import com.airlocksoftware.hackernews.model.*;
 import com.airlocksoftware.hackernews.parser.StoryParser;
 import com.airlocksoftware.hackernews.parser.StoryParser.StoryResponse;
-
 import com.crashlytics.android.Crashlytics;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 
 public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 
@@ -83,7 +75,7 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 		StoryResponse response = null;
 
 		// handle cache
-		Timestamp timestamp = Timestamp.cachedByBothIds(db, PAGE_TIMESTAMP_ID, page.toString());
+		StoryTimestamp timestamp = StoryTimestamp.cachedByBothIds(db, PAGE_TIMESTAMP_ID, page.toString());
 		if (timestamp != null && request == Request.NEW) {
 			List<Story> stories = Story.cachedByPage(db, page);
 			if (stories.size() > 0) {
@@ -142,7 +134,7 @@ public class StoryLoader extends AsyncTaskLoader<StoryResponse> {
 		StoryResponse response = null;
 
 		// check for more
-		Timestamp timestamp = Timestamp.cachedByPrimaryId(db, SUBMISSIONS_TIMESTAMP_ID);
+		StoryTimestamp timestamp = StoryTimestamp.cachedByPrimaryId(db, SUBMISSIONS_TIMESTAMP_ID);
 		if (request == Request.MORE && timestamp != null && timestamp.secondaryId.equals(username)) {
 			response = StoryParser.parseUserSubmissions(getContext(), username, timestamp.fnid);
 		}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.airlocksoftware.hackernews.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
@@ -17,11 +18,7 @@ import android.util.Log;
 
 import com.airlocksoftware.hackernews.data.ConnectionManager;
 import com.airlocksoftware.hackernews.data.UserPrefs;
-import com.airlocksoftware.hackernews.model.Page;
-import com.airlocksoftware.hackernews.model.Request;
-import com.airlocksoftware.hackernews.model.Result;
-import com.airlocksoftware.hackernews.model.Story;
-import com.airlocksoftware.hackernews.model.Timestamp;
+import com.airlocksoftware.hackernews.model.StoryTimestamp;
 
 public class StoryParser {
 
@@ -139,7 +136,7 @@ public class StoryParser {
 	}
 
 	/** Creates a new timestamp if the more element exists on the page, else returns null. **/
-	private static Timestamp getNewTimestamp(Document doc) {
+	private static StoryTimestamp getNewTimestamp(Document doc) {
 		// get new moreFnid & Timestamp
 		Element more = doc.select("td.title a:matchesOwn(^More$)")
 											.first();
@@ -149,7 +146,7 @@ public class StoryParser {
 		// strip leading slash (/) since it's added by the urlExtension code above
 		if (fnid.startsWith("/")) fnid = fnid.substring(1);
 
-		Timestamp timestamp = new Timestamp();
+		StoryTimestamp timestamp = new StoryTimestamp();
 		timestamp.fnid = fnid;
 		timestamp.time = System.currentTimeMillis();
 		return timestamp;
@@ -162,7 +159,7 @@ public class StoryParser {
 
 		public Result result       = null;
 		public List<Story> stories = null;
-		public Timestamp timestamp = null;
+		public StoryTimestamp timestamp = null;
 
 		public boolean isNull() {
 			return (this.equals(NULL_RESPONSE));

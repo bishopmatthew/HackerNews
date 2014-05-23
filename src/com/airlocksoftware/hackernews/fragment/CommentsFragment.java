@@ -1,10 +1,5 @@
 package com.airlocksoftware.hackernews.fragment;
 
-import java.io.Serializable;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.airlocksoftware.hackernews.R;
 import com.airlocksoftware.hackernews.activity.ReplyActivity;
 import com.airlocksoftware.hackernews.activity.UserActivity;
@@ -42,6 +36,10 @@ import com.airlocksoftware.holo.actionbar.interfaces.ActionBarController;
 import com.airlocksoftware.holo.image.IconView;
 import com.airlocksoftware.holo.utils.Utils;
 import com.airlocksoftware.holo.utils.ViewUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Displays a page of comments with the parent story as a header. Uses CommentsLoader to get data from the cache or the
@@ -77,7 +75,8 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
 
 	private View mHeaderView, mError, mEmpty, mLoading;
 	private TextView mHeaderTitle, mHeaderUsername, mHeaderPoints, mHeaderSelfText;
-	private IconView mUserIcon, mShareIcon, mUpvoteIcon, mReplyIcon;
+	private IconView mUserIcon, mShareIcon, mUpvoteIcon;
+//			mReplyIcon; disabled because the way replies work has changed
 	private View mUpvoteButton, mSelfTextContainer;
 	private ActionBarButton mBrowserButton, mRefreshButton;
 	private SharePopup mShare;
@@ -222,11 +221,11 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
 		mUserIcon = (IconView) mHeaderView.findViewById(R.id.icv_user);
 		mShareIcon = (IconView) mHeaderView.findViewById(R.id.icv_share);
 		mUpvoteIcon = (IconView) mHeaderView.findViewById(R.id.icv_upvote);
-		mReplyIcon = (IconView) mHeaderView.findViewById(R.id.icv_reply);
+//		mReplyIcon = (IconView) mHeaderView.findViewById(R.id.icv_reply);
 
 		mUserIcon.setOnClickListener(mUserListener);
 		mShareIcon.setOnClickListener(mShareListener);
-		mReplyIcon.setOnClickListener(mReplyListener);
+//		mReplyIcon.setOnClickListener(mReplyListener);
 
 		mUpvoteButton = mHeaderView.findViewById(R.id.btn_upvote);
 		mSelfTextContainer = mHeaderView.findViewById(R.id.cnt_txt_self);
@@ -426,7 +425,9 @@ public class CommentsFragment extends Fragment implements ActionBarClient, Loade
 		mSelfTextContainer.setVisibility(ViewUtils.boolToVis(hasSelfText));
 
 		// setup reply button
-		mReplyIcon.setVisibility(ViewUtils.boolToVis(!mStory.isArchived));
+//		mReplyIcon.setVisibility(ViewUtils.boolToVis(!mStory.isArchived)); // disabled because reply is broken
+//		mReplyIcon.setVisibility(ViewUtils.boolToVis(!mStory.isArchived));
+		mHeaderView.findViewById(R.id.icv_reply).setVisibility(View.GONE);
 		mHeaderView.setVisibility(View.VISIBLE);
 	}
 

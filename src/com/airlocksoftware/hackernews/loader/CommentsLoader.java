@@ -1,20 +1,15 @@
 package com.airlocksoftware.hackernews.loader;
 
-import java.util.List;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.AsyncTaskLoader;
-
 import com.airlocksoftware.hackernews.cache.DbHelperSingleton;
 import com.airlocksoftware.hackernews.fragment.CommentsFragment;
-import com.airlocksoftware.hackernews.model.Comment;
-import com.airlocksoftware.hackernews.model.Request;
-import com.airlocksoftware.hackernews.model.Result;
-import com.airlocksoftware.hackernews.model.Story;
-import com.airlocksoftware.hackernews.model.Timestamp;
+import com.airlocksoftware.hackernews.model.*;
 import com.airlocksoftware.hackernews.parser.CommentsParser;
 import com.airlocksoftware.hackernews.parser.CommentsParser.CommentsResponse;
+
+import java.util.List;
 
 /**
  * Loads the comments page specified by storyId. If possible, tries to load the data from the db cache. Otherwise it
@@ -39,18 +34,17 @@ public class CommentsLoader extends AsyncTaskLoader<CommentsResponse> {
 			return new CommentsResponse(Result.EMPTY);
 		}
 
-		SQLiteDatabase db = DbHelperSingleton.getInstance(getContext())
-																					.getWritableDatabase();
+		SQLiteDatabase db = DbHelperSingleton.getInstance(getContext()).getWritableDatabase();
 		CommentsResponse response = null;
 
 		List<Comment> comments = null;
 		Story story = null;
-		Timestamp timestamp = null;
+		CommentsTimestamp timestamp = null;
 
 		if (mRequest == Request.NEW) {
 			story = Story.cachedById(db, mStoryId);
 			comments = Comment.getFromCache(db, mStoryId);
-			timestamp = Timestamp.cachedByBothIds(db, CommentsParser.COMMENT_TIMESTAMP_ID, Long.toString(mStoryId));
+			timestamp = CommentsTimestamp.cachedByBothIds(db, CommentsParser.COMMENT_TIMESTAMP_ID, Long.toString(mStoryId));
 
 			if (story != null && comments != null && comments.size() > 0 && timestamp != null) {
 				response = new CommentsResponse(Result.SUCCESS);

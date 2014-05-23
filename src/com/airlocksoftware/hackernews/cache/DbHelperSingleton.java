@@ -4,10 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.airlocksoftware.hackernews.model.Comment;
-import com.airlocksoftware.hackernews.model.Story;
-import com.airlocksoftware.hackernews.model.Timestamp;
-import com.airlocksoftware.hackernews.model.Vote;
+import com.airlocksoftware.hackernews.model.*;
 
 /**
  * SQLiteOpenHelper singleton. Should be ok that the database is never closed as per:
@@ -18,7 +15,7 @@ public class DbHelperSingleton extends SQLiteOpenHelper {
 	private static DbHelperSingleton mInstance = null;
 
 	private static final String DATABASE_NAME = "hacker_news_cache.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	public static DbHelperSingleton getInstance(Context context) {
 		/**
@@ -45,7 +42,8 @@ public class DbHelperSingleton extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		new Story().createTable(db);
 		new Comment().createTable(db);
-		new Timestamp().createTable(db);
+		new StoryTimestamp().createTable(db);
+		new CommentsTimestamp().createTable(db);
 		new Vote().createTable(db);
 	}
 
@@ -53,7 +51,8 @@ public class DbHelperSingleton extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + new Story().getTableName());
 		db.execSQL("DROP TABLE IF EXISTS " + new Comment().getTableName());
-		db.execSQL("DROP TABLE IF EXISTS " + new Timestamp().getTableName());
+		db.execSQL("DROP TABLE IF EXISTS " + new StoryTimestamp().getTableName());
+		db.execSQL("DROP TABLE IF EXISTS " + new CommentsTimestamp().getTableName());
 		db.execSQL("DROP TABLE IF EXISTS " + new Vote().getTableName());
 
 		onCreate(db);
