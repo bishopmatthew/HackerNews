@@ -35,7 +35,7 @@ public class SettingsActivity extends SlideoutMenuActivity {
 		@Override
 		public void onClick(View v) {
 			mSubmitBugReports = !mSubmitBugReports;
-			mUserPrefs.saveOpenInBrowser(mSubmitBugReports);
+			mUserPrefs.saveBugsenseEnabled(mSubmitBugReports);
 			notifyDataSetChanged();
 		}
 	};
