@@ -291,7 +291,7 @@ public class SearchActivity extends BackActivity implements LoaderManager.Loader
 		boolean loadingVis = mIsLoading && adapterEmpty;
 		boolean errorVis = mLastResult == Result.FAILURE && !mIsLoading;
 		// Result.EMPTY refers to initial run of loader, not "no results" TODO should probably make this more logical
-		boolean noResultsVis = !errorVis && adapterEmpty && mLastResult != Result.EMPTY;
+		boolean noResultsVis = !errorVis && !mIsLoading && adapterEmpty && mLastResult != Result.EMPTY;
 
 		mSearchButton.showProgress(mIsLoading);
 
