@@ -1,10 +1,8 @@
 package com.airlocksoftware.hackernews.parser;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-
+import android.content.Context;
+import com.airlocksoftware.hackernews.data.ConnectionManager;
+import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
@@ -13,12 +11,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.airlocksoftware.hackernews.data.ConnectionManager;
-import com.airlocksoftware.hackernews.data.UserPrefs;
-import com.airlocksoftware.hackernews.model.StoryTimestamp;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 public class StoryParser {
 
@@ -78,9 +74,6 @@ public class StoryParser {
 		response.stories = new ArrayList<Story>();
 		response.result = Result.SUCCESS; // success unless error state is tripped
 		try {
-			long startTime = System.currentTimeMillis(); // TODO DEBUGGING
-			Log.d(TAG, "Start downloading stories");
-
 			UserPrefs data = new UserPrefs(context);
 			String userCookie = data.getUserCookie();
 			Document doc = getDocument(urlExtension, userCookie);
@@ -93,24 +86,19 @@ public class StoryParser {
 				return response;
 			}
 
-			long downloadTime = System.currentTimeMillis(); // TODO DEBUGGING
-			Log.d(TAG, "Download took: " + (downloadTime - startTime) + " milliseconds");
-
-			Elements titles = doc.select("td.title:containsOwn(.)");
+			Elements titles = doc.select("span.rank"); // html changed, story rank numbers now have this class
 			Elements subtexts = doc.select("td.subtext");
 			ListIterator<Element> titlesIterator = titles.listIterator();
 			ListIterator<Element> subtextIterator = subtexts.listIterator();
 
 			while (titlesIterator.hasNext() && subtextIterator.hasNext()) {
 				Element child = titlesIterator.next();
-				Element titleElement = child.parent();
+				Element titleElement = child.parent().parent();
 				Element subtextElement = subtextIterator.next();
 				Story story = parseStory(titleElement, subtextElement, userCookie != null);
 				story.page = page;
 				response.stories.add(story);
 			}
-			Log.d(TAG, "Parsing took: " + (System.currentTimeMillis() - downloadTime) + " milliseconds"); // TODO DEBUGGING
-
 			response.timestamp = getNewTimestamp(doc);
 
 		} catch (IOException e) {
