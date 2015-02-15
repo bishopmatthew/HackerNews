@@ -45,7 +45,7 @@ public class Story extends SqlObject {
 	// constant values need to match field names above
 	public static final String STORY_ID = "storyId";
 	public static final String POSITION = "position";
-	public static final String WHENCE = "whence";
+	public static final String WHENCE = "go_to";
 	public static final String URL = "url";
 	public static final String TITLE = "title";
 	public static final String DOMAIN = "domain";
@@ -66,7 +66,7 @@ public class Story extends SqlObject {
 		String toReturn = "";
 		toReturn += "postition: " + position;
 		toReturn += "\nstoryId: " + storyId;
-		if (whence != null) toReturn += "\nwhence: " + whence;
+		if (whence != null) toReturn += "\ngo_to: " + whence;
 		if (url != null) toReturn += "\nurl: " + url;
 		if (title != null) toReturn += "\ntitle: " + title;
 		if (domain != null) toReturn += "\ndomain: " + domain;

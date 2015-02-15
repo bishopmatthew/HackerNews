@@ -40,7 +40,7 @@ public class Comment extends SqlObject {
 	public static final String HTML = "html";
 	public static final String DEPTH = "depth";
 	public static final String REPLY_URL = "replyUrl";
-	public static final String WHENCE = "whence";
+	public static final String WHENCE = "go_to";
 	public static final String AUTH = "auth";
 	public static final String IS_UPVOTED = "isUpvoted";
 	public static final String IS_FOLDED = "isFolded";

@@ -1,6 +1,7 @@
 package com.airlocksoftware.hackernews.parser;
 
 import android.content.Context;
+import android.util.Log;
 import com.airlocksoftware.hackernews.data.ConnectionManager;
 import com.airlocksoftware.hackernews.data.UserPrefs;
 import com.airlocksoftware.hackernews.model.*;
@@ -136,7 +137,7 @@ public class CommentsParser {
 			Element replyInput = storyRows.select("form[action=comment]").first();
 			if (replyInput != null) {
 				response.timestamp.parent = replyInput.select("input[name=parent]").first().attr("value");
-				response.timestamp.whence = replyInput.select("input[name=whence]").first().attr("value");
+				response.timestamp.go_to = replyInput.select("input[name=goto]").first().attr("value");
 				response.timestamp.hmac = replyInput.select("input[name=hmac]").first().attr("value");
 				response.story.selfText = getSelfText(storyRows);
 				response.story.isArchived = false;
@@ -151,6 +152,7 @@ public class CommentsParser {
 		} catch (Exception e) {
 			response.result = Result.FAILURE;
 			response.comments = new ArrayList<Comment>();
+			Log.e(TAG, "Error parsing comments", e);
 		}
 
 		return response;
@@ -212,10 +214,13 @@ public class CommentsParser {
 	}
 
 	private static long getCommentId(Element comhead) {
-		return Long.parseLong(comhead.select("a")
-				.last()
-				.attr("href")
-				.split("=")[1]);
+		String linkHref = comhead.select("a[href^=item]").attr("href");
+		Matcher matcher = ID_PATTERN.matcher(linkHref);
+		if(matcher.find()) {
+			return Long.parseLong(matcher.group());
+		} else {
+			throw new IllegalStateException("Couldn't parse comment id from commentHeader");
+		}
 	}
 
 	private static String getAgo(Element comhead) {
@@ -241,11 +246,10 @@ public class CommentsParser {
 	}
 
 	private static String getHtml(Element commentContainer) {
-		String html = commentContainer.select("span.comment > :not(p:has(font[size]))").toString();
+		Elements comment = commentContainer.select("span.comment > :not(p:has(font[size]))");
+		String html = comment.outerHtml();
 		// delete font tags from Html
-		// TODO should somehow transform these so they show faded text (but in the appropriate color for the theme)
-		html = html.replace("<font color=\"#000000\">", "");
-		html = html.replace("</font>", "");
+		html = html.replaceAll("[<](/)?font[^>]*[>]", "");
 		return html;
 	}
 

@@ -15,7 +15,7 @@ public class DbHelperSingleton extends SQLiteOpenHelper {
 	private static DbHelperSingleton mInstance = null;
 
 	private static final String DATABASE_NAME = "hacker_news_cache.db";
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 
 	public static DbHelperSingleton getInstance(Context context) {
 		/**

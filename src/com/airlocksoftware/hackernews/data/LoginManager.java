@@ -6,7 +6,7 @@ import org.jsoup.Connection.Response;
 
 public class LoginManager {
 
-	private static final String LOGIN_URL_EXTENSION = "/login?whence=news";
+	private static final String LOGIN_URL_EXTENSION = "/login?go_to=news";
 
 	/**
 	 * Attempts to log the user into http://news.ycombinator.com. If successful, returns a user authentication cookie.
@@ -22,7 +22,7 @@ public class LoginManager {
 //					.attr("value");
 
 			Response response = ConnectionManager.anonConnect("/login")
-					.data("whence", "news")
+					.data("go_to", "news")
 					.data("acct", username)
 					.data("pw", password)
 					.header("Origin", ConnectionManager.BASE_URL)

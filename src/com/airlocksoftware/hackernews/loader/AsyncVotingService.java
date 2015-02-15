@@ -83,6 +83,6 @@ public class AsyncVotingService extends AsyncTask<Void, Void, Void> {
 
 	private String getVoteUrl(Vote vote) {
 		return "/vote?for=" + Long.toString(vote.itemId) + "&dir=up&by=" + vote.username + "&auth=" + vote.auth
-				+ "&whence=" + vote.whence;
+				+ "&go_to=" + vote.whence;
 	}
 }

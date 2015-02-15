@@ -13,7 +13,7 @@ public class CommentsTimestamp extends SqlObject {
 	public String secondaryId;
 
 	// Form data for the reply field
-	public String whence;
+	public String go_to;
 	public String parent;
 	public String hmac;
 
