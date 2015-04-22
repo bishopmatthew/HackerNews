@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -268,9 +267,8 @@ public class StoryParser {
 	}
 
 	private static String parseAgo(Element subtext) {
-		return ((TextNode) subtext.childNode(3)).text()
-				.replace("|", "")
-				.trim();
+		Element agoLink = subtext.select("a").get(1);
+		return agoLink.text().replace("|", "").trim();
 	}
 
 	private static String parseDomain(Element title) {

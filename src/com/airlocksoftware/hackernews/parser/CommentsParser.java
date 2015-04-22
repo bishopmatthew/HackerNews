@@ -8,7 +8,6 @@ import com.airlocksoftware.hackernews.model.*;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -224,13 +223,8 @@ public class CommentsParser {
 	}
 
 	private static String getAgo(Element comhead) {
-		// if this is the users' own comment, the text " by " will be at index 1 and "3 days ago |" will
-		// be at index 3 otherwise "3 days ago |" will be at index 1
-		String ago = ((TextNode) comhead.childNode(1)).text();
-		if (ago.equals(" by ")) {
-			ago = ((TextNode) comhead.childNode(3)).text();
-		}
-		return ago.replace("|", "").trim();
+		Element agoLink = comhead.select("a").get(1);
+		return agoLink.text().replace("|", "").trim();
 	}
 
 	private static String getUsername(Element comhead) {
