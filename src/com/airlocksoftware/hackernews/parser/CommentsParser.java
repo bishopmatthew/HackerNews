@@ -240,7 +240,7 @@ public class CommentsParser {
 	}
 
 	private static String getHtml(Element commentContainer) {
-		Elements comment = commentContainer.select("span.comment > :not(p:has(font[size]))");
+		Elements comment = commentContainer.select("div.comment > :not(p:has(font[size]))");
 		String html = comment.outerHtml();
 		// delete font tags from Html
 		html = html.replaceAll("[<](/)?font[^>]*[>]", "");
